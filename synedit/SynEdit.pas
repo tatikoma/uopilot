@@ -76,6 +76,7 @@ uses
   ExtCtrls,
   Windows,
   Messages,
+  {$IFDEF FPC}LCLType,{$ENDIF}
   {$IFDEF SYN_COMPILER_7}
   Themes,
   {$ENDIF}
@@ -525,7 +526,7 @@ type
     	LineCount: Integer);
 		procedure UpdateFoldRangeParents;
     procedure CheckIfAtMatchingKeywords;
-    function IsKeywordAtCursorPos(OpenKeyWord: PBoolean = nil): Boolean;
+    function IsKeywordAtCursorPos(OpenKeyWord: System.PBoolean = nil): Boolean;
     function GetAutoSizeDigitCount: Integer;
     function CanExecuteInLine(aLine: Integer; aKey: Word = 0): Boolean;
     function GetCollapseMarkRect(FoldRange: TSynEditFoldRange;
@@ -647,7 +648,9 @@ type
     function NeedKey(Key: Integer; Shift: TShiftState;
       const KeyText: WideString): Boolean; override;
 {$ELSE}
+    {$IFNDEF FPC}
     procedure CreateParams(var Params: TCreateParams); override;
+    {$ENDIF}
     procedure CreateWnd; override;
     procedure DestroyWnd; override;
     procedure InvalidateRect(const aRect: TRect; aErase: boolean); virtual;
@@ -666,6 +669,9 @@ type
     procedure KeyUp(var Key: Word; Shift: TShiftState); override;
     procedure KeyDown(var Key: Word; Shift: TShiftState); override;
     procedure KeyPress(var Key: Char); override;
+    {$IFDEF FPC}
+    procedure UTF8KeyPress(var UTF8Key: TUTF8Char); override;
+    {$ENDIF}
     procedure LinesChanged(Sender: TObject); virtual;
     procedure ListCleared(Sender: TObject);
     procedure ListDeleted(Sender: TObject; aIndex: integer; aCount: integer);
@@ -1033,8 +1039,10 @@ type
     property ActiveLineColor;
 {$IFDEF SYN_CLX}
 {$ELSE}
+    {$IFNDEF FPC}
     property Ctl3D;
     property ParentCtl3D;
+    {$ENDIF}
 {$ENDIF}
 
 		//### Code Folding ###
@@ -1302,10 +1310,10 @@ var
 begin
   if SText <> '' then begin
     Failed := TRUE; // assume the worst.
-    // Open and Close are the only TClipboard methods we use because TClipboard
-    // is very hard (impossible) to work with if you want to put more than one
-    // format on it at a time.
-    Clipboard.Open;
+    // LCL TClipboard.Open/Close не открывают буфер ОС, поэтому работаем с
+    // сырым WinAPI напрямую, чтобы положить сразу несколько форматов.
+    if not OpenClipboard(0) then
+      raise ESynEditError.Create('Clipboard copy operation failed');
     try
       // Clear anything already on the clipboard.
       EmptyClipboard;
@@ -1359,7 +1367,7 @@ begin
         // when it is done with it.
       end;
     finally
-      Clipboard.Close;
+      CloseClipboard;
       if Failed then
         raise ESynEditError.Create('Clipboard copy operation failed');
     end;
@@ -1491,6 +1499,9 @@ begin
   fMaxScrollWidth := 1024;
   fScrollBars := ssBoth;
   fBorderStyle := bsSingle;
+{$IFDEF FPC}
+  inherited SetBorderStyle(bsSingle);
+{$ENDIF}
   fInsertCaret := ctVerticalLine;
   fOverwriteCaret := ctBlock;
   FSelectionMode := smNormal;
@@ -1560,6 +1571,7 @@ end;
 
 {$IFDEF SYN_CLX}
 {$ELSE}
+{$IFNDEF FPC}
 procedure TCustomSynEdit.CreateParams(var Params: TCreateParams);
 const
   BorderStyles: array[TBorderStyle] of DWORD = (0, WS_BORDER);
@@ -1582,6 +1594,7 @@ begin
     end;
   end;
 end;
+{$ENDIF}
 {$ENDIF}
 
 procedure TCustomSynEdit.DecPaintLock;
@@ -2259,6 +2272,30 @@ begin
     // don't ignore further keys
     Exclude(fStateFlags, sfIgnoreNextChar);
 end;
+
+{$IFDEF FPC}
+procedure TCustomSynEdit.UTF8KeyPress(var UTF8Key: TUTF8Char);
+var
+  WS: WideString;
+  AKey: Char;
+  Used: Integer;
+begin
+  { UTF-8 LCL -> internal cp1251 SynEdit: transcode a single character
+    UTF-8 -> cp1251 and insert via the normal KeyPress (undo/redo, highlighting). }
+  if UTF8Key = '' then
+    Exit;
+  WS := UTF8Decode(UTF8Key);
+  if Length(WS) = 1 then
+  begin
+    Used := WideCharToMultiByte(1251, 0, @WS[1], 1, @AKey, 1, nil, nil);
+    if Used = 1 then
+    begin
+      KeyPress(AKey);
+      UTF8Key := '';
+    end;
+  end;
+end;
+{$ENDIF}
 
 function TCustomSynEdit.LeftSpaces(const Line: string): Integer;
 begin
@@ -4247,9 +4284,10 @@ begin
 {$ELSE}
     // Check for our special format first.
     if Clipboard.HasFormat(SynEditClipboardFormat) then begin
-      Clipboard.Open;
+      if not OpenClipboard(0) then
+        raise ESynEditError.Create('Clipboard paste operation failed.');
       try
-        Mem := Clipboard.GetAsHandle(SynEditClipboardFormat);
+        Mem := GetClipboardData(SynEditClipboardFormat);
         P := GlobalLock(Mem);
         if P <> nil then
         try
@@ -4298,7 +4336,7 @@ begin
         else
           raise ESynEditError.Create('Clipboard paste operation failed.');
       finally
-        Clipboard.Close;
+        CloseClipboard;
       end;
     // If our special format isn't there, check for regular text format.
     end else if Clipboard.HasFormat(CF_TEXT) then begin
@@ -4667,7 +4705,7 @@ procedure TCustomSynEdit.SetFont(const Value: TFont);
 var
   DC: HDC;
   Save: THandle;
-  Metrics: TTextMetric;
+  Metrics: Windows.TTextMetric;
   AveCW, MaxCW: Integer;
 {$ENDIF}
 begin
@@ -5260,7 +5298,7 @@ procedure TCustomSynEdit.UpdateScrollBars;
 var
   nMaxScroll: integer;
 {$IFNDEF SYN_CLX}
-  ScrollInfo: TScrollInfo;
+  ScrollInfo: Windows.TScrollInfo;
   iRightChar: Integer;
 {$ELSE}
   iClientRect: TRect;
@@ -5572,7 +5610,7 @@ begin
       try
         iNumberDropped := DragQueryFile(THandle(Msg.wParam), Cardinal(-1),
           nil, 0);
-        DragQueryPoint(THandle(Msg.wParam), Point);
+        DragQueryPoint(THandle(Msg.wParam), @Point);
 
         for i := 0 to iNumberDropped - 1 do
         begin
@@ -5739,7 +5777,7 @@ var
   pt: TPoint;
   ScrollHint: THintWindow;
   ButtonH: Integer;
-  ScrollInfo: TScrollInfo;
+  ScrollInfo: Windows.TScrollInfo;
 begin
   Msg.Result := 0;
   case Msg.ScrollCode of
@@ -7253,7 +7291,11 @@ begin
     Resize;
     Invalidate;
 {$ELSE}
+    {$IFDEF FPC}
+    inherited SetBorderStyle(Value);
+    {$ELSE}
     RecreateWnd;
+    {$ENDIF}
 {$ENDIF}
   end;
 end;
@@ -12509,8 +12551,8 @@ begin
   end;
 end;
 
-function TCustomSynEdit.IsKeywordAtCursorPos(OpenKeyWord: PBoolean): Boolean;
-  function IsKeywordAtCursorPosForFoldRegions(OpenKeyWord: PBoolean;
+function TCustomSynEdit.IsKeywordAtCursorPos(OpenKeyWord: System.PBoolean): Boolean;
+  function IsKeywordAtCursorPosForFoldRegions(OpenKeyWord: System.PBoolean;
   	FoldRegions: TFoldRegions): Boolean;
   var
 		P, i: Integer;

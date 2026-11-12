@@ -1,25 +1,33 @@
 program UoPilot;
 
-{ Минимальный стек 32 КБ -- значение уходит прямо в заголовок PE. }
+{$IFDEF FPC}
+  {$MODE Delphi}
+{$ENDIF}
+
+{ РњРёРЅРёРјР°Р»СЊРЅС‹Р№ СЃС‚РµРє 32 РљР‘ -- Р·РЅР°С‡РµРЅРёРµ СѓС…РѕРґРёС‚ РїСЂСЏРјРѕ РІ Р·Р°РіРѕР»РѕРІРѕРє PE. }
 {$MINSTACKSIZE 32768}
 
-{ FastMM4 -- первым юнитом: он подменяет менеджер памяти и при любом
-  другом месте в uses ругается «Память уже была выделена». }
+{ FastMM4 -- РїРµСЂРІС‹Рј СЋРЅРёС‚РѕРј: РѕРЅ РїРѕРґРјРµРЅСЏРµС‚ РјРµРЅРµРґР¶РµСЂ РїР°РјСЏС‚Рё Рё РїСЂРё Р»СЋР±РѕРј
+  РґСЂСѓРіРѕРј РјРµСЃС‚Рµ РІ uses СЂСѓРіР°РµС‚СЃСЏ В«РџР°РјСЏС‚СЊ СѓР¶Рµ Р±С‹Р»Р° РІС‹РґРµР»РµРЅР°В». }
 uses
-  FastMM4 in 'FastMM4.pas',
+{$IFnDEF FPC}
+{$ELSE}
+  Interfaces,
+{$ENDIF}
   Windows,
   SysUtils,
   Forms,
-  { Патчер VCL из SynWrite: весь файл под IFDEF VER150, то есть работает
-    только в Delphi 7. Стоит сразу за Forms -- патчит именно его. }
+  { РџР°С‚С‡РµСЂ VCL РёР· SynWrite: РІРµСЃСЊ С„Р°Р№Р» РїРѕРґ IFDEF VER150, С‚Рѕ РµСЃС‚СЊ СЂР°Р±РѕС‚Р°РµС‚
+    С‚РѕР»СЊРєРѕ РІ Delphi 7. РЎС‚РѕРёС‚ СЃСЂР°Р·Сѓ Р·Р° Forms -- РїР°С‚С‡РёС‚ РёРјРµРЅРЅРѕ РµРіРѕ. }
   VCLFixes in 'VCLFixes.pas',
   Unit1 in 'Unit1.pas' {fmSecondfj},
+  FixedTabControl in 'FixedTabControl.pas',
   fmFirst_u in 'fmFirst_u.pas' {fmFirstfj},
   Unit2 in 'Unit2.pas';
 
-{ Ресурсы: значки, курсор WEB_HAND, шесть языковых таблиц, справка,
-  звук и lua51.dll. }
-{$R uopres.res}
+{ Р РµСЃСѓСЂСЃС‹: Р·РЅР°С‡РєРё, РєСѓСЂСЃРѕСЂ WEB_HAND, С€РµСЃС‚СЊ СЏР·С‹РєРѕРІС‹С… С‚Р°Р±Р»РёС†, СЃРїСЂР°РІРєР°,
+  Р·РІСѓРє Рё lua51.dll. }
+{$R res/uopres.rc}
 
 var
   S: string;
@@ -32,9 +40,12 @@ begin
   Application.ProcessMessages;
   Application.CreateForm(TfmFirst, fmFirstfj);
   Application.CreateForm(TfmSecond, fmSecondfj);
+  fmSecondfj.ShowInTaskBar := stAlways;
   ShowWindow(Application.Handle, SW_HIDE);
+  SetWindowLong(Application.Handle, GWL_EXSTYLE,
+    GetWindowLong(Application.Handle, GWL_EXSTYLE) or WS_EX_TOOLWINDOW);
   if fmSecondfj.miMinToTray.Checked and fmSecondfj.FFlag14E6 then
-    ShowWindow(fmSecondfj.Handle, SW_HIDE);
+    fmSecondfj.Hide;
   if (fmSecondfj.edScript <> nil) and fmSecondfj.Visible and
      fmSecondfj.edScript.Visible and fmSecondfj.edScript.Enabled and
      (fmSecondfj.pcAll.ActivePage = fmSecondfj.tsScript) then
@@ -51,6 +62,6 @@ begin
   try
     Application.Run;
   except
-    Application.MessageBox('Неотловленная ошибка', '', 1);
+    Application.MessageBox('РќРµРѕС‚Р»РѕРІР»РµРЅРЅР°СЏ РѕС€РёР±РєР°', '', 1);
   end;
 end.

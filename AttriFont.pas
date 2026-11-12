@@ -1,23 +1,27 @@
 unit AttriFont;
 
-{ Диалог настройки подсветки синтаксиса -- целиком строится кодом, без
-  своей формы в DFM: набор строк в нём зависит от таблицы атрибутов
-  подсветчика, а она правится по ходу дела.
+{$IFDEF FPC}
+  {$MODE Delphi}
+{$ENDIF}
 
-  Unit1 подключён в описаниях (нужны TfmSecond, fmSecondfj, TUoPAttri,
-  TUoPHighlighter), а он подключает нас в реализации -- по-другому
-  взаимную ссылку не развести. }
+{ Р”РёР°Р»РѕРі РЅР°СЃС‚СЂРѕР№РєРё РїРѕРґСЃРІРµС‚РєРё СЃРёРЅС‚Р°РєСЃРёСЃР° -- С†РµР»РёРєРѕРј СЃС‚СЂРѕРёС‚СЃСЏ РєРѕРґРѕРј, Р±РµР·
+  СЃРІРѕРµР№ С„РѕСЂРјС‹ РІ DFM: РЅР°Р±РѕСЂ СЃС‚СЂРѕРє РІ РЅС‘Рј Р·Р°РІРёСЃРёС‚ РѕС‚ С‚Р°Р±Р»РёС†С‹ Р°С‚СЂРёР±СѓС‚РѕРІ
+  РїРѕРґСЃРІРµС‚С‡РёРєР°, Р° РѕРЅР° РїСЂР°РІРёС‚СЃСЏ РїРѕ С…РѕРґСѓ РґРµР»Р°.
+
+  Unit1 РїРѕРґРєР»СЋС‡С‘РЅ РІ РѕРїРёСЃР°РЅРёСЏС… (РЅСѓР¶РЅС‹ TfmSecond, fmSecondfj Рё TSynUOPilotSyn),
+  Р° РѕРЅ РїРѕРґРєР»СЋС‡Р°РµС‚ РЅР°СЃ РІ СЂРµР°Р»РёР·Р°С†РёРё -- РїРѕ-РґСЂСѓРіРѕРјСѓ РІР·Р°РёРјРЅСѓСЋ СЃСЃС‹Р»РєСѓ РЅРµ
+  СЂР°Р·РІРµСЃС‚Рё. }
 
 interface
 
 uses Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   StdCtrls, Buttons, Dialogs, Unit1, SynEditHighlighter,
-  SynHighlighterPas, ExtCtrls;
+  SynHighlighterUOPilot, ExtCtrls;
 
 type
-  { Своих полей нет: класс держит только КЛАССОВЫЕ обработчики, которые
-    диалог вешает на созданные им элементы. Обработчику никакого состояния
-    и не нужно -- всё лежит на самой форме. }
+  { РЎРІРѕРёС… РїРѕР»РµР№ РЅРµС‚: РєР»Р°СЃСЃ РґРµСЂР¶РёС‚ С‚РѕР»СЊРєРѕ РљР›РђРЎРЎРћР’Р«Р• РѕР±СЂР°Р±РѕС‚С‡РёРєРё, РєРѕС‚РѕСЂС‹Рµ
+    РґРёР°Р»РѕРі РІРµС€Р°РµС‚ РЅР° СЃРѕР·РґР°РЅРЅС‹Рµ РёРј СЌР»РµРјРµРЅС‚С‹. РћР±СЂР°Р±РѕС‚С‡РёРєСѓ РЅРёРєР°РєРѕРіРѕ СЃРѕСЃС‚РѕСЏРЅРёСЏ
+    Рё РЅРµ РЅСѓР¶РЅРѕ -- РІСЃС‘ Р»РµР¶РёС‚ РЅР° СЃР°РјРѕР№ С„РѕСЂРјРµ. }
   TAttriFontChange = class(TObject)
   public
     class procedure AttriLabelClick(Sender: TObject);
@@ -31,8 +35,8 @@ type
 
   TAttriFontChangeClass = class of TAttriFontChange;
 
-{ Строит диалог целиком: метки видов подсветки, списки слов и кнопки к
-  ним. Sender не нужен, но объявлен -- вешается это прямо на пункт меню. }
+{ РЎС‚СЂРѕРёС‚ РґРёР°Р»РѕРі С†РµР»РёРєРѕРј: РјРµС‚РєРё РІРёРґРѕРІ РїРѕРґСЃРІРµС‚РєРё, СЃРїРёСЃРєРё СЃР»РѕРІ Рё РєРЅРѕРїРєРё Рє
+  РЅРёРј. Sender РЅРµ РЅСѓР¶РµРЅ, РЅРѕ РѕР±СЉСЏРІР»РµРЅ -- РІРµС€Р°РµС‚СЃСЏ СЌС‚Рѕ РїСЂСЏРјРѕ РЅР° РїСѓРЅРєС‚ РјРµРЅСЋ. }
 procedure CreateAttriDialog(Cls: TAttriFontChangeClass; Sender: TObject);
 
 implementation
@@ -56,19 +60,31 @@ begin
   if gLangOffsety > 0 then
     gDlg596724bt.Caption := LoadStr(gLangOffsety + $C9)
   else
-    gDlg596724bt.Caption := 'Подсветка синтаксиса';
+    gDlg596724bt.Caption := 'РџРѕРґСЃРІРµС‚РєР° СЃРёРЅС‚Р°РєСЃРёСЃР°';
   H := $32;
   Cnt := fmSecondfj.fld_1428.AttrCount - 1;
   W := 0;
   with TColorDialog.Create(fmSecondfj) do
   begin
     Name := 'cdColorFront';
+    { Р’ Delphi СЃРІРѕР№СЃС‚РІРѕ Options СЃ С„Р»Р°РіРѕРј cdFullOpen СЂР°СЃРєСЂС‹РІР°РµС‚ РїРѕР»РЅС‹Р№
+      РґРёР°Р»РѕРі СЃ РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹РјРё С†РІРµС‚Р°РјРё. Р’ LCL РґРѕ РІРµСЂСЃРёРё 4.0 (РІ С‚.С‡. РІ
+      Lazarus 2.0.12) Сѓ TColorDialog РЅРµС‚ РЅРё Options, РЅРё cdFullOpen --
+      РїРѕР»РЅС‹Р№ РґРёР°Р»РѕРі РѕС‚РєСЂС‹РІР°РµС‚СЃСЏ РІСЃРµРіРґР°. РћСЃС‚Р°РІР»СЏРµРј СЃС‚СЂРѕРєСѓ С‚РѕР»СЊРєРѕ РґР»СЏ Delphi. }
+    {$IFNDEF FPC}
     Options := [cdFullOpen];
+    {$ENDIF}
   end;
   with TColorDialog.Create(fmSecondfj) do
   begin
     Name := 'cdColorBack';
+    { Р’ Delphi СЃРІРѕР№СЃС‚РІРѕ Options СЃ С„Р»Р°РіРѕРј cdFullOpen СЂР°СЃРєСЂС‹РІР°РµС‚ РїРѕР»РЅС‹Р№
+      РґРёР°Р»РѕРі СЃ РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹РјРё С†РІРµС‚Р°РјРё. Р’ LCL РґРѕ РІРµСЂСЃРёРё 4.0 (РІ С‚.С‡. РІ
+      Lazarus 2.0.12) Сѓ TColorDialog РЅРµС‚ РЅРё Options, РЅРё cdFullOpen --
+      РїРѕР»РЅС‹Р№ РґРёР°Р»РѕРі РѕС‚РєСЂС‹РІР°РµС‚СЃСЏ РІСЃРµРіРґР°. РћСЃС‚Р°РІР»СЏРµРј СЃС‚СЂРѕРєСѓ С‚РѕР»СЊРєРѕ РґР»СЏ Delphi. }
+    {$IFNDEF FPC}
     Options := [cdFullOpen];
+    {$ENDIF}
   end;
   with TComboBox.Create(fmSecondfj) do
   begin
@@ -97,7 +113,7 @@ begin
   for Pass := 0 to 1 do
     for I := 0 to Cnt do
     begin
-      K := TUoPAttri(fmSecondfj.fld_1428.Attribute[I]).Kind;
+        K := TSynUOAttributes(fmSecondfj.fld_1428.Attribute[I]).Kind;
       if (K + Pass = 0) or ((K > 0) and (Pass > 0)) then
       begin
         with TLabel.Create(fmSecondfj) do
@@ -130,7 +146,7 @@ begin
   for Pass2 := 0 to 1 do
     for I := 0 to Cnt do
     begin
-      K2 := TUoPAttri(fmSecondfj.fld_1428.Attribute[I]).Kind;
+      K2 := TSynUOAttributes(fmSecondfj.fld_1428.Attribute[I]).Kind;
       if (K2 + Pass2 = 0) or ((K2 > 0) and (Pass2 > 0)) then
       begin
         X := W;
@@ -145,10 +161,10 @@ begin
             Name := 'cbAttri' + IntToStr(K2);
             for Pass := 0 to 255 do
               for K := 0 to Length(
-                  TUoPHighlighter(fmSecondfj.fld_1428).Table[Pass].Names) - 1 do
-                if TUoPHighlighter(fmSecondfj.fld_1428).Table[Pass].Kinds[K] = Tag then
+                  TSynUOPilotSyn(fmSecondfj.fld_1428).KeywordTablePtr^[Pass].Names) - 1 do
+                if TSynUOPilotSyn(fmSecondfj.fld_1428).KeywordTablePtr^[Pass].Kinds[K] = Tag then
                   Items.Add(LowerCase(
-                    TUoPHighlighter(fmSecondfj.fld_1428).Table[Pass].Names[K]));
+                    TSynUOPilotSyn(fmSecondfj.fld_1428).KeywordTablePtr^[Pass].Names[K]));
             if Items.Count > 0 then
               ItemIndex := 0;
           end;
@@ -205,8 +221,8 @@ begin
   W := X + 10;
   gDlg596724bt.ClientHeight := H;
   gDlg596724bt.ClientWidth := W;
-  { Ставим диалог слева от главного окна, но не даём ему уехать за край
-    рабочего стола. }
+  { РЎС‚Р°РІРёРј РґРёР°Р»РѕРі СЃР»РµРІР° РѕС‚ РіР»Р°РІРЅРѕРіРѕ РѕРєРЅР°, РЅРѕ РЅРµ РґР°С‘Рј РµРјСѓ СѓРµС…Р°С‚СЊ Р·Р° РєСЂР°Р№
+    СЂР°Р±РѕС‡РµРіРѕ СЃС‚РѕР»Р°. }
   Pass2 := fmSecondfj.Left - gDlg596724bt.Width;
   K := (fmSecondfj.Height - gDlg596724bt.Height) div 2 + fmSecondfj.Top;
   if Pass2 < 0 then
@@ -228,11 +244,11 @@ var
   K: Integer;
   CB: TComboBox;
 begin
-  { Кнопка add: слово из cbAttri<Tag> уходит в таблицу подсветки и в
-    список самого комбобокса. Всё под пустым except -- элемента с таким
-    именем может и не быть.
-    Именно Repaint, а не Invalidate: перекрасить редактор надо сразу,
-    а не когда до него дойдёт очередь сообщений. }
+  { РљРЅРѕРїРєР° add: СЃР»РѕРІРѕ РёР· cbAttri<Tag> СѓС…РѕРґРёС‚ РІ С‚Р°Р±Р»РёС†Сѓ РїРѕРґСЃРІРµС‚РєРё Рё РІ
+    СЃРїРёСЃРѕРє СЃР°РјРѕРіРѕ РєРѕРјР±РѕР±РѕРєСЃР°. Р’СЃС‘ РїРѕРґ РїСѓСЃС‚С‹Рј except -- СЌР»РµРјРµРЅС‚Р° СЃ С‚Р°РєРёРј
+    РёРјРµРЅРµРј РјРѕР¶РµС‚ Рё РЅРµ Р±С‹С‚СЊ.
+    РРјРµРЅРЅРѕ Repaint, Р° РЅРµ Invalidate: РїРµСЂРµРєСЂР°СЃРёС‚СЊ СЂРµРґР°РєС‚РѕСЂ РЅР°РґРѕ СЃСЂР°Р·Сѓ,
+    Р° РЅРµ РєРѕРіРґР° РґРѕ РЅРµРіРѕ РґРѕР№РґС‘С‚ РѕС‡РµСЂРµРґСЊ СЃРѕРѕР±С‰РµРЅРёР№. }
   K := (Sender as TSpeedButton).Tag;
   try
     CB := fmSecondfj.FindComponent('cbAttri' + IntToStr(K)) as TComboBox;
@@ -250,9 +266,9 @@ var
   CB: TComboBox;
   K: Integer;
 begin
-  { Кнопка del: слово убирается и из списка, и из таблицы подсветки, а
-    выделение сдвигается на существующую строку -- иначе после удаления
-    последней ItemIndex останется за краем. }
+  { РљРЅРѕРїРєР° del: СЃР»РѕРІРѕ СѓР±РёСЂР°РµС‚СЃСЏ Рё РёР· СЃРїРёСЃРєР°, Рё РёР· С‚Р°Р±Р»РёС†С‹ РїРѕРґСЃРІРµС‚РєРё, Р°
+    РІС‹РґРµР»РµРЅРёРµ СЃРґРІРёРіР°РµС‚СЃСЏ РЅР° СЃСѓС‰РµСЃС‚РІСѓСЋС‰СѓСЋ СЃС‚СЂРѕРєСѓ -- РёРЅР°С‡Рµ РїРѕСЃР»Рµ СѓРґР°Р»РµРЅРёСЏ
+    РїРѕСЃР»РµРґРЅРµР№ ItemIndex РѕСЃС‚Р°РЅРµС‚СЃСЏ Р·Р° РєСЂР°РµРј. }
   K := (Sender as TSpeedButton).Tag;
   CB := fmSecondfj.FindComponent('cbAttri' + IntToStr(K)) as TComboBox;
   S := CB.Text;
@@ -278,9 +294,9 @@ var
   K: Integer;
   CB: TComboBox;
 begin
-  { Кнопка move: слово переезжает из своего списка в общий cbRWList, а сам
-    список показывается прямо на месте нажатой кнопки -- так видно, откуда
-    слово взято. }
+  { РљРЅРѕРїРєР° move: СЃР»РѕРІРѕ РїРµСЂРµРµР·Р¶Р°РµС‚ РёР· СЃРІРѕРµРіРѕ СЃРїРёСЃРєР° РІ РѕР±С‰РёР№ cbRWList, Р° СЃР°Рј
+    СЃРїРёСЃРѕРє РїРѕРєР°Р·С‹РІР°РµС‚СЃСЏ РїСЂСЏРјРѕ РЅР° РјРµСЃС‚Рµ РЅР°Р¶Р°С‚РѕР№ РєРЅРѕРїРєРё -- С‚Р°Рє РІРёРґРЅРѕ, РѕС‚РєСѓРґР°
+    СЃР»РѕРІРѕ РІР·СЏС‚Рѕ. }
   K := (Sender as TSpeedButton).Tag;
   Sender := Sender;
   CB := fmSecondfj.FindComponent('cbAttri' + IntToStr(K)) as TComboBox;
@@ -306,10 +322,10 @@ var
   K: Integer;
   CB: TComboBox;
 begin
-  { Выбрали вид подсветки в плавающем списке -- слово переезжает из
-    старого вида в новый: сперва добавляем в новый, потом убираем из
-    старого. Оба шага под своим except: испортить таблицу подсветки
-    из-за одного слова не стоит. }
+  { Р’С‹Р±СЂР°Р»Рё РІРёРґ РїРѕРґСЃРІРµС‚РєРё РІ РїР»Р°РІР°СЋС‰РµРј СЃРїРёСЃРєРµ -- СЃР»РѕРІРѕ РїРµСЂРµРµР·Р¶Р°РµС‚ РёР·
+    СЃС‚Р°СЂРѕРіРѕ РІРёРґР° РІ РЅРѕРІС‹Р№: СЃРїРµСЂРІР° РґРѕР±Р°РІР»СЏРµРј РІ РЅРѕРІС‹Р№, РїРѕС‚РѕРј СѓР±РёСЂР°РµРј РёР·
+    СЃС‚Р°СЂРѕРіРѕ. РћР±Р° С€Р°РіР° РїРѕРґ СЃРІРѕРёРј except: РёСЃРїРѕСЂС‚РёС‚СЊ С‚Р°Р±Р»РёС†Сѓ РїРѕРґСЃРІРµС‚РєРё
+    РёР·-Р·Р° РѕРґРЅРѕРіРѕ СЃР»РѕРІР° РЅРµ СЃС‚РѕРёС‚. }
   if (Sender as TComboBox).ItemIndex <> -1 then
   begin
     (Sender as TComboBox).Visible := False;
@@ -319,7 +335,7 @@ begin
     for I := 0 to fmSecondfj.fld_1428.AttrCount - 1 do
       if S = fmSecondfj.fld_1428.Attribute[I].Name then
       begin
-        K := TUoPAttri(fmSecondfj.fld_1428.Attribute[I]).Kind;
+      K := TSynUOAttributes(fmSecondfj.fld_1428.Attribute[I]).Kind;
         Found := True;
         Break;
       end;
@@ -353,7 +369,7 @@ end;
 
 class procedure TAttriFontChange.AttriRWListExit(Sender: TObject);
 begin
-  { Уход фокуса прячет плавающий список. }
+  { РЈС…РѕРґ С„РѕРєСѓСЃР° РїСЂСЏС‡РµС‚ РїР»Р°РІР°СЋС‰РёР№ СЃРїРёСЃРѕРє. }
   (Sender as TComboBox).Visible := False;
 end;
 
@@ -393,9 +409,9 @@ var
   I: Integer;
   L: TLabel;
 begin
-  { Кнопка «применить» стоит на ГЛАВНОЙ форме, а не в диалоге: цвета и
-    стиль из её элементов ложатся сперва на метку-образец lAttri<Tag>, а
-    оттуда -- на атрибут подсветки с тем же именем. }
+  { РљРЅРѕРїРєР° В«РїСЂРёРјРµРЅРёС‚СЊВ» СЃС‚РѕРёС‚ РЅР° Р“Р›РђР’РќРћР™ С„РѕСЂРјРµ, Р° РЅРµ РІ РґРёР°Р»РѕРіРµ: С†РІРµС‚Р° Рё
+    СЃС‚РёР»СЊ РёР· РµС‘ СЌР»РµРјРµРЅС‚РѕРІ Р»РѕР¶Р°С‚СЃСЏ СЃРїРµСЂРІР° РЅР° РјРµС‚РєСѓ-РѕР±СЂР°Р·РµС† lAttri<Tag>, Р°
+    РѕС‚С‚СѓРґР° -- РЅР° Р°С‚СЂРёР±СѓС‚ РїРѕРґСЃРІРµС‚РєРё СЃ С‚РµРј Р¶Рµ РёРјРµРЅРµРј. }
   L := fmSecondfj.FindComponent('lAttri' +
     IntToStr(fmSecondfj.sbAttriChangeApply.Tag)) as TLabel;
   L.Font.Color := (fmSecondfj.FindComponent('cdColorFront') as TColorDialog).Color;

@@ -1,136 +1,204 @@
 unit LangClipboard;
 
-{ Подменяем глобальный Clipboard своим потомком: тот кладёт в буфер обмена
-  формат CF_LOCALE с русской локалью, чтобы Windows перекодировала текст при
-  вставке в приложения с другой кодовой страницей. Клиент Ultima Online --
-  как раз такой случай.
+{$IFDEF FPC}
+  {$MODE Delphi}
+{$ENDIF}
 
-  Плюс две обёртки на строку, ими пользуются Unit1, uScanThread и SynEdit. }
+{ РџРѕС‡РµРјСѓ Р·РґРµСЃСЊ СЃС‹СЂРѕР№ WinAPI, Р° РЅРµ РїРѕС‚РѕРјРѕРє TClipboard СЃ override Open/Close,
+  РєР°Рє Р±С‹Р»Рѕ РІ Delphi-РІРµСЂСЃРёРё:
+
+  Р®РЅРёС‚ РїРѕСЂС‚РёСЂРѕРІР°РЅ СЃ Delphi VCL РЅР° Lazarus LCL. Р’ LCL-СЋРЅРёС‚Рµ Clipbrd:
+    - Open/Close РѕР±СЉСЏРІР»РµРЅС‹ Р‘Р•Р— virtual (clipbrd.pp), РїРѕСЌС‚РѕРјСѓ override РЅРµ
+      РєРѕРјРїРёР»РёСЂСѓРµС‚СЃСЏ, Р° reintroduce РЅРµ РґР°С‘С‚ РІРёСЂС‚СѓР°Р»СЊРЅРѕР№ РґРёСЃРїРµС‚С‡РµСЂРёР·Р°С†РёРё
+      (РІС‹Р·РѕРІ С‡РµСЂРµР· СЃСЃС‹Р»РєСѓ TClipboard СѓР№РґС‘С‚ РІ Р±Р°Р·РѕРІС‹Р№ РјРµС‚РѕРґ);
+    - AsText-СЃРµС‚С‚РµСЂ РЅРµ РІС‹Р·С‹РІР°РµС‚ Open/Close РІРѕРІСЃРµ (РёРґС‘С‚ С‡РµСЂРµР·
+      BeginUpdate/EndUpdate РІ SetBuffer), РїРѕСЌС‚РѕРјСѓ РїРµСЂРµС…РІР°С‚РёС‚СЊ Р·Р°РїРёСЃСЊ РІ
+      Р±СѓС„РµСЂ С‡РµСЂРµР· Open/Close РІ РїСЂРёРЅС†РёРїРµ РЅРµРІРѕР·РјРѕР¶РЅРѕ;
+    - GetAsHandle РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚.
+
+  РџРѕСЌС‚РѕРјСѓ Р»РѕРєР°Р»СЊ CF_LOCALE РєР»Р°РґС‘Рј Р·РґРµСЃСЊ СЏРІРЅРѕ, РІ РѕР±С‘СЂС‚РєР°С…, С‡РµСЂРµР·
+  OpenClipboard/EmptyClipboard/SetClipboardData/GetClipboardData.
+
+  РџР»СЋСЃ РґРІРµ РѕР±С‘СЂС‚РєРё РЅР° СЃС‚СЂРѕРєСѓ, РёРјРё РїРѕР»СЊР·СѓСЋС‚СЃСЏ Unit1, uScanThread Рё SynEdit:
+  SetClipboardText РєР»Р°РґС‘С‚ РІ Р±СѓС„РµСЂ CF_UNICODETEXT, CF_TEXT Рё CF_LOCALE (СЂСѓСЃСЃРєР°СЏ
+  Р»РѕРєР°Р»СЊ $0419), С‡С‚РѕР±С‹ РєР»РёРµРЅС‚ Ultima Online РєРѕСЂСЂРµРєС‚РЅРѕ РїРµСЂРµРєРѕРґРёСЂРѕРІР°Р» С‚РµРєСЃС‚ РїСЂРё
+  РІСЃС‚Р°РІРєРµ. }
 
 interface
 
 uses Windows, Clipbrd;
 
-type
-  TLangClipboard = class(TClipboard)
-  private
-    procedure SetClipboardLocale(LCID: DWORD);
-  public
-    procedure Close; override;
-    procedure Open; override;
-  end;
+const
+  LOCALE_RUSSIAN = $0419;
 
 function SetClipboardText(C: TClipboard; S: string): Boolean;
 function GetClipboardText(C: TClipboard): string;
-
-const
-  LOCALE_RUSSIAN = $0419;
 
 implementation
 
 uses SysUtils;
 
-{ Прежний буфер обмена -- чтобы освободить его после подмены. }
-var
-  OldClipboard: TClipboard;
-
+{ РљР»Р°РґС‘Рј РІ Р±СѓС„РµСЂ РѕР±РјРµРЅР° СЃС‚СЂРѕРєСѓ S РІ С‚СЂС‘С… С„РѕСЂРјР°С‚Р°С…: CF_UNICODETEXT (cp1251 ->
+  UTF-16), CF_TEXT (Р±Р°Р№С‚С‹ РєР°Рє РµСЃС‚СЊ, РІ РїСЂРѕРµРєС‚Рµ string = AnsiString/cp1251) Рё
+  CF_LOCALE = $0419. РџР°СЂР°РјРµС‚СЂ C РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ: СЂР°Р±РѕС‚Р°РµРј СЃ Р±СѓС„РµСЂРѕРј РћРЎ
+  РЅР°РїСЂСЏРјСѓСЋ. }
 function SetClipboardText(C: TClipboard; S: string): Boolean;
-begin
-  C.Open;
-  C.AsText := S;
-  C.Close;
-  Result := True;
-end;
 
-{ Параметр в теле не нужен -- работаем с глобальным Clipboard; оставлен
-  парой к SetClipboardText, чтобы звать одинаково. }
-function GetClipboardText(C: TClipboard): string;
-var
-  H: THandle;
-  P: Pointer;
-  Sz: Integer;
-  Len: Integer;
-  Failed: Boolean;
-begin
-  Result := '';
-  with Clipboard do
+  function AllocText: HGLOBAL;
+  var
+    P: Pointer;
+    Len: Integer;
   begin
-    try
-      Open;
-      if HasFormat(CF_TEXT) or HasFormat(CF_UNICODETEXT) then
-      begin
-        if Win32Platform = VER_PLATFORM_WIN32_NT then
-        begin
-          Failed := False;
-          if not Failed then
-          begin
-            H := GetAsHandle(CF_UNICODETEXT);
-            Sz := GlobalSize(H);
-            P := GlobalLock(H);
-            try
-              Len := Sz div 2 - 1;
-              SetLength(Result, Len);
-              WideCharToMultiByte(0, 0, P, Sz, PChar(Result), Len, nil, nil);
-            finally
-              GlobalUnlock(H);
-            end;
-          end;
-        end
-        else
-        begin
-          H := GetAsHandle(CF_TEXT);
-          Len := GlobalSize(H);
-          SetLength(Result, Len);
-          SetLength(Result, GetTextBuf(PChar(Result), Len));
-        end;
-      end;
-    finally
-      Close;
+    Len := Length(S) + 1;
+    Result := GlobalAlloc(GMEM_MOVEABLE or GMEM_DDESHARE, Len);
+    if Result = 0 then
+      Exit;
+    P := GlobalLock(Result);
+    if P = nil then
+    begin
+      GlobalFree(Result);
+      Result := 0;
+      Exit;
     end;
+    Move(PChar(S)^, P^, Len);
+    GlobalUnlock(Result);
+  end;
+
+  function AllocUnicodeText: HGLOBAL;
+  var
+    P: Pointer;
+    CharCount: Integer;
+    ByteCount: Integer;
+  begin
+    Result := 0;
+    CharCount := MultiByteToWideChar(1251, 0, PChar(S), -1, nil, 0);
+    if CharCount = 0 then
+      Exit;
+    ByteCount := CharCount * SizeOf(WideChar);
+    Result := GlobalAlloc(GMEM_MOVEABLE or GMEM_DDESHARE, ByteCount);
+    if Result = 0 then
+      Exit;
+    P := GlobalLock(Result);
+    if P = nil then
+    begin
+      GlobalFree(Result);
+      Result := 0;
+      Exit;
+    end;
+    MultiByteToWideChar(1251, 0, PChar(S), -1, PWideChar(P), CharCount);
+    GlobalUnlock(Result);
+  end;
+
+  function AllocLocale: HGLOBAL;
+  var
+    P: Pointer;
+    LCID: DWORD;
+  begin
+    Result := GlobalAlloc(GMEM_MOVEABLE or GMEM_DDESHARE, SizeOf(DWORD));
+    if Result = 0 then
+      Exit;
+    P := GlobalLock(Result);
+    if P = nil then
+    begin
+      GlobalFree(Result);
+      Result := 0;
+      Exit;
+    end;
+    LCID := LOCALE_RUSSIAN;
+    Move(LCID, P^, SizeOf(DWORD));
+    GlobalUnlock(Result);
+  end;
+
+  procedure SetData(Format: UINT; H: HGLOBAL);
+  begin
+    if H <> 0 then
+    begin
+      if SetClipboardData(Format, H) = 0 then
+        GlobalFree(H);
+    end;
+  end;
+
+begin
+  Result := False;
+  if not OpenClipboard(0) then
+    Exit;
+  try
+    EmptyClipboard;
+    SetData(Windows.CF_UNICODETEXT, AllocUnicodeText);
+    SetData(Windows.CF_TEXT, AllocText);
+    SetData(Windows.CF_LOCALE, AllocLocale);
+    Result := True;
+  finally
+    CloseClipboard;
   end;
 end;
 
-procedure TLangClipboard.Close;
-begin
-  SetClipboardLocale(LOCALE_RUSSIAN);
-  inherited Close;
-end;
+{ Р§РёС‚Р°РµРј РёР· Р±СѓС„РµСЂР° РѕР±РјРµРЅР°: РїСЂРµРґРїРѕС‡РёС‚Р°РµРј CF_UNICODETEXT (РїРµСЂРµРєРѕРґРёСЂСѓРµРј UTF-16 ->
+  cp1251), РёРЅР°С‡Рµ CF_TEXT (Р±Р°Р№С‚С‹ РєР°Рє РµСЃС‚СЊ). РџР°СЂР°РјРµС‚СЂ C РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ. }
+function GetClipboardText(C: TClipboard): string;
 
-procedure TLangClipboard.Open;
-begin
-  inherited Open;
-  SetClipboardLocale(LOCALE_RUSSIAN);
-end;
-
-{ Кладём в буфер обмена локаль отдельным форматом. Если не вышло -- молча
-  отдаём блок обратно, наружу не пробрасываем: из-за локали ронять вставку
-  незачем. }
-procedure TLangClipboard.SetClipboardLocale(LCID: DWORD);
-var
-  H: THandle;
-  P: Pointer;
-begin
-  H := GlobalAlloc(GMEM_MOVEABLE or GMEM_DDESHARE, SizeOf(DWORD));
-  try
+  function ReadUnicode: string;
+  var
+    H: THandle;
+    P: Pointer;
+    WideLen: Integer;
+    ByteLen: Integer;
+  begin
+    Result := '';
+    H := GetClipboardData(Windows.CF_UNICODETEXT);
+    if H = 0 then
+      Exit;
     P := GlobalLock(H);
+    if P = nil then
+      Exit;
     try
-      Move(LCID, P^, SizeOf(DWORD));
-      SetClipboardData(CF_LOCALE, H);
+      WideLen := lstrlenW(PWideChar(P));
+      ByteLen := WideCharToMultiByte(1251, 0, PWideChar(P), WideLen, nil, 0,
+        nil, nil);
+      SetLength(Result, ByteLen);
+      if ByteLen > 0 then
+        WideCharToMultiByte(1251, 0, PWideChar(P), WideLen, PChar(Result),
+          ByteLen, nil, nil);
     finally
       GlobalUnlock(H);
     end;
-  except
-    GlobalFree(H);
+  end;
+
+  function ReadAnsi: string;
+  var
+    H: THandle;
+    P: Pointer;
+    Len: Integer;
+  begin
+    Result := '';
+    H := GetClipboardData(Windows.CF_TEXT);
+    if H = 0 then
+      Exit;
+    P := GlobalLock(H);
+    if P = nil then
+      Exit;
+    try
+      Len := lstrlenA(PAnsiChar(P));
+      SetLength(Result, Len);
+      if Len > 0 then
+        Move(P^, PChar(Result)^, Len);
+    finally
+      GlobalUnlock(H);
+    end;
+  end;
+
+begin
+  Result := '';
+  if not OpenClipboard(0) then
+    Exit;
+  try
+    if IsClipboardFormatAvailable(Windows.CF_UNICODETEXT) then
+      Result := ReadUnicode
+    else if IsClipboardFormatAvailable(Windows.CF_TEXT) then
+      Result := ReadAnsi;
+  finally
+    CloseClipboard;
   end;
 end;
-
-initialization
-  OldClipboard := SetClipboard(TLangClipboard.Create);
-  if OldClipboard <> nil then
-    OldClipboard.Free;
-
-finalization
-  if Clipboard is TLangClipboard then
-    SetClipboard(nil).Free;
 
 end.

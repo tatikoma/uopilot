@@ -1,25 +1,42 @@
 unit Unit1;
 
-// Главная форма UoPilot: настройки, горячие клавиши, скрипты и
-// работа с окном клиента Ultima Online.
+{$IFDEF FPC}
+  {$MODE Delphi}
+{$ENDIF}
+
+// Р“Р»Р°РІРЅР°СЏ С„РѕСЂРјР° UoPilot: РЅР°СЃС‚СЂРѕР№РєРё, РіРѕСЂСЏС‡РёРµ РєР»Р°РІРёС€Рё, СЃРєСЂРёРїС‚С‹ Рё
+// СЂР°Р±РѕС‚Р° СЃ РѕРєРЅРѕРј РєР»РёРµРЅС‚Р° Ultima Online.
 
 interface
 
 uses
-  Types, HotKeyMgr, jpeg, Keydefs, Recorder, Spin, Grids, Gauges, mySys,
-  MyIniFiles, geScale, SynMemo, SynHighlighterPas, SynEdit,
-  SynEditCodeFolding, SynEditHighlighter, SynEditTypes, awMachMask,
-  TlHelp32, uScanThread, PerlRegEx, PngGDIP, GDIPAPI, GDIPOBJ, Unit2,
-  SHDocVw, LangClipboard, ActiveX, Buttons, Classes, Clipbrd, ComCtrls,
+{$IFnDEF FPC}
+  jpeg, TlHelp32, SHDocVw,
+{$ELSE}
+  MyWebBrowser,
+{$ENDIF}
+  Gauges,
+  Types, HotKeyMgr, Keydefs, Recorder, Spin, Grids, mySys,
+  MyIniFiles, geScale, SynHighlighterUOPilot, SynEdit,
+  SynEditHighlighter, SynEditTypes, SynEditMarks, awMachMask,
+  uScanThread, PerlRegEx, PngGDIP, GDIPAPI, GDIPOBJ, Unit2,
+  LangClipboard, ActiveX, Buttons, Classes, Clipbrd, ComCtrls, FixedTabControl,
   Controls, Dialogs, ExtCtrls, Forms, Graphics, IniFiles, Menus, Messages,
   Registry, ShellAPI, StdCtrls, StrUtils, SyncObjs, SysUtils, WinInet,
-  Windows;
+  Windows{$IFDEF FPC}, LCLType, RichMemo{$ENDIF};
 
 type
 
   THouseCmdsZ = array[1..16] of string;
 
-  TLogWinRecZ = packed record               // сохранённая геометрия окна лога
+{$IFDEF FPC}
+  TTrayNotifyIconData = TNotifyIconDataW;
+{$ELSE}
+  TTrayNotifyIconData = TNotifyIconData;
+{$ENDIF}
+  PTrayNotifyIconData = ^TTrayNotifyIconData;
+
+  TLogWinRecZ = packed record               // СЃРѕС…СЂР°РЅС‘РЅРЅР°СЏ РіРµРѕРјРµС‚СЂРёСЏ РѕРєРЅР° Р»РѕРіР°
   Shown:   Boolean;
   Left:    Integer;
   Top:     Integer;
@@ -27,7 +44,194 @@ type
   Height:  Integer;
   end;
 
+  { TfmSecond }
+
   TfmSecond = class(TForm)
+    miAbs: TMenuItem;
+    miArccos: TMenuItem;
+    miArcsin: TMenuItem;
+    miArctan: TMenuItem;
+    miAssert: TMenuItem;
+    miBasic: TMenuItem;
+    miCeil: TMenuItem;
+    miChr: TMenuItem;
+    miCollectgarbage: TMenuItem;
+    miCoroutine: TMenuItem;
+    miCoroutineCreate: TMenuItem;
+    miCoroutineResume: TMenuItem;
+    miCoroutineRunning: TMenuItem;
+    miCoroutineStatus: TMenuItem;
+    miCoroutineWrap: TMenuItem;
+    miCoroutineYield: TMenuItem;
+    miCos: TMenuItem;
+    miDebugDebug: TMenuItem;
+    miDebugGetfenv: TMenuItem;
+    miDebugGethook: TMenuItem;
+    miDebugGetinfo: TMenuItem;
+    miDebugGetlocal: TMenuItem;
+    miDebugGetmetatable: TMenuItem;
+    miDebugGetregistry: TMenuItem;
+    miDebugGetupvalue: TMenuItem;
+    miDebugSetfenv: TMenuItem;
+    miDebugSethook: TMenuItem;
+    miDebugSetlocal: TMenuItem;
+    miDebugSetmetatable: TMenuItem;
+    miDebugSetupvalue: TMenuItem;
+    miDebugTraceback: TMenuItem;
+    miDegtorad: TMenuItem;
+    miDofile: TMenuItem;
+    miError: TMenuItem;
+    miExp: TMenuItem;
+    miFileClose: TMenuItem;
+    miFileFlush: TMenuItem;
+    miFileLines: TMenuItem;
+    miFileRead: TMenuItem;
+    miFileSeek: TMenuItem;
+    miFileSetvbuf: TMenuItem;
+    miFileWrite: TMenuItem;
+    miFloor: TMenuItem;
+    miFrac: TMenuItem;
+    miGetfenv: TMenuItem;
+    miInputandOutput: TMenuItem;
+    miIoClose: TMenuItem;
+    miIoFlush: TMenuItem;
+    miIoInput: TMenuItem;
+    miIoLines: TMenuItem;
+    miIoOpen: TMenuItem;
+    miIoOutput: TMenuItem;
+    miIoPopen: TMenuItem;
+    miIoRead: TMenuItem;
+    miIoTmpfile: TMenuItem;
+    miIoType: TMenuItem;
+    miIoWrite: TMenuItem;
+    miIpairs: TMenuItem;
+    miIsreal: TMenuItem;
+    miIsstring: TMenuItem;
+    miLengthdirx: TMenuItem;
+    miLengthdiry: TMenuItem;
+    miLn: TMenuItem;
+    miLoad: TMenuItem;
+    miLoadfile: TMenuItem;
+    miLoadstring: TMenuItem;
+    miLog: TMenuItem;
+    miMathAbs: TMenuItem;
+    miMathAcos: TMenuItem;
+    miMathAsin: TMenuItem;
+    miMathAtan: TMenuItem;
+    miMathAtan2: TMenuItem;
+    miMathCeil: TMenuItem;
+    miMathCos: TMenuItem;
+    miMathCosh: TMenuItem;
+    miMathDeg: TMenuItem;
+    miMathematicalFunctions: TMenuItem;
+    miMathExp: TMenuItem;
+    miMathFloor: TMenuItem;
+    miMathFmod: TMenuItem;
+    miMathFrexp: TMenuItem;
+    miMathHuge: TMenuItem;
+    miMathLdexp: TMenuItem;
+    miMathLog: TMenuItem;
+    miMathLog10: TMenuItem;
+    miMathMax: TMenuItem;
+    miMathMin: TMenuItem;
+    miMathModf: TMenuItem;
+    miMathPi: TMenuItem;
+    miMathPow: TMenuItem;
+    miMathRad: TMenuItem;
+    miMathRandom: TMenuItem;
+    miMathRandomseed: TMenuItem;
+    miMathSin: TMenuItem;
+    miMathSinh: TMenuItem;
+    miMathSqrt: TMenuItem;
+    miMathTan: TMenuItem;
+    miMathTanh: TMenuItem;
+    miMaxx: TMenuItem;
+    miMean: TMenuItem;
+    miMinx: TMenuItem;
+    miModule: TMenuItem;
+    miModules: TMenuItem;
+    miMouseposabsx: TMenuItem;
+    miMouseposabsx1: TMenuItem;
+    miMouseposabs_y: TMenuItem;
+    miMouseposabs_y1: TMenuItem;
+    miMouseposx: TMenuItem;
+    miMouseposx1: TMenuItem;
+    miMouseposy: TMenuItem;
+    miMouseposy1: TMenuItem;
+    miNext: TMenuItem;
+    miOperatingSystem: TMenuItem;
+    miOrd: TMenuItem;
+    miOsClock: TMenuItem;
+    miOsDate: TMenuItem;
+    miOsDifftime: TMenuItem;
+    miOsExecute: TMenuItem;
+    miOsExit: TMenuItem;
+    miOsGetenv: TMenuItem;
+    miOsRemove: TMenuItem;
+    miOsRename: TMenuItem;
+    miOsSetlocale: TMenuItem;
+    miOsTime: TMenuItem;
+    miOsTmpname: TMenuItem;
+    miPackageCpath: TMenuItem;
+    miPackageLoaded: TMenuItem;
+    miPackageLoaders: TMenuItem;
+    miPackageLoadlib: TMenuItem;
+    miPackagePath: TMenuItem;
+    miPackagePreload: TMenuItem;
+    miPackageSeeall: TMenuItem;
+    miPairs: TMenuItem;
+    miPcall: TMenuItem;
+    miPi: TMenuItem;
+    miPointdirection: TMenuItem;
+    miPointdistance: TMenuItem;
+    miPower: TMenuItem;
+    miPrint: TMenuItem;
+    miRadtodeg: TMenuItem;
+    miRawequal: TMenuItem;
+    miRawget: TMenuItem;
+    miRawset: TMenuItem;
+    miRequire: TMenuItem;
+    miRound: TMenuItem;
+    miSelect: TMenuItem;
+    miSetfenv: TMenuItem;
+    miSetmetatable: TMenuItem;
+    miSin: TMenuItem;
+    miSqrt: TMenuItem;
+    miStringByte: TMenuItem;
+    miStringChar: TMenuItem;
+    miStringcount: TMenuItem;
+    miStringdigits: TMenuItem;
+    miStringDump: TMenuItem;
+    miStringFind: TMenuItem;
+    miStringFormat: TMenuItem;
+    miStringGmatch: TMenuItem;
+    miStringGsub: TMenuItem;
+    miStringLen: TMenuItem;
+    miStringletters: TMenuItem;
+    miStringlower: TMenuItem;
+    miStringLowerLua: TMenuItem;
+    miStringManipulation: TMenuItem;
+    miStringMatch: TMenuItem;
+    miStringRep: TMenuItem;
+    miStringreplace: TMenuItem;
+    miStringReverse: TMenuItem;
+    miStringSub: TMenuItem;
+    miStringupper: TMenuItem;
+    miStringUpperLua: TMenuItem;
+    miTableConcat: TMenuItem;
+    miTableInsert: TMenuItem;
+    miTableManipulation: TMenuItem;
+    miTableMaxn: TMenuItem;
+    miTableRemove: TMenuItem;
+    miTableSort: TMenuItem;
+    miTan: TMenuItem;
+    miTheDebugLibrary: TMenuItem;
+    miTonumber: TMenuItem;
+    miTostring: TMenuItem;
+    miTrunc: TMenuItem;
+    miType: TMenuItem;
+    miUnpack: TMenuItem;
+    miXpcall: TMenuItem;
     pcAll: TPageControl;
     tsGeneral: TTabSheet;
     tsScript: TTabSheet;
@@ -101,8 +305,8 @@ type
     sbMacros: TSpeedButton;
     sbSControl: TSpeedButton;
     PanelTs: TPanel;
-    tScript: TTabControl;
-    tScriptDesc: TTabControl;
+    tScript: TFixedTabControl;
+    tScriptDesc: TFixedTabControl;
     btStart: TSpeedButton;
     bAdd: TSpeedButton;
     bRemove: TSpeedButton;
@@ -1127,7 +1331,7 @@ type
     Label19: TLabel;
     miEditHotKeys: TMenuItem;
     pbWiki: TProgressBar;
-    // -- обработчики событий
+    // -- РѕР±СЂР°Р±РѕС‚С‡РёРєРё СЃРѕР±С‹С‚РёР№
     procedure FormCreate(Sender: TObject);
     procedure SetCoord(Sender: TObject);
     procedure btStartClick(Sender: TObject);
@@ -1253,7 +1457,6 @@ type
     procedure miAboutClick(Sender: TObject);
     procedure IconCallBackMessage(var Msg: TMessage); message WM_USER + $64;
     procedure FormDestroy(Sender: TObject);
-    procedure FormShow(Sender: TObject);
     procedure miMinToTrayClick(Sender: TObject);
     procedure tScriptDrawTab(Control: TCustomTabControl; TabIndex: Integer; const Rect: TRect; Active: Boolean);
     procedure miShowRuningScriptClick(Sender: TObject);
@@ -1377,8 +1580,8 @@ type
     procedure miAttriChangeClick(Sender: TObject);
     procedure odLoadShow(Sender: TObject);
   public
-    // Поля, которых нет в DFM: заводятся кодом в FormCreate.
-    edScript: TSynMemo;
+    // РџРѕР»СЏ, РєРѕС‚РѕСЂС‹С… РЅРµС‚ РІ DFM: Р·Р°РІРѕРґСЏС‚СЃСЏ РєРѕРґРѕРј РІ FormCreate.
+    edScript: TSynEdit;
     fld_1428: TSynCustomHighlighter;
     FHelpMemo: TMemo;
     fld_1430: Integer;
@@ -1466,14 +1669,25 @@ type
     function CreateTabHint(C: TWinControl): THintWindow;
     procedure CharParamsFormClose(Sender: TObject;
       var Action: TCloseAction);
-    procedure GutterClick(Sender: TObject; Button: TMouseButton;
-      X, Y, Line: Integer; Mark: TSynEditMark);
+    procedure GutterClick(Sender: TObject; X, Y, Line: Integer;
+      Mark: TSynEditMark);
     procedure RedrawAllTabs;
+    procedure DrawScriptTabBody(Canvas: TCanvas; IsDesc: Boolean;
+      TabIndex: Integer; R: TRect; Active: Boolean);
+    {$IFDEF FPC}
+    procedure tScriptDrawTabFPC(Sender: TFixedTabControl; Canvas: TCanvas;
+      TabIndex: Integer; const Rect: TRect; Active: Boolean);
+    {$ENDIF}
     procedure LastScriptItemClick(Sender: TObject);
     procedure ScriptTabWndProc(var Message: TMessage);
     procedure WndProc(var Message: TMessage); override;
     procedure AppMessage(var Msg: TMsg; var Handled: Boolean);
+    {$IFDEF FPC}
+    procedure FormDropFiles(Sender: TObject;
+      const FileNames: array of String);
+    {$ELSE}
     procedure WMDropFiles(var Msg: TMessage); message WM_DROPFILES;
+    {$ENDIF}
     procedure WMNCHitTest(var Msg: TMessage); message WM_NCHITTEST;
     procedure WMSize(var Msg: TMessage); message WM_SIZE;
     procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
@@ -1495,9 +1709,9 @@ type
   end;
   TStartUOThread = class(TThread)
   public
-    Wnd: HWND;             // найденное окно клиента
-    Pid: DWORD;            // его pid (0 = окно ещё не найдено)
-    ProcId: DWORD;         // pid, выданный CreateProcess
+    Wnd: HWND;             // РЅР°Р№РґРµРЅРЅРѕРµ РѕРєРЅРѕ РєР»РёРµРЅС‚Р°
+    Pid: DWORD;            // РµРіРѕ pid (0 = РѕРєРЅРѕ РµС‰С‘ РЅРµ РЅР°Р№РґРµРЅРѕ)
+    ProcId: DWORD;         // pid, РІС‹РґР°РЅРЅС‹Р№ CreateProcess
   protected
     procedure Execute; override;
   end;
@@ -1510,10 +1724,10 @@ type
   THKMods = set of THKMod;
   tHotKeyList = packed record
     Key: Integer;                      // +$00
-    Name: string;                      // +$04  имя компонента
+    Name: string;                      // +$04  РёРјСЏ РєРѕРјРїРѕРЅРµРЅС‚Р°
     Mods: THKMods;                     // +$08  Shift/Alt/Ctrl
     Pad09: array[$09..$0B] of Byte;
-    Text: string;                      // +$0C  подпись клавиши
+    Text: string;                      // +$0C  РїРѕРґРїРёСЃСЊ РєР»Р°РІРёС€Рё
     Handler: TNotifyEvent;             // +$10
     Enabled: Boolean;                  // +$18
     Pad19: array[$19..$1B] of Byte;
@@ -1531,8 +1745,8 @@ type
   end;
 
 
-  { Псевдоним: сам класс окна подсказки живёт в uScanThread,
-    а Unit2 знает его под этим именем. }
+  { РџСЃРµРІРґРѕРЅРёРј: СЃР°Рј РєР»Р°СЃСЃ РѕРєРЅР° РїРѕРґСЃРєР°Р·РєРё Р¶РёРІС‘С‚ РІ uScanThread,
+    Р° Unit2 Р·РЅР°РµС‚ РµРіРѕ РїРѕРґ СЌС‚РёРј РёРјРµРЅРµРј. }
   TRxHintWindow = TRxHintWindowRef;
 
   TInitPlugin = function(AHandle: HWND; AParam: Integer;
@@ -1600,8 +1814,8 @@ type
 
 
 
-  { Вкладок со скриптами 99; сотая, с процедурами, лежит отдельной
-    величиной gProcScript. }
+  { Р’РєР»Р°РґРѕРє СЃРѕ СЃРєСЂРёРїС‚Р°РјРё 99; СЃРѕС‚Р°СЏ, СЃ РїСЂРѕС†РµРґСѓСЂР°РјРё, Р»РµР¶РёС‚ РѕС‚РґРµР»СЊРЅРѕР№
+    РІРµР»РёС‡РёРЅРѕР№ gProcScript. }
   TScriptArray = array[0..98] of TScanThread;
   TEvalNames = array[0..288] of string;
   TWordCharSet = set of Char;
@@ -1613,6 +1827,18 @@ function OleInitialize(pvReserved: Pointer): HResult;
 procedure OleUninitialize;
   stdcall; external 'ole32.dll';
 
+{$IFDEF FPC}
+function LoadStr(Ident: Integer): string;
+{$ENDIF}
+function LoadStrCP1251(Ident: Integer): string;
+function UTF8ToCP1251(const S: string): string;
+function CP1251ToUTF8(const S: string): string;
+function IsValidUTF8(const S: string): Boolean;
+function CP1251UpperCase(const S: string): string;
+function CP1251LowerCase(const S: string): string;
+function CP1251StringReplace(const S, OldPattern, NewPattern: string;
+  Flags: TReplaceFlags): string;
+
 var
   gStartUOThread: TStartUOThread;
   fmSecondfj: TfmSecond;
@@ -1623,34 +1849,34 @@ var
   gLastPoint: Integer;
   gStr59615C: string;
   gHKNames: array of Cardinal;
-  gAutoRun: array[0..99] of Boolean;      // ключ /rN
-  gCmdFiles: array of string;             // скрипты из командной строки
+  gAutoRun: array[0..99] of Boolean;      // РєР»СЋС‡ /rN
+  gCmdFiles: array of string;             // СЃРєСЂРёРїС‚С‹ РёР· РєРѕРјР°РЅРґРЅРѕР№ СЃС‚СЂРѕРєРё
   gPausedCache: array[0..99] of Boolean;
   gRunCache: array[0..99] of Boolean;
-  gDrinkTicks: Integer;                    // обратный отсчёт зелья
-  gAppTitle: string[255];            // исходный Application.Title
-  gFormCaption: string[255];         // исходный заголовок формы
-  gDrinkArmed: Integer;                    // отсчёт уже запущен
+  gDrinkTicks: Integer;                    // РѕР±СЂР°С‚РЅС‹Р№ РѕС‚СЃС‡С‘С‚ Р·РµР»СЊСЏ
+  gAppTitle: string[255];            // РёСЃС…РѕРґРЅС‹Р№ Application.Title
+  gFormCaption: string[255];         // РёСЃС…РѕРґРЅС‹Р№ Р·Р°РіРѕР»РѕРІРѕРє С„РѕСЂРјС‹
+  gDrinkArmed: Integer;                    // РѕС‚СЃС‡С‘С‚ СѓР¶Рµ Р·Р°РїСѓС‰РµРЅ
   gHouseMenu: array[0..6] of string;      // LockDown, Secure, Release,
                                           // Ban, Trash, Remove, Strongbox
-  // команды кнопок дома/корабля, индексируются Tag кнопки.
+  // РєРѕРјР°РЅРґС‹ РєРЅРѕРїРѕРє РґРѕРјР°/РєРѕСЂР°Р±Р»СЏ, РёРЅРґРµРєСЃРёСЂСѓСЋС‚СЃСЏ Tag РєРЅРѕРїРєРё.
   gHouseCmds: THouseCmdsZ absolute gHouseMenu;
   gHKBusy: Boolean;
   gNoFocusStealfq: Boolean;
   gCalibrBase: Cardinal;
   gHKMoveBusy: Boolean;
   gScriptCount: Integer;
-  gPlayCount: Integer;              // число повторов воспроизведения
+  gPlayCount: Integer;              // С‡РёСЃР»Рѕ РїРѕРІС‚РѕСЂРѕРІ РІРѕСЃРїСЂРѕРёР·РІРµРґРµРЅРёСЏ
   gFlashing6: Boolean;
-  gLangId: Integer;                       // PRIMARYLANGID системы
+  gLangId: Integer;                       // PRIMARYLANGID СЃРёСЃС‚РµРјС‹
   gLangOffsety: Word;
   gHKEntrieslw: array of tHotKeyList;
   gHKSela: Integer;
   gHKMode: Integer;
-  gHotKeyTag: Integer;               // Tag флажка, которому назначают клавишу
+  gHotKeyTag: Integer;               // Tag С„Р»Р°Р¶РєР°, РєРѕС‚РѕСЂРѕРјСѓ РЅР°Р·РЅР°С‡Р°СЋС‚ РєР»Р°РІРёС€Сѓ
   gHKKeyIndex: Integer;
-  gHKItem: Integer;                  // индекс правимой клавиши в gHotKeyMgr, -1 = нет
-  gKbdLayoutow: string;                     // раскладка из реестра
+  gHKItem: Integer;                  // РёРЅРґРµРєСЃ РїСЂР°РІРёРјРѕР№ РєР»Р°РІРёС€Рё РІ gHotKeyMgr, -1 = РЅРµС‚
+  gKbdLayoutow: string;                     // СЂР°СЃРєР»Р°РґРєР° РёР· СЂРµРµСЃС‚СЂР°
   gCmdCounteh: Integer;
   gEditorFontName: string;
   gLogFontName: string;
@@ -1658,13 +1884,13 @@ var
   gLogFontSize: Integer;
   gFontApplyBoth: Boolean;
   gListFontSize: Integer;
-  gFontTarget: Integer;              // куда применять шрифт: 1 -- редактор, 2 -- лог
-  gTemplateLines: TStrings;         // шаблон нового скрипта
-  gMouseX: Integer;                  // координаты последнего клика по вкладке
+  gFontTarget: Integer;              // РєСѓРґР° РїСЂРёРјРµРЅСЏС‚СЊ С€СЂРёС„С‚: 1 -- СЂРµРґР°РєС‚РѕСЂ, 2 -- Р»РѕРі
+  gTemplateLines: TStrings;         // С€Р°Р±Р»РѕРЅ РЅРѕРІРѕРіРѕ СЃРєСЂРёРїС‚Р°
+  gMouseX: Integer;                  // РєРѕРѕСЂРґРёРЅР°С‚С‹ РїРѕСЃР»РµРґРЅРµРіРѕ РєР»РёРєР° РїРѕ РІРєР»Р°РґРєРµ
   gMouseY: Integer;
   gHKDisabled: Boolean;
   gFlag596521: Boolean;
-  gPerfFreqby: Int64;                       // QueryPerformanceFrequency на старте
+  gPerfFreqby: Int64;                       // QueryPerformanceFrequency РЅР° СЃС‚Р°СЂС‚Рµ
   gTaskbarMsg: Cardinal;
 type
   TSkillNameRecZ = record
@@ -1684,13 +1910,13 @@ const
   gDrinkMsg3: string = ' in your pack.';
   gNtUserNames: array[0..3] of string = (
     'XP sp2-3 32bit', 'Vista H 32bit', 'W7 Ult 32bit', '');
-  { Индексы -3..-1 -- номера системного вызова NtUserPostMessage по
-    версиям Windows, остальное -- шкала скорости. }
+  { РРЅРґРµРєСЃС‹ -3..-1 -- РЅРѕРјРµСЂР° СЃРёСЃС‚РµРјРЅРѕРіРѕ РІС‹Р·РѕРІР° NtUserPostMessage РїРѕ
+    РІРµСЂСЃРёСЏРј Windows, РѕСЃС‚Р°Р»СЊРЅРѕРµ -- С€РєР°Р»Р° СЃРєРѕСЂРѕСЃС‚Рё. }
   SpeedTableaah: array[-3..15] of Integer = (
     $11DB, $11F1, $11FC,
     0, -100, -50, -20, -10, -5, -4, -2, 1, 2, 4, 5, 10, 20, 50, 100);
 var
-  gSkillFlataq: array[0..115] of string = (   // 58 пар подряд
+  gSkillFlataq: array[0..115] of string = (   // 58 РїР°СЂ РїРѕРґСЂСЏРґ
     'Alchemy', '', 'Anatomy', '', 'Animal Lore', 'AnimalLore', 'ItemID',
     'Item Identification', 'Arms Lore', 'ArmsLore', 'Parrying', '', 'Begging',
     '', 'Blacksmithing', 'Blacksmithy', 'Bowcraft', 'Fletching',
@@ -1778,21 +2004,21 @@ var
     '<'..'Z', '\', '^'..'_', 'a'..'{', '}'..'~', #$A8, #$B8, #$C0..#$FF];
 
 var
-  gStrs596530: array of string;           // объявлен и не используется
+  gStrs596530: array of string;           // РѕР±СЉСЏРІР»РµРЅ Рё РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ
   gScriptso3: TScriptArray;
   gScriptsRaw: array[0..99] of Pointer absolute gScriptso3;
   gScriptsA: array[0..99] of TScanThread absolute gScriptso3;
-  gProcScript: TScanThread;                // вкладка процедур
+  gProcScript: TScanThread;                // РІРєР»Р°РґРєР° РїСЂРѕС†РµРґСѓСЂ
   gCmdListah7: TStringList;
   gCmdList2jj: TStringList;
 
-{ Доступ к защищённым методам: MoveRow у сетки и FreeImage у битмапа. }
+{ Р”РѕСЃС‚СѓРї Рє Р·Р°С‰РёС‰С‘РЅРЅС‹Рј РјРµС‚РѕРґР°Рј: MoveRow Сѓ СЃРµС‚РєРё Рё FreeImage Сѓ Р±РёС‚РјР°РїР°. }
 type
   TGridCracker = class(TStringGrid);
   TBitmapCracker = class(Graphics.TBitmap);
 
 const
-  gCmdNamesdd: TEvalNames = (   // имена величин языка скриптов, 289 позиций
+  gCmdNamesdd: TEvalNames = (   // РёРјРµРЅР° РІРµР»РёС‡РёРЅ СЏР·С‹РєР° СЃРєСЂРёРїС‚РѕРІ, 289 РїРѕР·РёС†РёР№
     'name', 'gold', 'wght', 'armor', 'hits', 'mana', 'stam', 'lastmsg',
     'coordx', 'coordy', 'min', 'hour', 'sec', 'str', 'int', 'dex', 'chardir',
     'timer', 'lastobjectid', 'lastobjecttype', 'lasttargetid', 'lasttargetx',
@@ -1872,13 +2098,13 @@ const
     'servicesend');
   gClVerNames: TClVerNamesZ = (
     '1.26.4a', '1.26.4b', '1.26.4e', '2.0.0', '2.0.0b', '2.0.3', '3.0.0c',
-    '3.0.0g', '3.0.8', 'MU', 'MU 1.04J(3 сезон)', 'ML 6.0.7.0 p81',
+    '3.0.0g', '3.0.8', 'MU', 'MU 1.04J(3 СЃРµР·РѕРЅ)', 'ML 6.0.7.0 p81',
     '6.0.12.3', '6.0.12.4', '6.0.13.0', '6.0.14.1', '6.0.14.2', '7.0.4.3',
     '7.0.4.4', '7.0.4.5', '7.0.5.0', '7.0.6.3', '7.0.18.0', 'custom');
-  // Версии клиента: MU, < 2.0.3, 2.0.3-3.0.0, 3.0.8, ML6.0.7.0, ML6.0.12.3, ML7.0.4.3
-  { 27 таблиц адресов памяти клиента, по строке на версию клиента.
-    Индексный доступ к ним дают накладки ClientAddr и ClientAddr2,
-    заведённые ниже, в разделе реализации. }
+  // Р’РµСЂСЃРёРё РєР»РёРµРЅС‚Р°: MU, < 2.0.3, 2.0.3-3.0.0, 3.0.8, ML6.0.7.0, ML6.0.12.3, ML7.0.4.3
+  { 27 С‚Р°Р±Р»РёС† Р°РґСЂРµСЃРѕРІ РїР°РјСЏС‚Рё РєР»РёРµРЅС‚Р°, РїРѕ СЃС‚СЂРѕРєРµ РЅР° РІРµСЂСЃРёСЋ РєР»РёРµРЅС‚Р°.
+    РРЅРґРµРєСЃРЅС‹Р№ РґРѕСЃС‚СѓРї Рє РЅРёРј РґР°СЋС‚ РЅР°РєР»Р°РґРєРё ClientAddr Рё ClientAddr2,
+    Р·Р°РІРµРґС‘РЅРЅС‹Рµ РЅРёР¶Рµ, РІ СЂР°Р·РґРµР»Рµ СЂРµР°Р»РёР·Р°С†РёРё. }
   gClT590778a8: array[0..24] of Cardinal = ($0050688C, $005089CC, $00505844, $0050CC42, $0050EEEA, $005474FF, $0055ED2B, $0055FDD3, $0059E563, $00000000, $00000000, $0060E2B5, $00612925, $00612925, $00612925, $00612925, $00612925, $006F7F0D, $006F6F0D, $006F7F0D, $006FAFBD, $006FBFBD, $00951FB8, $00000000, $00000000);
   gClT5907DCahr: array[0..24] of Cardinal = ($00C859DC, $00C87A8C, $00C8498C, $00C8C4C5, $00C8E8A5, $00CC9315, $00CE2C42, $00CE3CE2, $00D61ECA, $00000000, $00000000, $00839BD0, $0083CBE0, $0083CC00, $0083CC00, $0083CC00, $0083CC00, $009A8DC8, $009A7DC8, $009A8DC8, $009ABEA8, $009AFFB8, $00000000, $00000000, $00000000);
   gClT590840j4: array[0..24] of Cardinal = ($00506887, $005089C7, $0050583F, $0050CC3D, $0050EEE5, $005474FA, $0055ED26, $0055FDCE, $0059E55E, $00000000, $00000000, $0060E2AD, $0061291D, $0061291D, $0061291D, $0061291D, $0061291D, $006F7F05, $006F6F05, $006F7F05, $006FAFB5, $006FBFB5, $00000000, $00000000, $00000000);
@@ -1911,11 +2137,11 @@ const
   gClT591268lt: array[0..24] of Cardinal = ($00000000, $00000000, $00000000, $00000000, $00000000, $00CC535C, $00000000, $00000000, $00000000, $00000000, $00000000, $00000000, $00000000, $00000000, $00000000, $00000000, $00000000, $00000000, $00000000, $00000000, $00000000, $00000000, $00000000, $00000000, $00000000);
 
 var
-  gTempFilefv: string;                      // временный файл макроса
-  gExeNameko: string;                       // имя своего файла
-  gWikiPath: string;                      // каталог распакованной справки
+  gTempFilefv: string;                      // РІСЂРµРјРµРЅРЅС‹Р№ С„Р°Р№Р» РјР°РєСЂРѕСЃР°
+  gExeNameko: string;                       // РёРјСЏ СЃРІРѕРµРіРѕ С„Р°Р№Р»Р°
+  gWikiPath: string;                      // РєР°С‚Р°Р»РѕРі СЂР°СЃРїР°РєРѕРІР°РЅРЅРѕР№ СЃРїСЂР°РІРєРё
   gAboutForm: TForm;
-  // Вспомогательные окна: проверяются на nil/Visible в CanCloseOrActivate
+  // Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Рµ РѕРєРЅР°: РїСЂРѕРІРµСЂСЏСЋС‚СЃСЏ РЅР° nil/Visible РІ CanCloseOrActivate
   gDlg5966DC: TForm;
   gHelpForm: TForm;
   gDlg5966E4: TForm;
@@ -1925,9 +2151,9 @@ var
   gDlg5966F4: TForm;
   gDlg5966F8c6: TForm;
   gDlg5966FC: TForm;
-  // Диалоги, которые строятся кодом (TForm без DFM): заводятся лениво,
-  // при первом показе.
-  { Окно правки горячих клавиш: nil, пока не создано. }
+  // Р”РёР°Р»РѕРіРё, РєРѕС‚РѕСЂС‹Рµ СЃС‚СЂРѕСЏС‚СЃСЏ РєРѕРґРѕРј (TForm Р±РµР· DFM): Р·Р°РІРѕРґСЏС‚СЃСЏ Р»РµРЅРёРІРѕ,
+  // РїСЂРё РїРµСЂРІРѕРј РїРѕРєР°Р·Рµ.
+  { РћРєРЅРѕ РїСЂР°РІРєРё РіРѕСЂСЏС‡РёС… РєР»Р°РІРёС€: nil, РїРѕРєР° РЅРµ СЃРѕР·РґР°РЅРѕ. }
   gDlg596700: TForm;
   gDlg596704: TForm;
   gDlg596708: TForm;
@@ -1960,14 +2186,14 @@ const
     'CapsLock', 'Home');
 
 var
-  gLogFileNamejr: string;                   // полный путь к uopilot.log
+  gLogFileNamejr: string;                   // РїРѕР»РЅС‹Р№ РїСѓС‚СЊ Рє uopilot.log
   gLogFileOpenar: Boolean;
   gLogFileClosedr: Boolean;
   gCoordCaptureddo: Boolean;
-  gLogMaxSizehk: Integer;              // предел лога в 128-байтных единицах
-  gProcImageer: TImage;                     // картинка окна прогресса
-  gTextRange: Variant;                    // диапазон поиска в вики
-  gServiceNamec: string;                   // имя службы
+  gLogMaxSizehk: Integer;              // РїСЂРµРґРµР» Р»РѕРіР° РІ 128-Р±Р°Р№С‚РЅС‹С… РµРґРёРЅРёС†Р°С…
+  gProcImageer: TImage;                     // РєР°СЂС‚РёРЅРєР° РѕРєРЅР° РїСЂРѕРіСЂРµСЃСЃР°
+  gTextRange: Variant;                    // РґРёР°РїР°Р·РѕРЅ РїРѕРёСЃРєР° РІ РІРёРєРё
+  gServiceNamec: string;                   // РёРјСЏ СЃР»СѓР¶Р±С‹
   gSvcRetakx: Integer;
 const
   gHook591400: HHOOK = 0;
@@ -1982,9 +2208,10 @@ function GetPixel(DC: HDC; X, Y: Integer): COLORREF;
   stdcall; external 'gdi32.dll' name 'GetPixel';
 
 var
-  gAttriClass: TClass;               // ссылка на TAttriFontChange
-  gOldHelpProc: TWndMethod;         // прежний WindowProc окна справки
+  gAttriClass: TClass;               // СЃСЃС‹Р»РєР° РЅР° TAttriFontChange
+  gOldHelpProc: TWndMethod;         // РїСЂРµР¶РЅРёР№ WindowProc РѕРєРЅР° СЃРїСЂР°РІРєРё
 
+procedure MsgBoxW(Owner: HWND; Text, Caption: PChar; Flags: Integer);
 procedure MsgBox(Text, Caption: PChar; Flags: Integer);
 procedure UnhookHookB;
 procedure UnhookHookA;
@@ -2009,58 +2236,63 @@ function EnumKillWindowsProc(H: HWND; L: LPARAM): Boolean; stdcall;
 
 implementation
 
-uses sendR, MMSystem, SKey, fmFirst_u, WebLabel, MathEx, SynEditMiscClasses,
-  PsAPI, Unit5,
-  LZW_FolderActions, ScktComp, Masks, BrkrConst, HTTPApp, ProcessAPI,
-  lualib, MSHTML, uCircleForm, AttriFont;
+uses
+{$IFnDEF FPC}
+  PsAPI, ScktComp, BrkrConst, HTTPApp, MSHTML,
+{$ELSE}
+{$ENDIF}
+  sendR, MMSystem, SKey, fmFirst_u, WebLabel, MathEx, SynEditMiscClasses,
+  Unit5,
+  LZW_FolderActions, Masks, ProcessAPI,
+  lualib, uCircleForm, AttriFont;
 
 var
   gHotKeyMgr: THotKeyManager;
   gOldTabChange: TWndMethod;
   gHintPhase: Boolean;
   gHintTick: Integer;
-  { Двенадцать чисел подряд: позиции и размеры вспомогательных окон.
-    Читаются и пишутся циклом в AfterOptionsLoaded и miSaveOptionsClick. }
+  { Р”РІРµРЅР°РґС†Р°С‚СЊ С‡РёСЃРµР» РїРѕРґСЂСЏРґ: РїРѕР·РёС†РёРё Рё СЂР°Р·РјРµСЂС‹ РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹С… РѕРєРѕРЅ.
+    Р§РёС‚Р°СЋС‚СЃСЏ Рё РїРёС€СѓС‚СЃСЏ С†РёРєР»РѕРј РІ AfterOptionsLoaded Рё miSaveOptionsClick. }
   gWinPos: array[0..11] of Integer;
-  { Ширина и высота лежат в Right и Bottom, а не координаты угла. }
+  { РЁРёСЂРёРЅР° Рё РІС‹СЃРѕС‚Р° Р»РµР¶Р°С‚ РІ Right Рё Bottom, Р° РЅРµ РєРѕРѕСЂРґРёРЅР°С‚С‹ СѓРіР»Р°. }
   gLogRect: TRect;
   gHelpRect: TRect;
-  gTrayIcon: TNotifyIconData;        // структура иконки в трее
+  gTrayIcon: TTrayNotifyIconData;    // СЃС‚СЂСѓРєС‚СѓСЂР° РёРєРѕРЅРєРё РІ С‚СЂРµРµ
   gIconRun: HICON;
   gIconPause: HICON;
   gIconStop: HICON;
   gTrayBlink: Boolean;
-  gInScriptTab: Boolean;             // сейчас открыта вкладка скрипта
-  gFlag5969EE: Boolean;             // подавляет реакцию на смену вкладки
+  gInScriptTab: Boolean;             // СЃРµР№С‡Р°СЃ РѕС‚РєСЂС‹С‚Р° РІРєР»Р°РґРєР° СЃРєСЂРёРїС‚Р°
+  gFlag5969EE: Boolean;             // РїРѕРґР°РІР»СЏРµС‚ СЂРµР°РєС†РёСЋ РЅР° СЃРјРµРЅСѓ РІРєР»Р°РґРєРё
   gSavedWidth: Integer;
   gSavedHeight: Integer;
-  { Шесть штук -- по числу пар btS0..btS5 / ec0..ec5 / tm0..tm5;
-    индекс берётся из Tag кнопки. }
+  { РЁРµСЃС‚СЊ С€С‚СѓРє -- РїРѕ С‡РёСЃР»Сѓ РїР°СЂ btS0..btS5 / ec0..ec5 / tm0..tm5;
+    РёРЅРґРµРєСЃ Р±РµСЂС‘С‚СЃСЏ РёР· Tag РєРЅРѕРїРєРё. }
   gCalibrVals: array[0..5] of Integer;
-  gWinHandles: array of Cardinal;         // окна из cbWinList
+  gWinHandles: array of Cardinal;         // РѕРєРЅР° РёР· cbWinList
   gPanelPads: array[0..7] of Integer;
   gObjA34: TObject;
-  gObjA38: TCriticalSection;
-  gObjA3C: TCriticalSection;
-  gFlag596A40: Boolean;             // проглотить следующий Backspace
+  gObjA38: SyncObjs.TCriticalSection;
+  gObjA3C: SyncObjs.TCriticalSection;
+  gFlag596A40: Boolean;             // РїСЂРѕРіР»РѕС‚РёС‚СЊ СЃР»РµРґСѓСЋС‰РёР№ Backspace
   gOldLogProc: TWndMethod;
   gOldHelpProc2: TWndMethod;
   gOldCPProc: TWndMethod;
-  gFlag596A5C: Integer;             // индекс переименовываемой вкладки, -1 = нет
-  gStr596A60: string;                     // прежнее имя вкладки
+  gFlag596A5C: Integer;             // РёРЅРґРµРєСЃ РїРµСЂРµРёРјРµРЅРѕРІС‹РІР°РµРјРѕР№ РІРєР»Р°РґРєРё, -1 = РЅРµС‚
+  gStr596A60: string;                     // РїСЂРµР¶РЅРµРµ РёРјСЏ РІРєР»Р°РґРєРё
   gWidth596A64: Integer;
   gMacroIndex: Integer;
   gMacroIni: TIniFile;
   gMouseMacros: array[1..22] of ToneButton;
-  gMacroWnd: HWND;                  // окно для отправки макроса
+  gMacroWnd: HWND;                  // РѕРєРЅРѕ РґР»СЏ РѕС‚РїСЂР°РІРєРё РјР°РєСЂРѕСЃР°
   gMacroCols: Integer;
   gCount59AD80: Integer;
   gMacroThreadId: DWORD;
   gHKScript: Integer;
   gWikiThread: TWikiThread;
 
-{ Накладки для индексного доступа к таблицам адресов клиента:
-  absolute не заводит ни памяти, ни отдельной величины. }
+{ РќР°РєР»Р°РґРєРё РґР»СЏ РёРЅРґРµРєСЃРЅРѕРіРѕ РґРѕСЃС‚СѓРїР° Рє С‚Р°Р±Р»РёС†Р°Рј Р°РґСЂРµСЃРѕРІ РєР»РёРµРЅС‚Р°:
+  absolute РЅРµ Р·Р°РІРѕРґРёС‚ РЅРё РїР°РјСЏС‚Рё, РЅРё РѕС‚РґРµР»СЊРЅРѕР№ РІРµР»РёС‡РёРЅС‹. }
 var
   ClientAddr:  array[0..22, 0..24] of Cardinal absolute gClT590778a8;
   ClientAddr2: array[1..6,  0..24] of Cardinal absolute gClT591074cp;
@@ -2112,7 +2344,7 @@ function LoadHotKeyEntry(Data, Nm: ShortString): Boolean; forward;
 
 
 
-// Приватные процедуры модуля (не методы формы).
+// РџСЂРёРІР°С‚РЅС‹Рµ РїСЂРѕС†РµРґСѓСЂС‹ РјРѕРґСѓР»СЏ (РЅРµ РјРµС‚РѕРґС‹ С„РѕСЂРјС‹).
 
 
 
@@ -2134,7 +2366,11 @@ function LoadHotKeyEntry(Data, Nm: ShortString): Boolean; forward;
 
 
 
-{$R *.dfm}
+{$IFnDEF FPC}
+  {$R *.dfm}
+{$ELSE}
+  {$R *.lfm}
+{$ENDIF}
 
 
 
@@ -2446,13 +2682,13 @@ function SendKeyString(Wnd: Cardinal; S: string; Mode: Integer; Script: Pointer;
 
 function HKLine(Pfx: ShortString; E: tHotKeyList): ShortString;
 begin
-  // Тело не нужно: строку горячей клавиши собирает одноимённая
-  // вложенная функция внутри miSaveOptionsClick.
+  // РўРµР»Рѕ РЅРµ РЅСѓР¶РЅРѕ: СЃС‚СЂРѕРєСѓ РіРѕСЂСЏС‡РµР№ РєР»Р°РІРёС€Рё СЃРѕР±РёСЂР°РµС‚ РѕРґРЅРѕРёРјС‘РЅРЅР°СЏ
+  // РІР»РѕР¶РµРЅРЅР°СЏ С„СѓРЅРєС†РёСЏ РІРЅСѓС‚СЂРё miSaveOptionsClick.
 end;
 
 procedure SyncLogMsg;
 begin
-  // Тело живёт в TScanThread.SyncLogMsg (uScanThread).
+  // РўРµР»Рѕ Р¶РёРІС‘С‚ РІ TScanThread.SyncLogMsg (uScanThread).
 end;
 
 procedure TfmSecond.miSaveOptionsClick(Sender: TObject);
@@ -2463,9 +2699,9 @@ var
   Ini: TMyMemIniFile;
   Reg: TRegistry;
   I, N, Rep: Integer;
-  { Собирает строку горячей клавиши для ini:
-    '<Вкл>,<Подпись>,<Shift>,<Alt>,<Ctrl>,<Удержание>,<Звук>'.
-    Парная к LoadHotKeyEntry. }
+  { РЎРѕР±РёСЂР°РµС‚ СЃС‚СЂРѕРєСѓ РіРѕСЂСЏС‡РµР№ РєР»Р°РІРёС€Рё РґР»СЏ ini:
+    '<Р’РєР»>,<РџРѕРґРїРёСЃСЊ>,<Shift>,<Alt>,<Ctrl>,<РЈРґРµСЂР¶Р°РЅРёРµ>,<Р—РІСѓРє>'.
+    РџР°СЂРЅР°СЏ Рє LoadHotKeyEntry. }
   function HKLine(Nm: ShortString; E: tHotKeyList): ShortString;
   type
     THKMod = (hkShift, hkAlt, hkCtrl);
@@ -2496,8 +2732,8 @@ var
   end;
 
 begin
-  { Запись всех настроек в ini: одиннадцать секций подряд, между ними
-    Sect переприсваивается литералом. }
+  { Р—Р°РїРёСЃСЊ РІСЃРµС… РЅР°СЃС‚СЂРѕРµРє РІ ini: РѕРґРёРЅРЅР°РґС†Р°С‚СЊ СЃРµРєС†РёР№ РїРѕРґСЂСЏРґ, РјРµР¶РґСѓ РЅРёРјРё
+    Sect РїРµСЂРµРїСЂРёСЃРІР°РёРІР°РµС‚СЃСЏ Р»РёС‚РµСЂР°Р»РѕРј. }
   if not FFlag14E4 then
   begin
     SetForegroundWindow(Application.Handle);
@@ -2506,7 +2742,7 @@ begin
   end;
   Ini := TMyMemIniFile.Create(FOptionsFile);
   Sect := 'UoPilot';
-  { Галочки пакуются в битовое поле. }
+  { Р“Р°Р»РѕС‡РєРё РїР°РєСѓСЋС‚СЃСЏ РІ Р±РёС‚РѕРІРѕРµ РїРѕР»Рµ. }
   Ini.WriteInteger(Sect, 'SaveWinPosition',
     Ord(miSPosAC.Checked) shl 5 + Ord(miSPosHC.Checked) shl 4 +
     Ord(miSPosSC.Checked) shl 3 + Ord(miSPosUoP.Checked) shl 2 +
@@ -2547,8 +2783,8 @@ begin
     gWinPos[10] := gDlg5966F4.Top;
     gWinPos[11] := gDlg5966F4.Left;
   end;
-  { BoundsRect присваивается целиком; Right и Bottom тут же превращаются
-    в ширину и высоту. }
+  { BoundsRect РїСЂРёСЃРІР°РёРІР°РµС‚СЃСЏ С†РµР»РёРєРѕРј; Right Рё Bottom С‚СѓС‚ Р¶Рµ РїСЂРµРІСЂР°С‰Р°СЋС‚СЃСЏ
+    РІ С€РёСЂРёРЅСѓ Рё РІС‹СЃРѕС‚Сѓ. }
   if gDlg5966F8c6 <> nil then
   begin
     gLogRect := gDlg5966F8c6.BoundsRect;
@@ -2643,8 +2879,8 @@ begin
   Ini.WriteInteger(Sect, 'UOPriority', tbUOPriority.Position);
   Ini.WriteBool(Sect, 'StartUOMinimized', cbSUOMin.Checked);
   Ini.WriteBool(Sect, 'StartUOOnly', StartUOOnly.Checked);
-  { Пустой except: на ограниченной учётке запись в HKLM падает, и это
-    не повод ронять сохранение. }
+  { РџСѓСЃС‚РѕР№ except: РЅР° РѕРіСЂР°РЅРёС‡РµРЅРЅРѕР№ СѓС‡С‘С‚РєРµ Р·Р°РїРёСЃСЊ РІ HKLM РїР°РґР°РµС‚, Рё СЌС‚Рѕ
+    РЅРµ РїРѕРІРѕРґ СЂРѕРЅСЏС‚СЊ СЃРѕС…СЂР°РЅРµРЅРёРµ. }
   try
     Reg := TRegistry.Create;
     Reg.RootKey := HKEY_LOCAL_MACHINE;
@@ -2697,7 +2933,7 @@ begin
     Byte(cbInsertXY.Checked) + Byte(cbInsertXYabs.Checked) shl 1);
   Ini.WriteBool(Sect, 'Det_color', CBInsertColor.Checked);
   Ini.WriteBool(Sect, 'Add_Space', miAddSp.Checked);
-  { Шесть одинаковых циклов: столбцы двух сеток склеиваются через запятую. }
+  { РЁРµСЃС‚СЊ РѕРґРёРЅР°РєРѕРІС‹С… С†РёРєР»РѕРІ: СЃС‚РѕР»Р±С†С‹ РґРІСѓС… СЃРµС‚РѕРє СЃРєР»РµРёРІР°СЋС‚СЃСЏ С‡РµСЂРµР· Р·Р°РїСЏС‚СѓСЋ. }
   S := '';
   for I := 1 to sgLastObject.RowCount do
     S := S + sgLastObject.Cells[0, I - 1] + ',';
@@ -2728,7 +2964,7 @@ begin
   Ini.WriteString(Sect, 'FontName', gEditorFontName);
   Ini.WriteInteger(Sect, 'FontSizeSyn', gLogFontSize);
   Ini.WriteString(Sect, 'FontNameSyn', gLogFontName);
-  { Стиль пакуется по одному биту: каждый шаг -- сдвиг накопителя и or. }
+  { РЎС‚РёР»СЊ РїР°РєСѓРµС‚СЃСЏ РїРѕ РѕРґРЅРѕРјСѓ Р±РёС‚Сѓ: РєР°Р¶РґС‹Р№ С€Р°Рі -- СЃРґРІРёРі РЅР°РєРѕРїРёС‚РµР»СЏ Рё or. }
   Ini.WriteInteger(Sect, 'FontStyle',
     (((Byte(fsBold in edScript.Font.Style) shl 1 or
        Byte(fsItalic in edScript.Font.Style)) shl 1 or
@@ -2784,13 +3020,13 @@ begin
   gHKScript := -1;
   if cbEnableHK.Checked then
   begin
-    { Первые $22 записей -- общие клавиши: ключ = имя компонента без 'cb'. }
+    { РџРµСЂРІС‹Рµ $22 Р·Р°РїРёСЃРµР№ -- РѕР±С‰РёРµ РєР»Р°РІРёС€Рё: РєР»СЋС‡ = РёРјСЏ РєРѕРјРїРѕРЅРµРЅС‚Р° Р±РµР· 'cb'. }
     for I := 0 to $21 do
       Ini.WriteString(Sect, Copy(gHKEntrieslw[I].Name, 3, 57),
         HKLine('', gHKEntrieslw[I]));
-    { Дальше -- по две клавиши на каждую строку списка скриптов; номер
-      скрипта берётся из столбца 1, а чётность I выбирает первую или
-      вторую клавишу пары. }
+    { Р”Р°Р»СЊС€Рµ -- РїРѕ РґРІРµ РєР»Р°РІРёС€Рё РЅР° РєР°Р¶РґСѓСЋ СЃС‚СЂРѕРєСѓ СЃРїРёСЃРєР° СЃРєСЂРёРїС‚РѕРІ; РЅРѕРјРµСЂ
+      СЃРєСЂРёРїС‚Р° Р±РµСЂС‘С‚СЃСЏ РёР· СЃС‚РѕР»Р±С†Р° 1, Р° С‡С‘С‚РЅРѕСЃС‚СЊ I РІС‹Р±РёСЂР°РµС‚ РїРµСЂРІСѓСЋ РёР»Рё
+      РІС‚РѕСЂСѓСЋ РєР»Р°РІРёС€Сѓ РїР°СЂС‹. }
     for I := 0 to sghkScriptHKList.RowCount * 2 - 1 do
     begin
       N := StrToInt(sghkScriptHKList.Cells[1, I div 2]) * 2 + $22 + I mod 2;
@@ -2807,7 +3043,7 @@ begin
   end;
   Ini.WriteBool(Sect, 'TransparentHotKeys', miTransparentHotKeys.Checked);
   Sect := 'CustomClient';
-  { Ключи и поля тут разъехались на одну позицию. }
+  { РљР»СЋС‡Рё Рё РїРѕР»СЏ С‚СѓС‚ СЂР°Р·СЉРµС…Р°Р»РёСЃСЊ РЅР° РѕРґРЅСѓ РїРѕР·РёС†РёСЋ. }
   Ini.WriteInteger(Sect, 'AlwaysRun', EoffAlwaysRun.Value);
   Ini.WriteInteger(Sect, 'CP', EoffCP.Value);
   Ini.WriteInteger(Sect, 'CharDir', EoffCharDir.Value);
@@ -2835,7 +3071,7 @@ begin
   Ini.WriteInteger(Sect, 'Wght', ELastSpellStartNum.Value);
   Ini.WriteInteger(Sect, 'ClVer', cbCustomClVer.ItemIndex);
   Ini.WriteInteger(Sect, 'Backpack', EoffBackpack.Value);
-  { Цвета и списки слов подсветки уходят в ту же ini. }
+  { Р¦РІРµС‚Р° Рё СЃРїРёСЃРєРё СЃР»РѕРІ РїРѕРґСЃРІРµС‚РєРё СѓС…РѕРґСЏС‚ РІ С‚Сѓ Р¶Рµ ini. }
   SaveHighlighter(fld_1428, Ini);
   Sect := 'LoggingErrors';
   Ini.WriteBool(Sect, 'clrinvalid', miELclrinvalid.Checked);
@@ -2854,8 +3090,8 @@ var
   Ini: TMyMemIniFile;
   RS: TResourceStream;
 begin
-  { Имя библиотеки Lua берётся из ini, а если файла нет -- достаётся
-    из собственных ресурсов (RT_RCDATA, номера 51 и 151). }
+  { РРјСЏ Р±РёР±Р»РёРѕС‚РµРєРё Lua Р±РµСЂС‘С‚СЃСЏ РёР· ini, Р° РµСЃР»Рё С„Р°Р№Р»Р° РЅРµС‚ -- РґРѕСЃС‚Р°С‘С‚СЃСЏ
+    РёР· СЃРѕР±СЃС‚РІРµРЅРЅС‹С… СЂРµСЃСѓСЂСЃРѕРІ (RT_RCDATA, РЅРѕРјРµСЂР° 51 Рё 151). }
   Ini := TMyMemIniFile.Create(Form.FOptionsFile);
   Sect := 'UoPilot';
   Def := 'lua5.1.dll';
@@ -2900,9 +3136,9 @@ const
 var
   Mods: THKMods;
 begin
-  { Разбор строки настройки горячей клавиши из секции [Hotkeys]:
-    '<Вкл>,<Подпись>,<Shift>,<Alt>,<Ctrl>,<Удержание>,<Звук>'.
-    Оба параметра -- значениевые ShortString, и оба портятся по дороге. }
+  { Р Р°Р·Р±РѕСЂ СЃС‚СЂРѕРєРё РЅР°СЃС‚СЂРѕР№РєРё РіРѕСЂСЏС‡РµР№ РєР»Р°РІРёС€Рё РёР· СЃРµРєС†РёРё [Hotkeys]:
+    '<Р’РєР»>,<РџРѕРґРїРёСЃСЊ>,<Shift>,<Alt>,<Ctrl>,<РЈРґРµСЂР¶Р°РЅРёРµ>,<Р—РІСѓРє>'.
+    РћР±Р° РїР°СЂР°РјРµС‚СЂР° -- Р·РЅР°С‡РµРЅРёРµРІС‹Рµ ShortString, Рё РѕР±Р° РїРѕСЂС‚СЏС‚СЃСЏ РїРѕ РґРѕСЂРѕРіРµ. }
   En := StrIsTrue(Copy(Data, 1, Pos(',', Data) - 1));
   Nm := 'hk' + Nm;
   Delete(Data, 1, Pos(',', Data));
@@ -3371,7 +3607,7 @@ begin
     gScriptso3[K].ClientWnd := FTargetWnd;
     gScriptso3[K].ProcessId := PID;
     if gScriptso3[K].ProcessHandle <> 0 then
-      CloseHandle(gScriptso3[K].ProcessHandle);
+      FileClose(gScriptso3[K].ProcessHandle); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
     gScriptso3[K].ProcessHandle := OpenProcess($638, True, PID);
   end;
   seSendExDelayDef.Value := Ini.ReadInteger(Sect, 'SendExDelayDef', 0);
@@ -3437,7 +3673,9 @@ begin
       MI := mnHotKey.Items[0].Items[3];
       NewMI := TMenuItem.Create(MI);
       NewMI.Caption := Ln;
+      {$IFNDEF FPC}
       NewMI.AutoHotkeys := maManual;
+      {$ENDIF}
       NewMI.OnClick := LastScriptItemClick;
       MI.Insert(MI.Count, NewMI);
     end;
@@ -3544,16 +3782,16 @@ const
   LastScript: string = 'Last_script';
   ScriptDelay: string = 'Script_delay';
 begin
-  { Секция [Script]: имена и задержки всех вкладок-скриптов. Ключи
-    строятся из двух типизированных констант ('Last_script' и
+  { РЎРµРєС†РёСЏ [Script]: РёРјРµРЅР° Рё Р·Р°РґРµСЂР¶РєРё РІСЃРµС… РІРєР»Р°РґРѕРє-СЃРєСЂРёРїС‚РѕРІ. РљР»СЋС‡Рё
+    СЃС‚СЂРѕСЏС‚СЃСЏ РёР· РґРІСѓС… С‚РёРїРёР·РёСЂРѕРІР°РЅРЅС‹С… РєРѕРЅСЃС‚Р°РЅС‚ ('Last_script' Рё
     'Script_delay'). }
   Found := False;
   N := StrToInt(tScript.Tabs[tScript.TabIndex]);
   if gScriptso3[N] <> nil then
     gScriptso3[N].PauseCmd := edPause.Text;
   Ini.WriteInteger(Sect, 'Current_script', tScript.TabIndex);
-  { Сначала чистим все сто пар ключей -- иначе от прошлого сеанса остались бы
-    записи вкладок, которых уже нет. }
+  { РЎРЅР°С‡Р°Р»Р° С‡РёСЃС‚РёРј РІСЃРµ СЃС‚Рѕ РїР°СЂ РєР»СЋС‡РµР№ -- РёРЅР°С‡Рµ РѕС‚ РїСЂРѕС€Р»РѕРіРѕ СЃРµР°РЅСЃР° РѕСЃС‚Р°Р»РёСЃСЊ Р±С‹
+    Р·Р°РїРёСЃРё РІРєР»Р°РґРѕРє, РєРѕС‚РѕСЂС‹С… СѓР¶Рµ РЅРµС‚. }
   for I := 0 to 99 do
   begin
     Ini.DeleteKey(Sect, LastScript + IntToStr(I));
@@ -3572,8 +3810,8 @@ begin
     end;
     Inc(I);
   end;
-  { Вкладка 99 -- служебная (процедуры). Если её среди вкладок не было,
-    её ключи убираем отдельно. }
+  { Р’РєР»Р°РґРєР° 99 -- СЃР»СѓР¶РµР±РЅР°СЏ (РїСЂРѕС†РµРґСѓСЂС‹). Р•СЃР»Рё РµС‘ СЃСЂРµРґРё РІРєР»Р°РґРѕРє РЅРµ Р±С‹Р»Рѕ,
+    РµС‘ РєР»СЋС‡Рё СѓР±РёСЂР°РµРј РѕС‚РґРµР»СЊРЅРѕ. }
   if not Found then
   begin
     Ini.DeleteKey(Sect, LastScript + IntToStr(99));
@@ -3583,25 +3821,42 @@ end;
 
 procedure TfmSecond.SaveUoPilotSection(Ini: TMyMemIniFile; Sect: string);
 begin
-  { Одна строка: четыре галочки языка пакуются в битовое поле.
-    Значим только порядок слагаемых. }
+  { РћРґРЅР° СЃС‚СЂРѕРєР°: С‡РµС‚С‹СЂРµ РіР°Р»РѕС‡РєРё СЏР·С‹РєР° РїР°РєСѓСЋС‚СЃСЏ РІ Р±РёС‚РѕРІРѕРµ РїРѕР»Рµ.
+    Р—РЅР°С‡РёРј С‚РѕР»СЊРєРѕ РїРѕСЂСЏРґРѕРє СЃР»Р°РіР°РµРјС‹С…. }
   Ini.WriteInteger(Sect, 'Language',
     Byte(miLangPor.Checked) shl 3 + Byte(miLangEng.Checked) shl 2 +
     Byte(miLangRus.Checked) shl 1 + Byte(miLangDefault.Checked));
 end;
 
+procedure MsgBoxW(Owner: HWND; Text, Caption: PChar; Flags: Integer);
+{$IFDEF FPC}
+var
+  WText, WCaption: WideString;
+begin
+  { LCL С…СЂР°РЅРёС‚ СЃС‚СЂРѕРєРё РІ UTF-8, Р° MessageBoxA С‚СЂР°РєС‚СѓРµС‚ РёС… РєР°Рє cp1251.
+    РљРѕРЅРІРµСЂС‚РёСЂСѓРµРј РІ UTF-16 Рё Р·РѕРІС‘Рј С€РёСЂРѕРєСѓСЋ РІРµСЂСЃРёСЋ. }
+  WText := UTF8Decode(Text);
+  WCaption := UTF8Decode(Caption);
+  MessageBoxW(Owner, PWideChar(WText), PWideChar(WCaption), Flags);
+end;
+{$ELSE}
+begin
+  MessageBox(Owner, Text, Caption, Flags);
+end;
+{$ENDIF}
+
 procedure MsgBox(Text, Caption: PChar; Flags: Integer);
 begin
-  // Flags не используется: сообщение всегда MB_SYSTEMMODAL.
-  MessageBox(0, Text, Caption, MB_SYSTEMMODAL);
+  // Flags РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ: СЃРѕРѕР±С‰РµРЅРёРµ РІСЃРµРіРґР° MB_SYSTEMMODAL.
+  MsgBoxW(0, Text, Caption, MB_SYSTEMMODAL);
 end;
 
 procedure TfmSecond.TimerKeyAction(Kind: Byte; Value: Integer);
 begin
-  // Действие таймера tm0 по выбору в cb0: 11 -- двойной левый
-  // клик через PostMessage, $16 -- двойной правый, 1 -- левый, 2 -- правый
-  // (эти три через SendMessage). Каждому клику предшествует WM_SETCURSOR
-  // с hit-test кодом, как это делает сама Windows.
+  // Р”РµР№СЃС‚РІРёРµ С‚Р°Р№РјРµСЂР° tm0 РїРѕ РІС‹Р±РѕСЂСѓ РІ cb0: 11 -- РґРІРѕР№РЅРѕР№ Р»РµРІС‹Р№
+  // РєР»РёРє С‡РµСЂРµР· PostMessage, $16 -- РґРІРѕР№РЅРѕР№ РїСЂР°РІС‹Р№, 1 -- Р»РµРІС‹Р№, 2 -- РїСЂР°РІС‹Р№
+  // (СЌС‚Рё С‚СЂРё С‡РµСЂРµР· SendMessage). РљР°Р¶РґРѕРјСѓ РєР»РёРєСѓ РїСЂРµРґС€РµСЃС‚РІСѓРµС‚ WM_SETCURSOR
+  // СЃ hit-test РєРѕРґРѕРј, РєР°Рє СЌС‚Рѕ РґРµР»Р°РµС‚ СЃР°РјР° Windows.
   if Kind = $0B then
   begin
     PostMessage(FTargetWnd, WM_SETCURSOR, FTargetWnd, MakeLong(1, $0200));
@@ -3664,11 +3919,14 @@ var
   B: Boolean;
   B2: Boolean;
   Buf: array[0..MAX_PATH] of Char;
-  P: PChar;
+  WBuf: array[0..$FF] of WideChar;
+  WLen: Integer;
+  WS: WideString;
+  WinTitle: string;
 
-  { Автозапуск скриптов, помеченных ключом /rN: вкладка, открытая сейчас,
-    запускается кнопкой (btStartClick), остальные -- напрямую, с поиском
-    окна клиента по классу 'Ultima Online'. }
+  { РђРІС‚РѕР·Р°РїСѓСЃРє СЃРєСЂРёРїС‚РѕРІ, РїРѕРјРµС‡РµРЅРЅС‹С… РєР»СЋС‡РѕРј /rN: РІРєР»Р°РґРєР°, РѕС‚РєСЂС‹С‚Р°СЏ СЃРµР№С‡Р°СЃ,
+    Р·Р°РїСѓСЃРєР°РµС‚СЃСЏ РєРЅРѕРїРєРѕР№ (btStartClick), РѕСЃС‚Р°Р»СЊРЅС‹Рµ -- РЅР°РїСЂСЏРјСѓСЋ, СЃ РїРѕРёСЃРєРѕРј
+    РѕРєРЅР° РєР»РёРµРЅС‚Р° РїРѕ РєР»Р°СЃСЃСѓ 'Ultima Online'. }
   procedure AutoStartScripts;
   var
     I: Integer;
@@ -3695,7 +3953,7 @@ var
             GetWindowThreadProcessId(gScriptso3[I].ClientWnd, @PID);
             gScriptso3[I].ProcessId := PID;
             if gScriptso3[I].ProcessHandle <> 0 then
-              CloseHandle(gScriptso3[I].ProcessHandle);
+              FileClose(gScriptso3[I].ProcessHandle); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
             gScriptso3[I].ProcessHandle := OpenProcess($638, True, PID);
           end;
           gScriptso3[I].Paused := False;
@@ -3708,8 +3966,8 @@ var
 
 
 begin
-  { Конструктор главной формы: инициализация глобальных, создание редактора
-    скрипта, таблицы горячих клавиш, разбор командной строки и раскладка. }
+  { РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РіР»Р°РІРЅРѕР№ С„РѕСЂРјС‹: РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РіР»РѕР±Р°Р»СЊРЅС‹С…, СЃРѕР·РґР°РЅРёРµ СЂРµРґР°РєС‚РѕСЂР°
+    СЃРєСЂРёРїС‚Р°, С‚Р°Р±Р»РёС†С‹ РіРѕСЂСЏС‡РёС… РєР»Р°РІРёС€, СЂР°Р·Р±РѕСЂ РєРѕРјР°РЅРґРЅРѕР№ СЃС‚СЂРѕРєРё Рё СЂР°СЃРєР»Р°РґРєР°. }
   Set8087CW(Get8087CW or $05);
   if not QueryPerformanceFrequency(gPerfFreqby) then
   begin
@@ -3718,15 +3976,15 @@ begin
   FFlag14EC := False;
   gHKDisabled := False;
   FFlag14E4 := False;
-  { заголовок окна -- случайная строка из 5..30 печатных символов }
+  { Р·Р°РіРѕР»РѕРІРѕРє РѕРєРЅР° -- СЃР»СѓС‡Р°Р№РЅР°СЏ СЃС‚СЂРѕРєР° РёР· 5..30 РїРµС‡Р°С‚РЅС‹С… СЃРёРјРІРѕР»РѕРІ }
   S := '';
   Randomize;
   for I := 1 to Random($1A) + 5 do
     S := S + Chr(Random($5F) + $20);
   Caption := S;
   gFontApplyBoth := False;
-  { редактор скрипта создаётся кодом и кладётся на вкладку tsScript }
-  edScript := TSynMemo.Create(Self);
+  { СЂРµРґР°РєС‚РѕСЂ СЃРєСЂРёРїС‚Р° СЃРѕР·РґР°С‘С‚СЃСЏ РєРѕРґРѕРј Рё РєР»Р°РґС‘С‚СЃСЏ РЅР° РІРєР»Р°РґРєСѓ tsScript }
+  edScript := TSynEdit.Create(Self);
   with edScript do
   begin
     Parent := tsScript;
@@ -3735,11 +3993,12 @@ begin
     Top := 0;
     Align := alClient;
     Color := $FF000014;
-    Font.Charset := RUSSIAN_CHARSET;
+    Font.Charset := DEFAULT_CHARSET;
     Font.Color := $FF000008;
     Font.Height := -12;
     Font.Name := 'Courier New';
     Font.Style := [];
+    Font.Quality := fqClearType;
     ParentShowHint := False;
     PopupMenu := mnCom;
     ShowHint := False;
@@ -3755,40 +4014,43 @@ begin
     BookMarkOptions.EnableKeys := False;
     BookMarkOptions.GlyphsVisible := False;
     Gutter.AutoSize := True;
-    Gutter.DigitCount := 2;
-    Gutter.Font.Charset := DEFAULT_CHARSET;
-    Gutter.Font.Color := $FF000008;
-    Gutter.Font.Height := -11;
-    Gutter.Font.Name := 'Courier New';
-    Gutter.Font.Style := [];
     Gutter.LeftOffset := 0;
     Gutter.RightOffset := 2;
-    Gutter.ShowLineNumbers := True;
     Gutter.Visible := True;
     Gutter.Width := 10;
-    Gutter.ZeroStart := True;
-    Gutter.LineNumberStart := 0;
+    with Gutter.LineNumberPart do
+    begin
+      AutoSize := True;
+      Visible := True;
+      DigitCount := 2;
+      ZeroStart := True;
+      MarkupInfo.Foreground := $FF000008;
+    end;
+    {$IFDEF FPC}
+    Gutter.MarksPart.Visible := False;
+    Gutter.ChangesPart.Visible := False;
+    Gutter.CodeFoldPart.Visible := False;
+    Gutter.SeparatorPart.Visible := False;
+    {$ENDIF}
     TabWidth := 4;
     WantTabs := True;
-    WordWrap := False;
-    WordWrapGlyph.Visible := False;
     Options := Options - [eoSmartTabs];
   end;
   edScript.SendToBack;
-  { подсветка синтаксиса: класс живёт в отдельном юните }
-  fld_1428 := TSynPasSyn.Create(fmSecondfj);
+  { РїРѕРґСЃРІРµС‚РєР° СЃРёРЅС‚Р°РєСЃРёСЃР°: РєР»Р°СЃСЃ Р¶РёРІС‘С‚ РІ РѕС‚РґРµР»СЊРЅРѕРј СЋРЅРёС‚Рµ }
+  fld_1428 := TSynUOPilotSyn.Create(fmSecondfj);
   edScript.Highlighter := fld_1428;
   gCoordCaptureddo := False;
   gLogFileClosedr := False;
   FFlag1438 := True;
   sghkScriptHKList.Tag := $23;
   gFlag596A40 := False;
-  gObjA34 := TCriticalSection.Create;
-  gObjA38 := TCriticalSection.Create;
-  gObjA3C := TCriticalSection.Create;
+  gObjA34 := SyncObjs.TCriticalSection.Create;
+  gObjA38 := SyncObjs.TCriticalSection.Create;
+  gObjA3C := SyncObjs.TCriticalSection.Create;
   gPanelPads[0] := pCPVar.Height;
-  { снять ограничения, выставить размер по невидимым панелям-линейкам и
-    заново зафиксировать его как минимум и максимум }
+  { СЃРЅСЏС‚СЊ РѕРіСЂР°РЅРёС‡РµРЅРёСЏ, РІС‹СЃС‚Р°РІРёС‚СЊ СЂР°Р·РјРµСЂ РїРѕ РЅРµРІРёРґРёРјС‹Рј РїР°РЅРµР»СЏРј-Р»РёРЅРµР№РєР°Рј Рё
+    Р·Р°РЅРѕРІРѕ Р·Р°С„РёРєСЃРёСЂРѕРІР°С‚СЊ РµРіРѕ РєР°Рє РјРёРЅРёРјСѓРј Рё РјР°РєСЃРёРјСѓРј }
   fmSecondfj.Constraints.MinHeight := 0;
   fmSecondfj.Constraints.MinWidth := 0;
   fmSecondfj.Constraints.MaxHeight := 0;
@@ -3809,7 +4071,7 @@ begin
   SetLength(gHKEntrieslw, $E8);
   SetLength(gHKNames, $E8);
   gHotKeyMgr := THotKeyManager.Create(Self);
-  { первые 34 клавиши -- именованные команды, дальше идут клавиши вкладок }
+  { РїРµСЂРІС‹Рµ 34 РєР»Р°РІРёС€Рё -- РёРјРµРЅРѕРІР°РЅРЅС‹Рµ РєРѕРјР°РЅРґС‹, РґР°Р»СЊС€Рµ РёРґСѓС‚ РєР»Р°РІРёС€Рё РІРєР»Р°РґРѕРє }
   for I := 0 to $21 do
   begin
     gHKEntrieslw[I].Name := gHKDefNames[I];
@@ -3852,8 +4114,8 @@ begin
       33: gHKEntrieslw[I].Handler := HotKeyEnableKeyboard;
     end;
   end;
-  { дальше -- пары «переключиться на скрипт N» / «поставить его на паузу»,
-    чередуются по флагу B, отличаются только модификатором }
+  { РґР°Р»СЊС€Рµ -- РїР°СЂС‹ В«РїРµСЂРµРєР»СЋС‡РёС‚СЊСЃСЏ РЅР° СЃРєСЂРёРїС‚ NВ» / В«РїРѕСЃС‚Р°РІРёС‚СЊ РµРіРѕ РЅР° РїР°СѓР·СѓВ»,
+    С‡РµСЂРµРґСѓСЋС‚СЃСЏ РїРѕ С„Р»Р°РіСѓ B, РѕС‚Р»РёС‡Р°СЋС‚СЃСЏ С‚РѕР»СЊРєРѕ РјРѕРґРёС„РёРєР°С‚РѕСЂРѕРј }
   B := True;
   for I := $22 to $E7 do
   begin
@@ -3870,8 +4132,8 @@ begin
     B := not B;
     gHKEntrieslw[I].Text := 'S';
   end;
-  { раскладка клавиатуры: из реестра берётся вторая по счёту, а если она
-    английская или её нет -- первая }
+  { СЂР°СЃРєР»Р°РґРєР° РєР»Р°РІРёР°С‚СѓСЂС‹: РёР· СЂРµРµСЃС‚СЂР° Р±РµСЂС‘С‚СЃСЏ РІС‚РѕСЂР°СЏ РїРѕ СЃС‡С‘С‚Сѓ, Р° РµСЃР»Рё РѕРЅР°
+    Р°РЅРіР»РёР№СЃРєР°СЏ РёР»Рё РµС‘ РЅРµС‚ -- РїРµСЂРІР°СЏ }
   gKbdLayoutow := '00000409';
   S := '\Keyboard Layout\Preload';
   Reg := TRegistry.Create;
@@ -3894,7 +4156,7 @@ begin
     Reg.CloseKey;
     Reg.Free;
   end;
-  { разбор командной строки: ключи вида /cПуть, /sСкрипт, /iИни, /rN, /m, /hКаталог }
+  { СЂР°Р·Р±РѕСЂ РєРѕРјР°РЅРґРЅРѕР№ СЃС‚СЂРѕРєРё: РєР»СЋС‡Рё РІРёРґР° /cРџСѓС‚СЊ, /sРЎРєСЂРёРїС‚, /iРРЅРё, /rN, /m, /hРљР°С‚Р°Р»РѕРі }
   FFlag14E6 := False;
   FOptionsFile := '';
   for I := 1 to ParamCount do
@@ -3903,7 +4165,7 @@ begin
     try
       if S[1] = '/' then
       begin
-        case LowerCase(S[2])[1] of
+        case LowerCase(S)[2] of
           'c':
             begin
               Delete(S, 1, 2);
@@ -3958,11 +4220,11 @@ begin
         MsgBox(PChar(LoadStr(gLangOffsety + $198) + IntToStr(I) + '):' + #13 +
           ParamStr(I)), 'UOPilot Error Message', 0)
       else
-        MsgBox(PChar('Ошибка в параметрах командной строки (' + IntToStr(I) +
+        MsgBox(PChar('РћС€РёР±РєР° РІ РїР°СЂР°РјРµС‚СЂР°С… РєРѕРјР°РЅРґРЅРѕР№ СЃС‚СЂРѕРєРё (' + IntToStr(I) +
           '):' + #13 + ParamStr(I)), 'UOPilot Error Message', 0);
     end;
   end;
-  { путь к клиенту, если не задан ключом -- из реестра Origin }
+  { РїСѓС‚СЊ Рє РєР»РёРµРЅС‚Сѓ, РµСЃР»Рё РЅРµ Р·Р°РґР°РЅ РєР»СЋС‡РѕРј -- РёР· СЂРµРµСЃС‚СЂР° Origin }
   if eSUO.Text = '' then
   begin
     try
@@ -3980,7 +4242,7 @@ begin
   if FOptionsFile = '' then
     FOptionsFile := gTempFilefv + 'uopilot.ini';
   gWikiPath := gTempFilefv + 'Help\';
-  { Ctrl+Y в редакторе занимаем под свою команду }
+  { Ctrl+Y РІ СЂРµРґР°РєС‚РѕСЂРµ Р·Р°РЅРёРјР°РµРј РїРѕРґ СЃРІРѕСЋ РєРѕРјР°РЅРґСѓ }
   with edScript.Keystrokes do
   begin
     I := FindShortcut(ShortCut(Ord('Y'), [ssCtrl]));
@@ -3990,10 +4252,16 @@ begin
     if I > 0 then
       Items[I].ShortCut := ShortCut(Ord('Y'), [ssCtrl])
     else
-      AddKey($25A, Ord('Y'), [ssCtrl]);
+      with Add do
+      begin
+        Command := $25A;
+        Key := Ord('Y');
+        Shift := [ssCtrl];
+        ShiftMask := [];
+      end;
   end;
   LoadLuaLib(Self);
-  { первая вкладка скрипта: поток, лог и подмена оконной процедуры лога }
+  { РїРµСЂРІР°СЏ РІРєР»Р°РґРєР° СЃРєСЂРёРїС‚Р°: РїРѕС‚РѕРє, Р»РѕРі Рё РїРѕРґРјРµРЅР° РѕРєРѕРЅРЅРѕР№ РїСЂРѕС†РµРґСѓСЂС‹ Р»РѕРіР° }
   I := StrToInt(tScript.Tabs[tScript.TabIndex]);
   gScriptso3[I] := TScanThread.NewScriptTab(True);
   gScriptso3[I].SelfRef := Pointer(gScriptso3[I]);
@@ -4028,9 +4296,17 @@ begin
     SetThreadPriority(gScriptso3[I].Handle, THREAD_PRIORITY_NORMAL);
   end;
   fld_145C := -1;
+  {$IFDEF FPC}
+  { LCL/Win32 РїРµСЂРµС…РІР°С‚С‹РІР°РµС‚ WM_DROPFILES РґРѕ message-РјРµС‚РѕРґРѕРІ, РїРѕСЌС‚РѕРјСѓ
+    СЂР°Р±РѕС‚Р°РµС‚ С‚РѕР»СЊРєРѕ AllowDropFiles/OnDropFiles. РџСѓС‚СЊ РІРЅСѓС‚СЂРё LCL
+    С‡РёС‚Р°РµС‚СЃСЏ DragQueryFileW Рё РїСЂРёС…РѕРґРёС‚ РІ UTF-8. }
+  OnDropFiles := FormDropFiles;
+  AllowDropFiles := True;
+  {$ELSE}
   DragAcceptFiles(Handle, True);
+  {$ENDIF}
   TheRecorder.SpeedFactor := miSpeed.Tag;
-  { поиск окна клиента и открытие его процесса }
+  { РїРѕРёСЃРє РѕРєРЅР° РєР»РёРµРЅС‚Р° Рё РѕС‚РєСЂС‹С‚РёРµ РµРіРѕ РїСЂРѕС†РµСЃСЃР° }
   if gLangOffsety > 0 then
   begin
     sgVar.Cells[0, 0] := LoadStr(gLangOffsety + $199);
@@ -4038,13 +4314,13 @@ begin
   end
   else
   begin
-    sgVar.Cells[0, 0] := 'Имя';
-    sgVar.Cells[1, 0] := 'Значение';
+    sgVar.Cells[0, 0] := 'РРјСЏ';
+    sgVar.Cells[1, 0] := 'Р—РЅР°С‡РµРЅРёРµ';
   end;
   FTargetWnd := FindWindow('Ultima Online', nil);
   GetWindowThreadProcessId(FTargetWnd, @PID);
   if FClientProcess <> 0 then
-    CloseHandle(FClientProcess);
+    FileClose(FClientProcess); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
   FClientProcess := OpenProcess($638, False, PID);
   gWorkWnd := FTargetWnd;
   gClientThread := OpenProcess($418, False, PID);
@@ -4054,14 +4330,15 @@ begin
   gScriptso3[tScript.TabIndex].ProcessHandle := OpenProcess($638, False, PID);
   if FTargetWnd <> 0 then
   begin
-    GetMem(P, $FF);
-    GetWindowText(FTargetWnd, P, $FF);
-    I := Pos('-', P) + 1;
-    sbGMPage.Caption := Copy(P, I, Pos('(', P) - I - 1);
-    FreeMem(P);
+    { Р·Р°РіРѕР»РѕРІРѕРє РѕРєРЅР° С‡РёС‚Р°РµРј РІ wide-Р±СѓС„РµСЂРµ Рё РїРµСЂРµРІРѕРґРёРј РІ UTF-8 РґР»СЏ LCL }
+    WLen := GetWindowTextW(FTargetWnd, WBuf, Length(WBuf));
+    SetString(WS, WBuf, WLen);
+    WinTitle := UTF8Encode(WS);
+    I := Pos('-', WinTitle) + 1;
+    sbGMPage.Caption := Copy(WinTitle, I, Pos('(', WinTitle) - I - 1);
   end;
-  { Списки имён клавиш, версий клиента и команд скрипта. Таблица имён
-    берётся из HotKeyMgr. }
+  { РЎРїРёСЃРєРё РёРјС‘РЅ РєР»Р°РІРёС€, РІРµСЂСЃРёР№ РєР»РёРµРЅС‚Р° Рё РєРѕРјР°РЅРґ СЃРєСЂРёРїС‚Р°. РўР°Р±Р»РёС†Р° РёРјС‘РЅ
+    Р±РµСЂС‘С‚СЃСЏ РёР· HotKeyMgr. }
   cb1.Items.Clear;
   for I := 0 to 99 do
     cb1.Items.Add(gHKNameTablee9[I]);
@@ -4093,6 +4370,9 @@ begin
   if gDlg59671Ct7 = nil then
   begin
     gDlg59671Ct7 := TForm.Create(fmSecondfj);
+    {$IFDEF FPC}
+    gDlg59671Ct7.PopupParent := fmSecondfj;
+    {$ENDIF}
     gDlg59671Ct7.Parent := nil;
     gDlg59671Ct7.BorderStyle := bsSizeToolWin;
     gProcImageer := TImage.Create(gDlg59671Ct7);
@@ -4103,7 +4383,7 @@ begin
     AfterOptionsLoaded;
   except
   end;
-  { подсказка окна: версия, собранная посимвольно, чтобы не бросалась в глаза }
+  { РїРѕРґСЃРєР°Р·РєР° РѕРєРЅР°: РІРµСЂСЃРёСЏ, СЃРѕР±СЂР°РЅРЅР°СЏ РїРѕСЃРёРјРІРѕР»СЊРЅРѕ, С‡С‚РѕР±С‹ РЅРµ Р±СЂРѕСЃР°Р»Р°СЃСЊ РІ РіР»Р°Р·Р° }
   S := '2.42';
   I := $2C;
   I := I * 2;
@@ -4128,7 +4408,7 @@ begin
     sbCharParamsClick(Sender);
   gNoFocusStealfq := False;
   Randomize;
-  { скрипты, перечисленные в командной строке, открываются по вкладкам }
+  { СЃРєСЂРёРїС‚С‹, РїРµСЂРµС‡РёСЃР»РµРЅРЅС‹Рµ РІ РєРѕРјР°РЅРґРЅРѕР№ СЃС‚СЂРѕРєРµ, РѕС‚РєСЂС‹РІР°СЋС‚СЃСЏ РїРѕ РІРєР»Р°РґРєР°Рј }
   for I := 0 to Length(gCmdFiles) - 1 do
   begin
     FFlag1467 := True;
@@ -4168,8 +4448,12 @@ begin
   Panel4.ParentFont := False;
   tScript.ParentFont := False;
   tScript.Font.Style := [fsBold];
+  {$IFDEF FPC}
+  tScript.OnDrawTab := tScriptDrawTabFPC;
+  tScriptDesc.OnDrawTab := tScriptDrawTabFPC;
+  {$ENDIF}
   FormResize(Sender);
-  { ширины столбцов сеток считаются от невидимых панелей-линеек }
+  { С€РёСЂРёРЅС‹ СЃС‚РѕР»Р±С†РѕРІ СЃРµС‚РѕРє СЃС‡РёС‚Р°СЋС‚СЃСЏ РѕС‚ РЅРµРІРёРґРёРјС‹С… РїР°РЅРµР»РµР№-Р»РёРЅРµРµРє }
   sgVar.ColWidths[1] := $53;
   sgLastObject.ColWidths[1] := $40;
   sgLastTarget.ColWidths[1] := $40;
@@ -4202,6 +4486,8 @@ begin
   LoadPlugins(Self, '');
   gNoFocusStealfq := True;
   miMinToTray.Checked := FFlag14E5;
+  if miMinToTray.Checked then
+    MinimizeToTray;
   gNoFocusStealfq := False;
   if FFlag14E6 or miStartMinimized.Checked then
     ShowWindow(fmSecondfj.Handle, SW_SHOWMINNOACTIVE);
@@ -4219,8 +4505,8 @@ var
   B: Byte;
   ReadCount: Cardinal;
 begin
-  // Читает флаги прямо из памяти процесса Ultima Online.
-  // Адреса зависят от версии клиента -- отсюда выбор по cbClVer.ItemIndex.
+  // Р§РёС‚Р°РµС‚ С„Р»Р°РіРё РїСЂСЏРјРѕ РёР· РїР°РјСЏС‚Рё РїСЂРѕС†РµСЃСЃР° Ultima Online.
+  // РђРґСЂРµСЃР° Р·Р°РІРёСЃСЏС‚ РѕС‚ РІРµСЂСЃРёРё РєР»РёРµРЅС‚Р° -- РѕС‚СЃСЋРґР° РІС‹Р±РѕСЂ РїРѕ cbClVer.ItemIndex.
   ReadProcessMemory(ProcessHandle, Pointer(ClientAddr[0, cbClVer.ItemIndex]),
                     @B, 1, ReadCount);
   cbName.Checked := B <> 0;
@@ -4233,7 +4519,7 @@ begin
   ReadProcessMemory(ProcessHandle, Pointer(ClientAddr[3, cbClVer.ItemIndex]),
                     @B, 1, ReadCount);
   cbPathF.Checked := B <> 0;
-  { пятая строка читает ClientAddr[22]: строка массива -- 25 Cardinal }
+  { РїСЏС‚Р°СЏ СЃС‚СЂРѕРєР° С‡РёС‚Р°РµС‚ ClientAddr[22]: СЃС‚СЂРѕРєР° РјР°СЃСЃРёРІР° -- 25 Cardinal }
   ReadProcessMemory(ProcessHandle, Pointer(ClientAddr[22, cbClVer.ItemIndex]),
                     @B, 1, ReadCount);
   cbRun.Checked := B <> 0;
@@ -4243,11 +4529,11 @@ procedure TfmSecond.EmulateMouseMessage(Key: Byte; LParam: LPARAM);
 var
   H: HWND;
 begin
-  // Реализация команд мыши скриптового языка UoPilot.
+  // Р РµР°Р»РёР·Р°С†РёСЏ РєРѕРјР°РЅРґ РјС‹С€Рё СЃРєСЂРёРїС‚РѕРІРѕРіРѕ СЏР·С‹РєР° UoPilot.
   // Key: $01 = Left, $02 = Right, $0B = Double_Left, $16 = Double_Right.
-  // Каждому клику предшествует WM_SETCURSOR с hit-test кодом, как это делает
-  // сама Windows -- иначе клиент игры сообщение игнорирует.
-  H := gWorkWnd;   // FTargetWnd -- хэндл окна игры
+  // РљР°Р¶РґРѕРјСѓ РєР»РёРєСѓ РїСЂРµРґС€РµСЃС‚РІСѓРµС‚ WM_SETCURSOR СЃ hit-test РєРѕРґРѕРј, РєР°Рє СЌС‚Рѕ РґРµР»Р°РµС‚
+  // СЃР°РјР° Windows -- РёРЅР°С‡Рµ РєР»РёРµРЅС‚ РёРіСЂС‹ СЃРѕРѕР±С‰РµРЅРёРµ РёРіРЅРѕСЂРёСЂСѓРµС‚.
+  H := gWorkWnd;   // FTargetWnd -- С…СЌРЅРґР» РѕРєРЅР° РёРіСЂС‹
   if Key = $0B then
   begin
     PostMessageA(H, WM_SETCURSOR, H, MakeLong(1, $0200));
@@ -4306,10 +4592,11 @@ var
   Unused1: Integer;
   Pid2: DWORD;
   W: DWORD;
-  Buf: PChar;
   S: string;
   Tid: DWORD;
-  Buf2: PChar;
+  WBuf: array[0..$FF] of WideChar;
+  WLen: Integer;
+  WS: WideString;
   H: DWORD;
   Ok: Boolean;
   Unused2: Integer;
@@ -4317,8 +4604,8 @@ var
   B: Graphics.TBitmap;
   SB: TSpeedButton;
 begin
-  { Ctrl+A: снимает координаты точки под курсором и рабочее окно скрипта.
-    Одна переменная W служит и хэндлом окна, и цветом пикселя. }
+  { Ctrl+A: СЃРЅРёРјР°РµС‚ РєРѕРѕСЂРґРёРЅР°С‚С‹ С‚РѕС‡РєРё РїРѕРґ РєСѓСЂСЃРѕСЂРѕРј Рё СЂР°Р±РѕС‡РµРµ РѕРєРЅРѕ СЃРєСЂРёРїС‚Р°.
+    РћРґРЅР° РїРµСЂРµРјРµРЅРЅР°СЏ W СЃР»СѓР¶РёС‚ Рё С…СЌРЅРґР»РѕРј РѕРєРЅР°, Рё С†РІРµС‚РѕРј РїРёРєСЃРµР»СЏ. }
   pCoordsAndPoints.ShowHint := False;
   if cbhkSetWorkWindow.Checked and (Sender is TMenuItem) and
      ((Sender as TMenuItem).Name = 'miCtrlA') and
@@ -4330,14 +4617,15 @@ begin
   if sbGMPage.Down then
   begin
     GetCursorPos(P);
-    CloseHandle(gClientThread);
+    FileClose(gClientThread); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
     gWorkWnd := WindowFromPoint(P);
-    GetMem(Buf, $FF);
-    GetWindowText(gWorkWnd, Buf, $FF);
-    I := Pos('-', Buf) + 1;
-    sbGMPage.Caption := Copy(Buf, I, Pos('(', Buf) - Integer(I) - 1);
-    { приведение обязательно: Integer - Cardinal Delphi считает в Int64 }
-    FreeMem(Buf);
+    { Р·Р°РіРѕР»РѕРІРѕРє РѕРєРЅР° С‡РёС‚Р°РµРј РІ wide-Р±СѓС„РµСЂРµ Рё РїРµСЂРµРІРѕРґРёРј РІ UTF-8 РґР»СЏ LCL }
+    WLen := GetWindowTextW(gWorkWnd, WBuf, Length(WBuf));
+    SetString(WS, WBuf, WLen);
+    S := UTF8Encode(WS);
+    I := Pos('-', S) + 1;
+    sbGMPage.Caption := Copy(S, I, Pos('(', S) - Integer(I) - 1);
+    { РїСЂРёРІРµРґРµРЅРёРµ РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ: Integer - Cardinal Delphi СЃС‡РёС‚Р°РµС‚ РІ Int64 }
     GetWindowThreadProcessId(gWorkWnd, @Pid);
     gClientThread := OpenProcess($418, False, Pid);
     sbGMPage.Down := False;
@@ -4347,7 +4635,7 @@ begin
   if sbLoginUO.Down then
   begin
     GetCursorPos(P);
-    CloseHandle(gLoginProcess);
+    FileClose(gLoginProcess); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
     gLoginWnd := WindowFromPoint(P);
     GetWindowThreadProcessId(gLoginWnd, @Pid);
     gLoginProcess := OpenProcess($10, True, Pid);
@@ -4356,20 +4644,21 @@ begin
   if pcAll.ActivePage = tsScript then
   begin
     GetCursorPos(P);
-    Buf2 := StrAlloc(100);
     if miLockOnStartup.Checked then
     begin
       W := WindowFromPoint(P);
-      GetWindowText(W, Buf2, $50);
+      WLen := GetWindowTextW(W, WBuf, Length(WBuf));
+      SetString(WS, WBuf, WLen);
+      S := UTF8Encode(WS);
       N := StrToInt(tScript.Tabs[tScript.TabIndex]);
       if gScriptso3[N].ClientWnd = 0 then
       begin
-        { Msg -- ShortString, а присваивается PChar. Текст берётся из строковых
-          ресурсов через LoadStr. }
+        { Msg -- ShortString, Р° РїСЂРёСЃРІР°РёРІР°РµС‚СЃСЏ PChar. РўРµРєСЃС‚ Р±РµСЂС‘С‚СЃСЏ РёР· СЃС‚СЂРѕРєРѕРІС‹С…
+          СЂРµСЃСѓСЂСЃРѕРІ С‡РµСЂРµР· LoadStr. }
         if gLangOffsety > 0 then
-          gScriptso3[N].Msg := PChar(LoadStr(gLangOffsety + $19B))
+          gScriptso3[N].Msg := PChar(LoadStrCP1251(gLangOffsety + $19B))
         else
-          gScriptso3[N].Msg := PChar('Не могу найти рабочее окно');
+          gScriptso3[N].Msg := PChar(UTF8ToCP1251('РќРµ РјРѕРіСѓ РЅР°Р№С‚Рё СЂР°Р±РѕС‡РµРµ РѕРєРЅРѕ'));
         gScriptso3[N].SyncLogMsg;
       end;
       Tid := GetWindowThreadProcessId(W, @Pid);
@@ -4380,7 +4669,7 @@ begin
         gScriptso3[N].ThreadId := Tid;
         gScriptso3[N].ProcessId := Pid;
         if gScriptso3[N].ProcessHandle <> 0 then
-          CloseHandle(gScriptso3[N].ProcessHandle);
+          FileClose(gScriptso3[N].ProcessHandle); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
         gScriptso3[N].ProcessHandle := OpenProcess($638, True, Pid);
         gScriptso3[N].ClientWnd2 := gScriptso3[N].ClientWnd;
         gScriptso3[N].ProcessHandle2 := gScriptso3[N].ProcessHandle;
@@ -4388,20 +4677,22 @@ begin
       FTargetWnd := W;
       GetWindowThreadProcessId(FTargetWnd, @Pid2);
       if Pointer(FClientProcess) <> nil then
-        CloseHandle(FClientProcess);
+        FileClose(FClientProcess); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
       FClientProcess := OpenProcess($638, False, Pid2);
     end
     else
     begin
       N := StrToInt(tScript.Tabs[tScript.TabIndex]);
       gScriptso3[N].ClientWnd := WindowFromPoint(P);
-      GetWindowText(gScriptso3[N].ClientWnd, Buf2, $50);
+      WLen := GetWindowTextW(gScriptso3[N].ClientWnd, WBuf, Length(WBuf));
+      SetString(WS, WBuf, WLen);
+      S := UTF8Encode(WS);
       if gScriptso3[N].ClientWnd = 0 then
       begin
         if gLangOffsety > 0 then
-          gScriptso3[0].Msg := PChar(LoadStr(gLangOffsety + $19B))
+          gScriptso3[0].Msg := PChar(LoadStrCP1251(gLangOffsety + $19B))
         else
-          gScriptso3[0].Msg := PChar('Не могу найти рабочее окно');
+          gScriptso3[0].Msg := PChar(UTF8ToCP1251('РќРµ РјРѕРіСѓ РЅР°Р№С‚Рё СЂР°Р±РѕС‡РµРµ РѕРєРЅРѕ'));
         gCoordCaptureddo := True;
         gScriptso3[0].SyncLogMsg;
       end
@@ -4411,14 +4702,13 @@ begin
           GetWindowThreadProcessId(gScriptso3[N].ClientWnd, @Pid);
         gScriptso3[N].ProcessId := Pid;
         if gScriptso3[N].ProcessHandle <> 0 then
-          CloseHandle(gScriptso3[N].ProcessHandle);
+          FileClose(gScriptso3[N].ProcessHandle); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
         gScriptso3[N].ProcessHandle := OpenProcess($638, True, Pid);
         gScriptso3[N].ClientWnd2 := gScriptso3[N].ClientWnd;
         gScriptso3[N].ProcessHandle2 := gScriptso3[N].ProcessHandle;
       end;
     end;
-    lWinList.Caption := Buf2;
-    StrDispose(Buf2);
+    lWinList.Caption := S;
     sbWorkwindowHandle.Caption := IntToStr(gScriptso3[N].ClientWnd);
     btXYabs.Caption := IntToStr(P.X) + ', ' + IntToStr(P.Y);
     if CBInsertColor.Checked then
@@ -4428,8 +4718,8 @@ begin
       ReleaseDC(0, DC);
       if W = 0 then
       begin
-        { GetPixel вернул 0 -- снимаем точку через собственный битмап;
-          в BitBlt ширина и высота читаются свойствами, а не константами }
+        { GetPixel РІРµСЂРЅСѓР» 0 -- СЃРЅРёРјР°РµРј С‚РѕС‡РєСѓ С‡РµСЂРµР· СЃРѕР±СЃС‚РІРµРЅРЅС‹Р№ Р±РёС‚РјР°Рї;
+          РІ BitBlt С€РёСЂРёРЅР° Рё РІС‹СЃРѕС‚Р° С‡РёС‚Р°СЋС‚СЃСЏ СЃРІРѕР№СЃС‚РІР°РјРё, Р° РЅРµ РєРѕРЅСЃС‚Р°РЅС‚Р°РјРё }
         B := Graphics.TBitmap.Create;
         B.PixelFormat := pf24bit;
         DC := GetDC(0);
@@ -4465,8 +4755,8 @@ begin
     UpdateClientFlags(gScriptso3[N].ProcessHandle);
     if cbCheckGetImage.Checked then
     begin
-      { проверка захвата картинки: идём вверх по родительским окнам, пока
-        не получится или пока не выйдем за процесс клиента }
+      { РїСЂРѕРІРµСЂРєР° Р·Р°С…РІР°С‚Р° РєР°СЂС‚РёРЅРєРё: РёРґС‘Рј РІРІРµСЂС… РїРѕ СЂРѕРґРёС‚РµР»СЊСЃРєРёРј РѕРєРЅР°Рј, РїРѕРєР°
+        РЅРµ РїРѕР»СѓС‡РёС‚СЃСЏ РёР»Рё РїРѕРєР° РЅРµ РІС‹Р№РґРµРј Р·Р° РїСЂРѕС†РµСЃСЃ РєР»РёРµРЅС‚Р° }
       N := StrToInt(tScript.Tabs[tScript.TabIndex]);
       Ok := False;
       H := gScriptso3[N].ClientWnd2;
@@ -4479,9 +4769,9 @@ begin
         Ok := TryCaptureImage(gScriptso3[N], H);
         if Ok then
         begin
-          GetMem(Buf, $100);
-          GetWindowText(H, Buf, $FF);
-          S := S + Buf;
+          WLen := GetWindowTextW(H, WBuf, Length(WBuf));
+          SetString(WS, WBuf, WLen);
+          S := S + UTF8Encode(WS);
           if Pos(#10, S) > 0 then
             S := Copy(S, 1, Pos(#10, S) - 1);
           if tcLog.TabIndex > 0 then
@@ -4490,7 +4780,6 @@ begin
             gScriptso3[I].LogView.Lines.Add(S);
           end;
           mLog.Lines.Add(S);
-          FreeMem(Buf);
         end
         else
         begin
@@ -4516,15 +4805,15 @@ begin
   end
   else
   begin
-    { ветка else: вкладки «Общее» и «Прочее» разбираются только здесь }
+    { РІРµС‚РєР° else: РІРєР»Р°РґРєРё В«РћР±С‰РµРµВ» Рё В«РџСЂРѕС‡РµРµВ» СЂР°Р·Р±РёСЂР°СЋС‚СЃСЏ С‚РѕР»СЊРєРѕ Р·РґРµСЃСЊ }
     GetCursorPos(P);
     FTargetWnd := WindowFromPoint(P);
     if FTargetWnd = 0 then
     begin
       if gLangOffsety > 0 then
-        gScriptso3[0].Msg := PChar(LoadStr(gLangOffsety + $19B))
+        gScriptso3[0].Msg := PChar(LoadStrCP1251(gLangOffsety + $19B))
       else
-        gScriptso3[0].Msg := PChar('Не могу найти рабочее окно');
+        gScriptso3[0].Msg := PChar(UTF8ToCP1251('РќРµ РјРѕРіСѓ РЅР°Р№С‚Рё СЂР°Р±РѕС‡РµРµ РѕРєРЅРѕ'));
       gCoordCaptureddo := True;
       gScriptso3[0].SyncLogMsg;
     end
@@ -4533,7 +4822,7 @@ begin
       Windows.ScreenToClient(FTargetWnd, P);
       GetWindowThreadProcessId(FTargetWnd, @Pid2);
       if FClientProcess <> 0 then
-        CloseHandle(FClientProcess);
+        FileClose(FClientProcess); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
       FClientProcess := OpenProcess($638, False, Pid2);
       UpdateClientFlags(FClientProcess);
     end;
@@ -4611,7 +4900,7 @@ begin
       GetWindowThreadProcessId(gScriptso3[I].ClientWnd, @Pid);
       gScriptso3[I].ProcessId := Pid;
       if gScriptso3[I].ProcessHandle <> 0 then
-        CloseHandle(gScriptso3[I].ProcessHandle);
+        FileClose(gScriptso3[I].ProcessHandle); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
       if Pid <> 0 then
         gScriptso3[I].ProcessHandle := OpenProcess($638, True, Pid)
       else
@@ -4620,7 +4909,7 @@ begin
     N := edScript.Lines.Count;
     SetLength(gScriptso3[I].Lines, N);
     for J := 0 to N - 1 do
-      gScriptso3[I].Lines[J] := edScript.Lines[J];
+      gScriptso3[I].Lines[J] := UTF8ToCP1251(edScript.Lines[J]);
     if Length(gScriptso3[I].Lines) = 0 then
     begin
       btStart.Down := False;
@@ -4656,8 +4945,8 @@ begin
     PlaySound(nil, 0, SND_ASYNC);
     gScriptso3[I].StopRequested := True;
     gScriptso3[I].Flag91 := False;
-    { Здесь закрывается lua_State, а не прячется форма: поле +$105BE8
-      хранит TLua. }
+    { Р—РґРµСЃСЊ Р·Р°РєСЂС‹РІР°РµС‚СЃСЏ lua_State, Р° РЅРµ РїСЂСЏС‡РµС‚СЃСЏ С„РѕСЂРјР°: РїРѕР»Рµ +$105BE8
+      С…СЂР°РЅРёС‚ TLua. }
     if gScriptso3[I].DebugForm <> nil then
       LuaClose(TLua(gScriptso3[I].DebugForm), 0);
     if gScriptso3[I].Paused or (gScriptso3[I].PromptWnd <> nil) then
@@ -4737,9 +5026,9 @@ var
   V: Integer;
   C: Integer;
 begin
-  { Кнопки калибровки btS1..btS8: у каждой свой Tag, по нему берётся поле
-    ввода `ec<Tag>` и его значение уходит в gCalibrVals. Неразбираемое
-    значение даёт -1. }
+  { РљРЅРѕРїРєРё РєР°Р»РёР±СЂРѕРІРєРё btS1..btS8: Сѓ РєР°Р¶РґРѕР№ СЃРІРѕР№ Tag, РїРѕ РЅРµРјСѓ Р±РµСЂС‘С‚СЃСЏ РїРѕР»Рµ
+    РІРІРѕРґР° `ec<Tag>` Рё РµРіРѕ Р·РЅР°С‡РµРЅРёРµ СѓС…РѕРґРёС‚ РІ gCalibrVals. РќРµСЂР°Р·Р±РёСЂР°РµРјРѕРµ
+    Р·РЅР°С‡РµРЅРёРµ РґР°С‘С‚ -1. }
   N := (Sender as TComponent).Tag;
   try
     C := StrToInt((fmSecondfj.FindComponent('ec' + IntToStr(N)) as TEdit).Text);
@@ -4749,7 +5038,7 @@ begin
   gCalibrVals[N] := C;
   if (Sender as TSpeedButton).Down then
   begin
-    { btS4/btS5 работают со вторым окном, остальные -- с основным }
+    { btS4/btS5 СЂР°Р±РѕС‚Р°СЋС‚ СЃРѕ РІС‚РѕСЂС‹Рј РѕРєРЅРѕРј, РѕСЃС‚Р°Р»СЊРЅС‹Рµ -- СЃ РѕСЃРЅРѕРІРЅС‹Рј }
     if ((Sender as TSpeedButton).Name = 'btS4') or
        ((Sender as TSpeedButton).Name = 'btS5') then
     begin
@@ -4759,15 +5048,15 @@ begin
       begin
         (Sender as TSpeedButton).Down := False;
         SetForegroundWindow(Application.Handle);
-        { строка перевода берётся из строковых ресурсов по номеру
-          gLangOffsety + база }
+        { СЃС‚СЂРѕРєР° РїРµСЂРµРІРѕРґР° Р±РµСЂС‘С‚СЃСЏ РёР· СЃС‚СЂРѕРєРѕРІС‹С… СЂРµСЃСѓСЂСЃРѕРІ РїРѕ РЅРѕРјРµСЂСѓ
+          gLangOffsety + Р±Р°Р·Р° }
         if gLangOffsety > 0 then
           MsgBox(PChar(LoadStr(gLangOffsety + $19C) + '"Ctrl+B"'),
             'UOPilot Error Message', 0)
         else
-          MsgBox('Не могу найти рабочее окно, попробуйте указать его ' +
-            'принудительно:'#13#10'Установите курсор мыши над окном и ' +
-            'нажмите "Ctrl+B"', 'UOPilot Error Message', 0);
+          MsgBox('РќРµ РјРѕРіСѓ РЅР°Р№С‚Рё СЂР°Р±РѕС‡РµРµ РѕРєРЅРѕ, РїРѕРїСЂРѕР±СѓР№С‚Рµ СѓРєР°Р·Р°С‚СЊ РµРіРѕ ' +
+            'РїСЂРёРЅСѓРґРёС‚РµР»СЊРЅРѕ:'#13#10'РЈСЃС‚Р°РЅРѕРІРёС‚Рµ РєСѓСЂСЃРѕСЂ РјС‹С€Рё РЅР°Рґ РѕРєРЅРѕРј Рё ' +
+            'РЅР°Р¶РјРёС‚Рµ "Ctrl+B"', 'UOPilot Error Message', 0);
         Exit;
       end;
     end
@@ -4783,14 +5072,14 @@ begin
           MsgBox(PChar(LoadStr(gLangOffsety + $19C) + '"Ctrl+A"'),
             'UOPilot Error Message', 0)
         else
-          MsgBox('Не могу найти рабочее окно, попробуйте указать его ' +
-            'принудительно:'#13#10'Установите курсор мыши над окном и ' +
-            'нажмите "Ctrl+A"', 'UOPilot Error Message', 0);
+          MsgBox('РќРµ РјРѕРіСѓ РЅР°Р№С‚Рё СЂР°Р±РѕС‡РµРµ РѕРєРЅРѕ, РїРѕРїСЂРѕР±СѓР№С‚Рµ СѓРєР°Р·Р°С‚СЊ РµРіРѕ ' +
+            'РїСЂРёРЅСѓРґРёС‚РµР»СЊРЅРѕ:'#13#10'РЈСЃС‚Р°РЅРѕРІРёС‚Рµ РєСѓСЂСЃРѕСЂ РјС‹С€Рё РЅР°Рґ РѕРєРЅРѕРј Рё ' +
+            'РЅР°Р¶РјРёС‚Рµ "Ctrl+A"', 'UOPilot Error Message', 0);
         Exit;
       end;
       GetWindowThreadProcessId(FTargetWnd, @Pid);
       if FClientProcess <> 0 then
-        CloseHandle(FClientProcess);
+        FileClose(FClientProcess); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
       FClientProcess := OpenProcess($638, True, Pid);
     end;
     if (Sender as TSpeedButton).Name = 'btS0' then
@@ -4802,7 +5091,7 @@ begin
           MsgBox(PChar(LoadStr(gLangOffsety + $19D)),
             'UOPilot Error Message', 0)
         else
-          MsgBox('Выберите тип кликания', 'UOPilot Error Message', 0);
+          MsgBox('Р’С‹Р±РµСЂРёС‚Рµ С‚РёРї РєР»РёРєР°РЅРёСЏ', 'UOPilot Error Message', 0);
         btS0.Down := False;
         Exit;
       end;
@@ -4815,12 +5104,12 @@ begin
         MsgBox(PChar(LoadStr(gLangOffsety + $19E)),
           'UOPilot Error Message', 0)
       else
-        MsgBox('Задайте клавишу', 'UOPilot Error Message', 0);
+        MsgBox('Р—Р°РґР°Р№С‚Рµ РєР»Р°РІРёС€Сѓ', 'UOPilot Error Message', 0);
       (Sender as TSpeedButton).Down := False;
       Exit;
     end;
     try
-      { текст поля ed<Tag> разбирается в код клавиши; -1 -- ошибка }
+      { С‚РµРєСЃС‚ РїРѕР»СЏ ed<Tag> СЂР°Р·Р±РёСЂР°РµС‚СЃСЏ РІ РєРѕРґ РєР»Р°РІРёС€Рё; -1 -- РѕС€РёР±РєР° }
       S := (fmSecondfj.FindComponent('ed' +
         IntToStr((Sender as TComponent).Tag)) as TEdit).Text;
       V := ParseTimerValue(S);
@@ -4840,7 +5129,7 @@ begin
         MsgBox(PChar(LoadStr(gLangOffsety + $19F)),
           'UOPilot Error Message', 0)
       else
-        MsgBox('Задайте правильный интервал (в миллисекундах)',
+        MsgBox('Р—Р°РґР°Р№С‚Рµ РїСЂР°РІРёР»СЊРЅС‹Р№ РёРЅС‚РµСЂРІР°Р» (РІ РјРёР»Р»РёСЃРµРєСѓРЅРґР°С…)',
           'UOPilot Error Message', 0);
       (Sender as TSpeedButton).Down := False;
       Exit;
@@ -4848,7 +5137,7 @@ begin
   end
   else
   begin
-    { кнопка отжата -- таймер стоп, поля ввода снова доступны }
+    { РєРЅРѕРїРєР° РѕС‚Р¶Р°С‚Р° -- С‚Р°Р№РјРµСЂ СЃС‚РѕРї, РїРѕР»СЏ РІРІРѕРґР° СЃРЅРѕРІР° РґРѕСЃС‚СѓРїРЅС‹ }
     (fmSecondfj.FindComponent('tm' +
       IntToStr((Sender as TComponent).Tag)) as TTimer).Enabled := False;
     (fmSecondfj.FindComponent('cb' +
@@ -4944,7 +5233,7 @@ begin
       if gLangOffsety > 0 then
         MsgBox(PChar(LoadStr(gLangOffsety + $1A0)), 'UOPilot Error Message', 0)
       else
-        MsgBox('Ошибка при попытке определить клавишу', 'UOPilot Error Message', 0);
+        MsgBox('РћС€РёР±РєР° РїСЂРё РїРѕРїС‹С‚РєРµ РѕРїСЂРµРґРµР»РёС‚СЊ РєР»Р°РІРёС€Сѓ', 'UOPilot Error Message', 0);
     end;
   end;
   T := T;
@@ -4967,9 +5256,9 @@ var
   J: TJPEGImage;
   Chk: Boolean;
 begin
-  { Снимок экрана по горячей клавише: имя файла -- либо PicNNN с
-    автонумерацией (максимальный существующий номер ищется перебором
-    каталога), либо Pic + дата-время. }
+  { РЎРЅРёРјРѕРє СЌРєСЂР°РЅР° РїРѕ РіРѕСЂСЏС‡РµР№ РєР»Р°РІРёС€Рµ: РёРјСЏ С„Р°Р№Р»Р° -- Р»РёР±Рѕ PicNNN СЃ
+    Р°РІС‚РѕРЅСѓРјРµСЂР°С†РёРµР№ (РјР°РєСЃРёРјР°Р»СЊРЅС‹Р№ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёР№ РЅРѕРјРµСЂ РёС‰РµС‚СЃСЏ РїРµСЂРµР±РѕСЂРѕРј
+    РєР°С‚Р°Р»РѕРіР°), Р»РёР±Рѕ Pic + РґР°С‚Р°-РІСЂРµРјСЏ. }
   try
     Chk := cbDate.Checked;
     if not Chk then
@@ -4978,8 +5267,8 @@ begin
       S := ExtractFilePath(edScr.Text) + '*.*';
       if FindFirst(S, faAnyFile, SR) = 0 then
         repeat
-          { своя try внутри цикла: имя вида picXX.bmp может не разбираться,
-            и тогда файл просто пропускается }
+          { СЃРІРѕСЏ try РІРЅСѓС‚СЂРё С†РёРєР»Р°: РёРјСЏ РІРёРґР° picXX.bmp РјРѕР¶РµС‚ РЅРµ СЂР°Р·Р±РёСЂР°С‚СЊСЃСЏ,
+            Рё С‚РѕРіРґР° С„Р°Р№Р» РїСЂРѕСЃС‚Рѕ РїСЂРѕРїСѓСЃРєР°РµС‚СЃСЏ }
           try
             if LowerCase(Copy(SR.Name, 1, 3)) = 'pic' then
               if StrToInt(Copy(SR.Name, 4, Length(SR.Name) - 7)) > Max then
@@ -4987,7 +5276,7 @@ begin
           except
           end;
         until FindNext(SR) <> 0;
-      { FindClose снаружи if -- закрываем поиск в любом случае }
+      { FindClose СЃРЅР°СЂСѓР¶Рё if -- Р·Р°РєСЂС‹РІР°РµРј РїРѕРёСЃРє РІ Р»СЋР±РѕРј СЃР»СѓС‡Р°Рµ }
       SysUtils.FindClose(SR);
       Inc(Max);
       S := IntToStr(Max);
@@ -5005,12 +5294,12 @@ begin
     end;
   except
     SetForegroundWindow(Application.Handle);
-    MsgBox('Не удалось определить путь или имя файла',
+    MsgBox('РќРµ СѓРґР°Р»РѕСЃСЊ РѕРїСЂРµРґРµР»РёС‚СЊ РїСѓС‚СЊ РёР»Рё РёРјСЏ С„Р°Р№Р»Р°',
       'UOPilot Error Message', 0);
     Exit;
   end;
   DC := 0;
-  { внешняя рамка накрывает и съёмку, и сохранение, и освобождение ресурсов }
+  { РІРЅРµС€РЅСЏСЏ СЂР°РјРєР° РЅР°РєСЂС‹РІР°РµС‚ Рё СЃСЉС‘РјРєСѓ, Рё СЃРѕС…СЂР°РЅРµРЅРёРµ, Рё РѕСЃРІРѕР±РѕР¶РґРµРЅРёРµ СЂРµСЃСѓСЂСЃРѕРІ }
   try
     B := Graphics.TBitmap.Create;
     Ok := True;
@@ -5038,8 +5327,8 @@ begin
         GetWindowRect(W, R);
         B.Height := R.Bottom - R.Top;
         B.Width := R.Right - R.Left;
-        { окно снимается через PrintWindow во временный DC -- иначе не видно
-          содержимого перекрытых участков }
+        { РѕРєРЅРѕ СЃРЅРёРјР°РµС‚СЃСЏ С‡РµСЂРµР· PrintWindow РІРѕ РІСЂРµРјРµРЅРЅС‹Р№ DC -- РёРЅР°С‡Рµ РЅРµ РІРёРґРЅРѕ
+          СЃРѕРґРµСЂР¶РёРјРѕРіРѕ РїРµСЂРµРєСЂС‹С‚С‹С… СѓС‡Р°СЃС‚РєРѕРІ }
         MemDC := CreateCompatibleDC(DC);
         Bmp := CreateCompatibleBitmap(DC, B.Width, B.Height);
         Old := SelectObject(MemDC, Bmp);
@@ -5051,7 +5340,7 @@ begin
       end;
     except
       SetForegroundWindow(Application.Handle);
-      MsgBox('Не удалось создать копию экрана', 'UOPilot Error Message', 0);
+      MsgBox('РќРµ СѓРґР°Р»РѕСЃСЊ СЃРѕР·РґР°С‚СЊ РєРѕРїРёСЋ СЌРєСЂР°РЅР°', 'UOPilot Error Message', 0);
       Ok := False;
     end;
     if Ok then
@@ -5061,7 +5350,7 @@ begin
         J := TJPEGImage.Create;
         J.Assign(B);
         J.CompressionQuality := SpinEdit1.Value;
-        J.Compress;
+        {$IFnDEF FPC}J.Compress;{$ENDIF}
         J.SaveToFile(S + '.jpg');
         J.Free;
       end;
@@ -5069,14 +5358,14 @@ begin
         B.SaveToFile(S + '.bmp');
     except
       SetForegroundWindow(Application.Handle);
-      MsgBox('Не удалось сохранить копию экрана', 'UOPilot Error Message', 0);
+      MsgBox('РќРµ СѓРґР°Р»РѕСЃСЊ СЃРѕС…СЂР°РЅРёС‚СЊ РєРѕРїРёСЋ СЌРєСЂР°РЅР°', 'UOPilot Error Message', 0);
     end;
     B.FreeImage;
     B.Free;
     ReleaseDC(0, DC);
   except
     SetForegroundWindow(Application.Handle);
-    MsgBox('Ошибка при создпнии или очистке мусора',
+    MsgBox('РћС€РёР±РєР° РїСЂРё СЃРѕР·РґРїРЅРёРё РёР»Рё РѕС‡РёСЃС‚РєРµ РјСѓСЃРѕСЂР°',
       'UOPilot Error Message', 0);
   end;
 end;
@@ -5094,13 +5383,17 @@ procedure TfmSecond.LoadScriptFile(FileName: string);
 var
   S, S2: string;
   N, L, Cnt, P, I: Integer;
+  {$IFDEF FPC}
+  R: TRichMemo;
+  {$ELSE}
   R: TRichEdit;
+  {$ENDIF}
 begin
-  { Загрузка файла скрипта в текущую вкладку: относительный путь
-    достраивается каталогом программы, RTF распознаётся по началу первой
-    строки и прогоняется через скрытый TRichEdit, пауза берётся из имени
-    файла (script.500.txt -> 500), а имя без расширения уходит в подпись
-    вкладки. }
+  { Р—Р°РіСЂСѓР·РєР° С„Р°Р№Р»Р° СЃРєСЂРёРїС‚Р° РІ С‚РµРєСѓС‰СѓСЋ РІРєР»Р°РґРєСѓ: РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅС‹Р№ РїСѓС‚СЊ
+    РґРѕСЃС‚СЂР°РёРІР°РµС‚СЃСЏ РєР°С‚Р°Р»РѕРіРѕРј РїСЂРѕРіСЂР°РјРјС‹, RTF СЂР°СЃРїРѕР·РЅР°С‘С‚СЃСЏ РїРѕ РЅР°С‡Р°Р»Сѓ РїРµСЂРІРѕР№
+    СЃС‚СЂРѕРєРё Рё РїСЂРѕРіРѕРЅСЏРµС‚СЃСЏ С‡РµСЂРµР· СЃРєСЂС‹С‚С‹Р№ TRichEdit, РїР°СѓР·Р° Р±РµСЂС‘С‚СЃСЏ РёР· РёРјРµРЅРё
+    С„Р°Р№Р»Р° (script.500.txt -> 500), Р° РёРјСЏ Р±РµР· СЂР°СЃС€РёСЂРµРЅРёСЏ СѓС…РѕРґРёС‚ РІ РїРѕРґРїРёСЃСЊ
+    РІРєР»Р°РґРєРё. }
   if Copy(FileName, 1, 2) <> '\\' then
     if Copy(FileName, 2, 1) <> ':' then
       FileName := gTempFilefv + FileName;
@@ -5109,8 +5402,26 @@ begin
   edScript.Clear;
   try
     edScript.Lines.LoadFromFile(FileName);
+    { Р°РІС‚РѕРѕРїСЂРµРґРµР»РµРЅРёРµ РєРѕРґРёСЂРѕРІРєРё: РЅРѕРІС‹Рµ С„Р°Р№Р»С‹ РІ UTF-8, СЃС‚Р°СЂС‹Рµ РІ cp1251.
+      Р•СЃР»Рё Р±Р°Р№С‚С‹ РЅРµ РІР°Р»РёРґРЅС‹Р№ UTF-8, С‡РёС‚Р°РµРј СЃС‚СЂРѕРєРё РєР°Рє cp1251 Рё РїРµСЂРµРІРѕРґРёРј
+      РІ UTF-8. }
+    if not IsValidUTF8(edScript.Lines.Text) then
+      for I := 0 to edScript.Lines.Count - 1 do
+        edScript.Lines[I] := CP1251ToUTF8(edScript.Lines[I]);
     if Copy(edScript.Lines[0], 1, 5) = '{\rtf' then
     begin
+      {$IFDEF FPC}
+      R := TRichMemo.Create(fmSecondfj);
+      try
+        R.Parent := fmSecondfj;
+        R.Visible := False;
+        R.HandleNeeded;
+        R.Rtf := edScript.Lines.Text;
+        edScript.Lines.Text := R.Text;
+      finally
+        R.Free;
+      end;
+      {$ELSE}
       R := TRichEdit.Create(fmSecondfj);
       R.Visible := False;
       R.Parent := fmSecondfj;
@@ -5119,6 +5430,7 @@ begin
       R.PlainText := True;
       edScript.Lines.Text := R.Lines.Text;
       R.Free;
+      {$ENDIF}
     end;
   except
     SetForegroundWindow(Application.Handle);
@@ -5126,7 +5438,7 @@ begin
       MsgBox(PChar(LoadStr(gLangOffsety + $1A2) + #13 + FileName),
         'UOPilot Error Message', 0)
     else
-      MsgBox(PChar('Не могу загрузить скрипт'#13 + FileName),
+      MsgBox(PChar('РќРµ РјРѕРіСѓ Р·Р°РіСЂСѓР·РёС‚СЊ СЃРєСЂРёРїС‚'#13 + FileName),
         'UOPilot Error Message', 0);
     Exit;
   end;
@@ -5180,7 +5492,7 @@ begin
   if gLangOffsety > 0 then
     odLoad.Title := LoadStr(gLangOffsety + $1A3)
   else
-    odLoad.Title := 'Загрузить скрипт...';
+    odLoad.Title := 'Р—Р°РіСЂСѓР·РёС‚СЊ СЃРєСЂРёРїС‚...';
   if odLoad.Execute then
   begin
     LoadScriptFile(odLoad.FileName);
@@ -5194,18 +5506,30 @@ begin
   end;
 end;
 
+{$IFDEF FPC}
+procedure TfmSecond.FormDropFiles(Sender: TObject;
+  const FileNames: array of String);
+begin
+  { РџРµСЂРµС‚Р°СЃРєРёРІР°РЅРёРµ С„Р°Р№Р»Р° РЅР° РѕРєРЅРѕ: LCL С‡РёС‚Р°РµС‚ РїСѓС‚СЊ С‡РµСЂРµР· DragQueryFileW
+    Рё РѕС‚РґР°С‘С‚ РµРіРѕ РІ UTF-8. DragFinish РІС‹Р·С‹РІР°РµС‚ СЃР°Рј LCL. Р“СЂСѓР·РёРј С‚РѕР»СЊРєРѕ
+    РїРµСЂРІС‹Р№ С„Р°Р№Р» вЂ” СЌС‚Рѕ СЃРѕС…СЂР°РЅСЏРµС‚ РїСЂРµР¶РЅРµРµ РїРѕРІРµРґРµРЅРёРµ. }
+  if Length(FileNames) > 0 then
+    LoadScriptFile(FileNames[0]);
+end;
+{$ELSE}
 procedure TfmSecond.WMDropFiles(var Msg: TMessage);
 var
   Buf: array[0..255] of Char;
   H: THandle;
 begin
-  { Перетаскивание файла на окно: имя первого файла берётся в буфер
-    и отдаётся обычной загрузке скрипта. }
+  { РџРµСЂРµС‚Р°СЃРєРёРІР°РЅРёРµ С„Р°Р№Р»Р° РЅР° РѕРєРЅРѕ: РёРјСЏ РїРµСЂРІРѕРіРѕ С„Р°Р№Р»Р° Р±РµСЂС‘С‚СЃСЏ РІ Р±СѓС„РµСЂ
+    Рё РѕС‚РґР°С‘С‚СЃСЏ РѕР±С‹С‡РЅРѕР№ Р·Р°РіСЂСѓР·РєРµ СЃРєСЂРёРїС‚Р°. }
   H := Msg.WParam;
   DragQueryFile(H, 0, Buf, 255);
   LoadScriptFile(Buf);
   DragFinish(H);
 end;
+{$ENDIF}
 
 procedure TfmSecond.btSaveClick(Sender: TObject);
 var
@@ -5219,10 +5543,10 @@ var
   I: Integer;
   N: Integer;
 begin
-  { Сохранение скрипта через диалог. Расширение подставляется из фильтра:
-    список вида `описание|маска|...` разбирается по '|', и если у файла уже
-    есть подходящее расширение, ничего не добавляется. Сравнение идёт
-    в нижнем регистре. }
+  { РЎРѕС…СЂР°РЅРµРЅРёРµ СЃРєСЂРёРїС‚Р° С‡РµСЂРµР· РґРёР°Р»РѕРі. Р Р°СЃС€РёСЂРµРЅРёРµ РїРѕРґСЃС‚Р°РІР»СЏРµС‚СЃСЏ РёР· С„РёР»СЊС‚СЂР°:
+    СЃРїРёСЃРѕРє РІРёРґР° `РѕРїРёСЃР°РЅРёРµ|РјР°СЃРєР°|...` СЂР°Р·Р±РёСЂР°РµС‚СЃСЏ РїРѕ '|', Рё РµСЃР»Рё Сѓ С„Р°Р№Р»Р° СѓР¶Рµ
+    РµСЃС‚СЊ РїРѕРґС…РѕРґСЏС‰РµРµ СЂР°СЃС€РёСЂРµРЅРёРµ, РЅРёС‡РµРіРѕ РЅРµ РґРѕР±Р°РІР»СЏРµС‚СЃСЏ. РЎСЂР°РІРЅРµРЅРёРµ РёРґС‘С‚
+    РІ РЅРёР¶РЅРµРј СЂРµРіРёСЃС‚СЂРµ. }
   if (Sender as TMenuItem).Name = 'miTabClose' then
     I := tScript.IndexOfTabAt(gMouseX, gMouseY)
   else
@@ -5234,7 +5558,7 @@ begin
   if gLangOffsety > 0 then
     sdSave.Title := LoadStr(gLangOffsety + $1A4)
   else
-    sdSave.Title := 'Сохранить скрипт как...';
+    sdSave.Title := 'РЎРѕС…СЂР°РЅРёС‚СЊ СЃРєСЂРёРїС‚ РєР°Рє...';
   if Pos(AnsiLowerCase('Scripts') + '\',
              AnsiLowerCase(sdSave.FileName)) = 1 then
     sdSave.FileName := Copy(sdSave.FileName, 9, Length(sdSave.FileName));
@@ -5308,9 +5632,9 @@ procedure TfmSecond.miComClick(Sender: TObject);
 var
   S: string;
   I, J, D, K, L: Integer;
-  E: TSynMemo;
+  E: TSynEdit;
 begin
-  { Пункты правки буфера уходят прямо в редактор и выходят из метода. }
+  { РџСѓРЅРєС‚С‹ РїСЂР°РІРєРё Р±СѓС„РµСЂР° СѓС…РѕРґСЏС‚ РїСЂСЏРјРѕ РІ СЂРµРґР°РєС‚РѕСЂ Рё РІС‹С…РѕРґСЏС‚ РёР· РјРµС‚РѕРґР°. }
   if (Sender as TMenuItem).Name = 'miPaste' then
   begin
     edScript.PasteFromClipboard;
@@ -5337,9 +5661,9 @@ begin
     mLM.CopyToClipboard;
     Exit;
   end;
-  { Остальное -- шаблон команды из подписи пункта. }
+  { РћСЃС‚Р°Р»СЊРЅРѕРµ -- С€Р°Р±Р»РѕРЅ РєРѕРјР°РЅРґС‹ РёР· РїРѕРґРїРёСЃРё РїСѓРЅРєС‚Р°. }
   S := LowerCase((Sender as TMenuItem).Caption);
-  { Из шаблона выбрасываются угловые скобки вокруг имён параметров. }
+  { РР· С€Р°Р±Р»РѕРЅР° РІС‹Р±СЂР°СЃС‹РІР°СЋС‚СЃСЏ СѓРіР»РѕРІС‹Рµ СЃРєРѕР±РєРё РІРѕРєСЂСѓРі РёРјС‘РЅ РїР°СЂР°РјРµС‚СЂРѕРІ. }
   I := Pos('(', S);
   while I < Length(S) do
   begin
@@ -5347,7 +5671,7 @@ begin
     if S[I] in ['<', '>'] then
       Delete(S, I, 1);
   end;
-  { ... и квадратные скобки вместе с содержимым: D -- глубина вложенности }
+  { ... Рё РєРІР°РґСЂР°С‚РЅС‹Рµ СЃРєРѕР±РєРё РІРјРµСЃС‚Рµ СЃ СЃРѕРґРµСЂР¶РёРјС‹Рј: D -- РіР»СѓР±РёРЅР° РІР»РѕР¶РµРЅРЅРѕСЃС‚Рё }
   I := Pos('[', S);
   if I > 0 then
   begin
@@ -5373,8 +5697,8 @@ begin
       Inc(J);
     end;
   end;
-  { Хвостовые пробелы срезаются, но Copy берёт K + 1 -- один пробел
-    остаётся; закрывающая скобка приклеивается вплотную. }
+  { РҐРІРѕСЃС‚РѕРІС‹Рµ РїСЂРѕР±РµР»С‹ СЃСЂРµР·Р°СЋС‚СЃСЏ, РЅРѕ Copy Р±РµСЂС‘С‚ K + 1 -- РѕРґРёРЅ РїСЂРѕР±РµР»
+    РѕСЃС‚Р°С‘С‚СЃСЏ; Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏ СЃРєРѕР±РєР° РїСЂРёРєР»РµРёРІР°РµС‚СЃСЏ РІРїР»РѕС‚РЅСѓСЋ. }
   K := Length(S);
   while (K > 0) and (S[K] = ' ') do
     Dec(K);
@@ -5387,8 +5711,8 @@ begin
       Dec(K);
     S := Copy(S, 1, K) + ')';
   end;
-  { Первая строка скрипта '--' -- старый диалект: там у команды обязательны
-    круглые скобки, решётки не нужны, аргументы разделяются запятыми. }
+  { РџРµСЂРІР°СЏ СЃС‚СЂРѕРєР° СЃРєСЂРёРїС‚Р° '--' -- СЃС‚Р°СЂС‹Р№ РґРёР°Р»РµРєС‚: С‚Р°Рј Сѓ РєРѕРјР°РЅРґС‹ РѕР±СЏР·Р°С‚РµР»СЊРЅС‹
+    РєСЂСѓРіР»С‹Рµ СЃРєРѕР±РєРё, СЂРµС€С‘С‚РєРё РЅРµ РЅСѓР¶РЅС‹, Р°СЂРіСѓРјРµРЅС‚С‹ СЂР°Р·РґРµР»СЏСЋС‚СЃСЏ Р·Р°РїСЏС‚С‹РјРё. }
   if Copy(edScript.Lines[0], 1, 2) = '--' then
   begin
     I := Pos('(', S);
@@ -5443,9 +5767,9 @@ var
   I: Integer;
   N: Integer;
 begin
-  { Очистка скрипта: подтверждение, затем обнуление строк, текста и
-    привязанной горячей клавиши. Сравнение S с '99' в конце идёт уже
-    ПОСЛЕ того, как S перезаписана текстом вопроса. }
+  { РћС‡РёСЃС‚РєР° СЃРєСЂРёРїС‚Р°: РїРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ, Р·Р°С‚РµРј РѕР±РЅСѓР»РµРЅРёРµ СЃС‚СЂРѕРє, С‚РµРєСЃС‚Р° Рё
+    РїСЂРёРІСЏР·Р°РЅРЅРѕР№ РіРѕСЂСЏС‡РµР№ РєР»Р°РІРёС€Рё. РЎСЂР°РІРЅРµРЅРёРµ S СЃ '99' РІ РєРѕРЅС†Рµ РёРґС‘С‚ СѓР¶Рµ
+    РџРћРЎР›Р• С‚РѕРіРѕ, РєР°Рє S РїРµСЂРµР·Р°РїРёСЃР°РЅР° С‚РµРєСЃС‚РѕРј РІРѕРїСЂРѕСЃР°. }
   if (Sender as TMenuItem).Name = 'miTabClear' then
     I := tScript.IndexOfTabAt(gMouseX, gMouseY)
   else
@@ -5467,7 +5791,7 @@ begin
     if gLangOffsety > 0 then
       S := LoadStr(gLangOffsety + $1A5)
     else
-      S := 'Вы уверены, что хотите'#13'очистить существующий скрипт?';
+      S := 'Р’С‹ СѓРІРµСЂРµРЅС‹, С‡С‚Рѕ С…РѕС‚РёС‚Рµ'#13'РѕС‡РёСЃС‚РёС‚СЊ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёР№ СЃРєСЂРёРїС‚?';
     if MessageDlg(S, mtConfirmation, [mbYes, mbNo], 0) = mrYes then
     begin
       if Cur then
@@ -5502,10 +5826,10 @@ var
   C: Integer;
   DC: HDC;
 begin
-  { Ctrl+B: на вкладке скрипта берёт координаты из подписи btXYabs, читает
-    пиксель экрана и раскладывает цвет по каналам -- десятичным и
-    шестнадцатеричным; на остальных вкладках выбирает рабочее окно под
-    курсором. }
+  { Ctrl+B: РЅР° РІРєР»Р°РґРєРµ СЃРєСЂРёРїС‚Р° Р±РµСЂС‘С‚ РєРѕРѕСЂРґРёРЅР°С‚С‹ РёР· РїРѕРґРїРёСЃРё btXYabs, С‡РёС‚Р°РµС‚
+    РїРёРєСЃРµР»СЊ СЌРєСЂР°РЅР° Рё СЂР°СЃРєР»Р°РґС‹РІР°РµС‚ С†РІРµС‚ РїРѕ РєР°РЅР°Р»Р°Рј -- РґРµСЃСЏС‚РёС‡РЅС‹Рј Рё
+    С€РµСЃС‚РЅР°РґС†Р°С‚РµСЂРёС‡РЅС‹Рј; РЅР° РѕСЃС‚Р°Р»СЊРЅС‹С… РІРєР»Р°РґРєР°С… РІС‹Р±РёСЂР°РµС‚ СЂР°Р±РѕС‡РµРµ РѕРєРЅРѕ РїРѕРґ
+    РєСѓСЂСЃРѕСЂРѕРј. }
   if pcAll.ActivePage = tsScript then
   begin
     DC := GetDC(0);
@@ -5538,14 +5862,14 @@ begin
       if gLangOffsety > 0 then
         MsgBox(PChar(LoadStr(gLangOffsety + $19B)), 'UOPilot Error Message', 0)
       else
-        MsgBox('Не могу найти рабочее окно', 'UOPilot Error Message', 0);
+        MsgBox('РќРµ РјРѕРіСѓ РЅР°Р№С‚Рё СЂР°Р±РѕС‡РµРµ РѕРєРЅРѕ', 'UOPilot Error Message', 0);
     end
     else
     begin
       if gLangOffsety > 0 then
         gbOtherWindow.Caption := LoadStr(gLangOffsety + $1A6)
       else
-        gbOtherWindow.Caption := 'Выбрано! Для выбора другого: (Ctrl+B)';
+        gbOtherWindow.Caption := 'Р’С‹Р±СЂР°РЅРѕ! Р”Р»СЏ РІС‹Р±РѕСЂР° РґСЂСѓРіРѕРіРѕ: (Ctrl+B)';
     end;
   end;
 end;
@@ -5569,12 +5893,13 @@ var
   FName: string;
   I: Integer;
   Tab: Integer;
-  M: TMemo;
+  M: TStringList;
   N: Integer;
 begin
-  { Сохранение скрипта в его файл. Прежняя версия уезжает в Backup рядом
-    с файлом, с меткой времени в имени. Если сохраняется не текущая вкладка,
-    строки берутся из объекта потока через временный TMemo. }
+  { РЎРѕС…СЂР°РЅРµРЅРёРµ СЃРєСЂРёРїС‚Р° РІ РµРіРѕ С„Р°Р№Р». РџСЂРµР¶РЅСЏСЏ РІРµСЂСЃРёСЏ СѓРµР·Р¶Р°РµС‚ РІ Backup СЂСЏРґРѕРј
+    СЃ С„Р°Р№Р»РѕРј, СЃ РјРµС‚РєРѕР№ РІСЂРµРјРµРЅРё РІ РёРјРµРЅРё. Р•СЃР»Рё СЃРѕС…СЂР°РЅСЏРµС‚СЃСЏ РЅРµ С‚РµРєСѓС‰Р°СЏ РІРєР»Р°РґРєР°,
+    СЃС‚СЂРѕРєРё Р±РµСЂСѓС‚СЃСЏ РёР· РѕР±СЉРµРєС‚Р° РїРѕС‚РѕРєР° С‡РµСЂРµР· TStringList Рё РїРµСЂРµРІРѕРґСЏС‚СЃСЏ РёР·
+    cp1251 РІ UTF-8. }
   if (Sender as TMenuItem).Name = 'miTabClose' then
     Tab := tScript.IndexOfTabAt(gMouseX, gMouseY)
   else
@@ -5600,12 +5925,14 @@ begin
     edScript.Lines.SaveToFile(gStr59615C)
   else
   begin
-    M := TMemo.Create(fmSecondfj);
-    M.Parent := fmSecondfj;
-    for I := 0 to Length(gScriptso3[N].Lines) - 1 do
-      M.Lines.Add(gScriptso3[N].Lines[I]);
-    M.Lines.SaveToFile(gStr59615C);
-    FreeAndNil(M);
+    M := TStringList.Create;
+    try
+      for I := 0 to Length(gScriptso3[N].Lines) - 1 do
+        M.Add(CP1251ToUTF8(gScriptso3[N].Lines[I]));
+      M.SaveToFile(gStr59615C);
+    finally
+      FreeAndNil(M);
+    end;
   end;
   edScript.Modified := False;
   gScriptso3[N].Modified := False;
@@ -5615,7 +5942,7 @@ end;
 
 procedure TfmSecond.HotKeyshkctrl(Sender: TObject);
 begin
-  { Кнопка ищется по имени: 'btS' + третий символ имени горячей клавиши. }
+  { РљРЅРѕРїРєР° РёС‰РµС‚СЃСЏ РїРѕ РёРјРµРЅРё: 'btS' + С‚СЂРµС‚РёР№ СЃРёРјРІРѕР» РёРјРµРЅРё РіРѕСЂСЏС‡РµР№ РєР»Р°РІРёС€Рё. }
   (fmSecondfj.FindComponent('btS' + Copy((Sender as THotKeyItem).Name, 3, 1)) as TSpeedButton).Down :=
     not (fmSecondfj.FindComponent('btS' + Copy((Sender as THotKeyItem).Name, 3, 1)) as TSpeedButton).Down;
   (fmSecondfj.FindComponent('btS' + Copy((Sender as THotKeyItem).Name, 3, 1)) as TSpeedButton).Click;
@@ -5630,7 +5957,7 @@ procedure TfmSecond.btAddColClick(Sender: TObject);
 var
   S: string;
 begin
-  { Одна кнопка на несколько вставок: что вставлять, решает её имя. }
+  { РћРґРЅР° РєРЅРѕРїРєР° РЅР° РЅРµСЃРєРѕР»СЊРєРѕ РІСЃС‚Р°РІРѕРє: С‡С‚Рѕ РІСЃС‚Р°РІР»СЏС‚СЊ, СЂРµС€Р°РµС‚ РµС‘ РёРјСЏ. }
   if (Sender as TSpeedButton).Name = 'sbWorkwindowHandle' then
     S := sbWorkwindowHandle.Caption + ' ';
   if (Sender as TSpeedButton).Name = 'btColor' then
@@ -5647,7 +5974,7 @@ begin
       if gLangOffsety > 0 then
         MsgBox(PChar(LoadStr(gLangOffsety + $19E)), 'UOPilot Error Message', 0)
       else
-        MsgBox('Задайте клавишу', 'UOPilot Error Message', 0);
+        MsgBox('Р—Р°РґР°Р№С‚Рµ РєР»Р°РІРёС€Сѓ', 'UOPilot Error Message', 0);
       Exit;
     end;
     S := '{' + cbM.Text + '} ';
@@ -5698,7 +6025,7 @@ var
   T: string;
   U: string;
 begin
-  { Будильник: кнопка включает таймер, поле ввода при этом блокируется. }
+  { Р‘СѓРґРёР»СЊРЅРёРє: РєРЅРѕРїРєР° РІРєР»СЋС‡Р°РµС‚ С‚Р°Р№РјРµСЂ, РїРѕР»Рµ РІРІРѕРґР° РїСЂРё СЌС‚РѕРј Р±Р»РѕРєРёСЂСѓРµС‚СЃСЏ. }
   Lbudilnik.Enabled := SBBudilnik.Down;
   TBudilnik.Enabled := SBBudilnik.Down;
   eBudilnikDelay.Enabled := not SBBudilnik.Down;
@@ -5726,8 +6053,8 @@ var
   R: THandle;
   P: PChar;
 begin
-  { Будильник тикает раз в секунду: сверяет текущее время с заданным и
-    срабатывает на минуте X, X+2, X+4, X+6, X+8, а на X+9 выключается. }
+  { Р‘СѓРґРёР»СЊРЅРёРє С‚РёРєР°РµС‚ СЂР°Р· РІ СЃРµРєСѓРЅРґСѓ: СЃРІРµСЂСЏРµС‚ С‚РµРєСѓС‰РµРµ РІСЂРµРјСЏ СЃ Р·Р°РґР°РЅРЅС‹Рј Рё
+    СЃСЂР°Р±Р°С‚С‹РІР°РµС‚ РЅР° РјРёРЅСѓС‚Рµ X, X+2, X+4, X+6, X+8, Р° РЅР° X+9 РІС‹РєР»СЋС‡Р°РµС‚СЃСЏ. }
   S := TimeToStr(Time);
   SBBudilnik.Caption := S;
   H := StrToInt(Copy(S, 1, Pos(':', S) - 1));
@@ -5975,7 +6302,7 @@ var
   I: Integer;
   W: HWND;
 
-  { Пауза с прокачкой очереди сообщений. }
+  { РџР°СѓР·Р° СЃ РїСЂРѕРєР°С‡РєРѕР№ РѕС‡РµСЂРµРґРё СЃРѕРѕР±С‰РµРЅРёР№. }
   procedure Wait(MS: string);
   begin
     if MS = '' then
@@ -6001,7 +6328,7 @@ begin
     L2 := MakeLong(P.X, P.Y);
     if Back then
     begin
-      { обмен местами: клик уходит туда, откуда пришла мышь }
+      { РѕР±РјРµРЅ РјРµСЃС‚Р°РјРё: РєР»РёРє СѓС…РѕРґРёС‚ С‚СѓРґР°, РѕС‚РєСѓРґР° РїСЂРёС€Р»Р° РјС‹С€СЊ }
       T := L2;
       L2 := L1;
       L1 := T;
@@ -6046,9 +6373,9 @@ var
   K: Integer;
   C: TCheckBox;
 begin
-  { Галка «горячие клавиши включены»: разрешает/запрещает все чекбоксы клавиш
-    и переставляет пометки 'X' в списке скриптовых клавиш. Номер записи --
-    удвоенный номер скрипта плюс $22, второй элемент пары -- пауза. }
+  { Р“Р°Р»РєР° В«РіРѕСЂСЏС‡РёРµ РєР»Р°РІРёС€Рё РІРєР»СЋС‡РµРЅС‹В»: СЂР°Р·СЂРµС€Р°РµС‚/Р·Р°РїСЂРµС‰Р°РµС‚ РІСЃРµ С‡РµРєР±РѕРєСЃС‹ РєР»Р°РІРёС€
+    Рё РїРµСЂРµСЃС‚Р°РІР»СЏРµС‚ РїРѕРјРµС‚РєРё 'X' РІ СЃРїРёСЃРєРµ СЃРєСЂРёРїС‚РѕРІС‹С… РєР»Р°РІРёС€. РќРѕРјРµСЂ Р·Р°РїРёСЃРё --
+    СѓРґРІРѕРµРЅРЅС‹Р№ РЅРѕРјРµСЂ СЃРєСЂРёРїС‚Р° РїР»СЋСЃ $22, РІС‚РѕСЂРѕР№ СЌР»РµРјРµРЅС‚ РїР°СЂС‹ -- РїР°СѓР·Р°. }
   if cbEnableHK.Checked then
   begin
     if gHKBusy then
@@ -6147,12 +6474,15 @@ var
   Res: Integer;
   Stream: TResourceStream;
 begin
-  { Окно справки строится кодом: форма без рамки, внутри TMemo во всю площадь,
-    текст берётся из ресурса (номер зависит от языка). WindowProc у мемо
-    подменяется, прежний сохраняется в глобальной. }
+  { РћРєРЅРѕ СЃРїСЂР°РІРєРё СЃС‚СЂРѕРёС‚СЃСЏ РєРѕРґРѕРј: С„РѕСЂРјР° Р±РµР· СЂР°РјРєРё, РІРЅСѓС‚СЂРё TMemo РІРѕ РІСЃСЋ РїР»РѕС‰Р°РґСЊ,
+    С‚РµРєСЃС‚ Р±РµСЂС‘С‚СЃСЏ РёР· СЂРµСЃСѓСЂСЃР° (РЅРѕРјРµСЂ Р·Р°РІРёСЃРёС‚ РѕС‚ СЏР·С‹РєР°). WindowProc Сѓ РјРµРјРѕ
+    РїРѕРґРјРµРЅСЏРµС‚СЃСЏ, РїСЂРµР¶РЅРёР№ СЃРѕС…СЂР°РЅСЏРµС‚СЃСЏ РІ РіР»РѕР±Р°Р»СЊРЅРѕР№. }
   if gDlg5966DC = nil then
   begin
     gDlg5966DC := TForm.Create(fmSecondfj);
+    {$IFDEF FPC}
+    gDlg5966DC.PopupParent := fmSecondfj;
+    {$ENDIF}
     gDlg5966DC.Parent := nil;
     gDlg5966DC.BorderStyle := bsSizeToolWin;
     gDlg5966DC.Height := $202;
@@ -6161,7 +6491,7 @@ begin
     if gLangOffsety > 0 then
       gDlg5966DC.Caption := LoadStr(gLangOffsety + $1A7)
     else
-      gDlg5966DC.Caption := 'Справка';
+      gDlg5966DC.Caption := 'РЎРїСЂР°РІРєР°';
     gDlg5966DC.OnCloseQuery := HelpFormClose;
     FHelpMemo := TMemo.Create(gDlg5966DC);
     FHelpMemo.Parent := gDlg5966DC;
@@ -6213,13 +6543,16 @@ var
       Exit;
   end;
 begin
-  { Окно справки по скриптам: строится кодом при первом вызове, дальше только
-    показывается/прячется. Внутри pcHelp: вкладка истории (TMemo в fld_1430)
-    и вкладка вики (TWebBrowser); история берётся из ресурсов RCDATA. }
+  { РћРєРЅРѕ СЃРїСЂР°РІРєРё РїРѕ СЃРєСЂРёРїС‚Р°Рј: СЃС‚СЂРѕРёС‚СЃСЏ РєРѕРґРѕРј РїСЂРё РїРµСЂРІРѕРј РІС‹Р·РѕРІРµ, РґР°Р»СЊС€Рµ С‚РѕР»СЊРєРѕ
+    РїРѕРєР°Р·С‹РІР°РµС‚СЃСЏ/РїСЂСЏС‡РµС‚СЃСЏ. Р’РЅСѓС‚СЂРё pcHelp: РІРєР»Р°РґРєР° РёСЃС‚РѕСЂРёРё (TMemo РІ fld_1430)
+    Рё РІРєР»Р°РґРєР° РІРёРєРё (TWebBrowser); РёСЃС‚РѕСЂРёСЏ Р±РµСЂС‘С‚СЃСЏ РёР· СЂРµСЃСѓСЂСЃРѕРІ RCDATA. }
   if gHelpForm = nil then
   begin
     cbWikiList.DropDownCount := $14;
     gHelpForm := TForm.Create(fmSecondfj);
+    {$IFDEF FPC}
+    gHelpForm.PopupParent := fmSecondfj;
+    {$ENDIF}
     gHelpForm.Parent := nil;
     gHelpForm.BorderStyle := bsSizeable;
     V := gHelpRect.Top;
@@ -6277,7 +6610,7 @@ begin
     if wbWiki = nil then
     begin
       wbWiki := TWebBrowser.Create(Self);
-      { Parent у TWebBrowser перекрыт автоматизационным IDispatch, отсюда каст }
+      { Parent Сѓ TWebBrowser РїРµСЂРµРєСЂС‹С‚ Р°РІС‚РѕРјР°С‚РёР·Р°С†РёРѕРЅРЅС‹Рј IDispatch, РѕС‚СЃСЋРґР° РєР°СЃС‚ }
       TWinControl(wbWiki).Parent := tsWiki;
       with wbWiki do
       begin
@@ -6298,7 +6631,7 @@ begin
       spUnpackWikiClick(Sender);
     end;
     WikiRefreshList(Self);
-    wbWiki.Navigate(gWikiPath + 'Введение_в_пилотный_скриптинг' + '.htm');
+    wbWiki.Navigate(gWikiPath + 'Р’РІРµРґРµРЅРёРµ_РІ_РїРёР»РѕС‚РЅС‹Р№_СЃРєСЂРёРїС‚РёРЅРі' + '.htm');
     eFindText.Modified := True;
   end;
   if gHelpForm.Visible then
@@ -6315,7 +6648,7 @@ begin
       gHelpForm.Caption := LoadStr(gLangOffsety + $1A7) + ', ' +
         LoadStr(gLangOffsety + $EE)
     else
-      gHelpForm.Caption := 'Справка, История развития программы';
+      gHelpForm.Caption := 'РЎРїСЂР°РІРєР°, РСЃС‚РѕСЂРёСЏ СЂР°Р·РІРёС‚РёСЏ РїСЂРѕРіСЂР°РјРјС‹';
     L := TStringList.Create;
     P := 1;
     if (gLangOffsety <> $7D0) and (gLangOffsety <> 0) then
@@ -6332,7 +6665,7 @@ begin
     begin
       TMemo(fld_1430).Lines.Add('');
       TMemo(fld_1430).Lines.Add('2.42');
-      { вычистить html-теги: пока в строке есть <...>, вырезать их }
+      { РІС‹С‡РёСЃС‚РёС‚СЊ html-С‚РµРіРё: РїРѕРєР° РІ СЃС‚СЂРѕРєРµ РµСЃС‚СЊ <...>, РІС‹СЂРµР·Р°С‚СЊ РёС… }
       I := 0;
       while I <= L.Count - 1 do
       begin
@@ -6376,6 +6709,9 @@ begin
   if gDlg5966FC = nil then
   begin
     gDlg5966FC := TForm.Create(fmSecondfj);
+    {$IFDEF FPC}
+    gDlg5966FC.PopupParent := fmSecondfj;
+    {$ENDIF}
     gDlg5966FC.Parent := nil;
     gDlg5966FC.BorderStyle := bsSizeToolWin;
     gDlg5966FC.Height := $248;
@@ -6384,7 +6720,7 @@ begin
     if gLangOffsety > 0 then
       gDlg5966FC.Caption := LoadStr(gLangOffsety + $17E)
     else
-      gDlg5966FC.Caption := 'Пример плагина';
+      gDlg5966FC.Caption := 'РџСЂРёРјРµСЂ РїР»Р°РіРёРЅР°';
     gDlg5966FC.OnKeyPress := FormsKeyPress;
     gDlg5966FC.KeyPreview := True;
     gDlg5966FC.OnCloseQuery := PluginSampleFormClose;
@@ -6457,9 +6793,9 @@ var
   Chk: Boolean;
   Idx: Integer;
 begin
-  { Закрытие формы: снимаются перехваты оконных процедур, гасятся таймеры,
-    изменённые скрипты автосохраняются, настройки уходят в ini, потоки скриптов
-    останавливаются, и только потом Application.Terminate. }
+  { Р—Р°РєСЂС‹С‚РёРµ С„РѕСЂРјС‹: СЃРЅРёРјР°СЋС‚СЃСЏ РїРµСЂРµС…РІР°С‚С‹ РѕРєРѕРЅРЅС‹С… РїСЂРѕС†РµРґСѓСЂ, РіР°СЃСЏС‚СЃСЏ С‚Р°Р№РјРµСЂС‹,
+    РёР·РјРµРЅС‘РЅРЅС‹Рµ СЃРєСЂРёРїС‚С‹ Р°РІС‚РѕСЃРѕС…СЂР°РЅСЏСЋС‚СЃСЏ, РЅР°СЃС‚СЂРѕР№РєРё СѓС…РѕРґСЏС‚ РІ ini, РїРѕС‚РѕРєРё СЃРєСЂРёРїС‚РѕРІ
+    РѕСЃС‚Р°РЅР°РІР»РёРІР°СЋС‚СЃСЏ, Рё С‚РѕР»СЊРєРѕ РїРѕС‚РѕРј Application.Terminate. }
   ClipCursor(nil);
   Application.OnDeactivate := nil;
   if gHotKeyMgr <> nil then
@@ -6536,9 +6872,9 @@ begin
       {$I-} CloseFile(gLogFilejr); {$I+}
     end;
     if FClientProcess > 0 then
-      CloseHandle(FClientProcess);
+      FileClose(FClientProcess); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
     if gClientThread > 0 then
-      CloseHandle(gClientThread);
+      FileClose(gClientThread); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
     if not ((Sender is TMenuItem) and
             ((Sender as TMenuItem).Name = 'miExitWoSave')) then
     begin
@@ -6569,7 +6905,7 @@ begin
     MsgBox('Error on exit', 'UOPilot Error Message', 0);
   end;
   fmSecondfj.edScript.Enabled := False;
-  { gPlugins объявлена указателем: сама переменная живёт в чужом юните }
+  { gPlugins РѕР±СЉСЏРІР»РµРЅР° СѓРєР°Р·Р°С‚РµР»РµРј: СЃР°РјР° РїРµСЂРµРјРµРЅРЅР°СЏ Р¶РёРІС‘С‚ РІ С‡СѓР¶РѕРј СЋРЅРёС‚Рµ }
   if Pointer(gPluginListjr) <> nil then
     if gPluginListjr.Count > 0 then
       DonePlugins(Self, '');
@@ -6611,6 +6947,9 @@ begin
   if gDlg5966E4 = nil then
   begin
     gDlg5966E4 := TForm.Create(fmSecondfj);
+    {$IFDEF FPC}
+    gDlg5966E4.PopupParent := fmSecondfj;
+    {$ENDIF}
     gDlg5966E4.Parent := nil;
     gDlg5966E4.Font := fmSecondfj.Font;
     gDlg5966E4.BorderStyle := bsToolWindow;
@@ -6708,16 +7047,16 @@ end;
 
 procedure TfmSecond.Timer1Timer(Sender: TObject);
 type
-  { Блок состояния персонажа в памяти клиента UO. Читается одним
-    ReadProcessMemory, поэтому поля названы по смещениям: смысл известен только
-    у части из них. Новый формат -- 80 байт, старый -- 60. }
+  { Р‘Р»РѕРє СЃРѕСЃС‚РѕСЏРЅРёСЏ РїРµСЂСЃРѕРЅР°Р¶Р° РІ РїР°РјСЏС‚Рё РєР»РёРµРЅС‚Р° UO. Р§РёС‚Р°РµС‚СЃСЏ РѕРґРЅРёРј
+    ReadProcessMemory, РїРѕСЌС‚РѕРјСѓ РїРѕР»СЏ РЅР°Р·РІР°РЅС‹ РїРѕ СЃРјРµС‰РµРЅРёСЏРј: СЃРјС‹СЃР» РёР·РІРµСЃС‚РµРЅ С‚РѕР»СЊРєРѕ
+    Сѓ С‡Р°СЃС‚Рё РёР· РЅРёС…. РќРѕРІС‹Р№ С„РѕСЂРјР°С‚ -- 80 Р±Р°Р№С‚, СЃС‚Р°СЂС‹Р№ -- 60. }
   TCharStat = packed record
     Name: array[0..31] of Char;        { +$00 }
-    S20: SmallInt;                     { +$20  сила }
-    S22: SmallInt;                     { +$22  ловкость }
-    S24: SmallInt;                     { +$24  интеллект }
-    S26: SmallInt;                     { +$26  жизнь }
-    S28: SmallInt;                     { +$28  жизнь макс. }
+    S20: SmallInt;                     { +$20  СЃРёР»Р° }
+    S22: SmallInt;                     { +$22  Р»РѕРІРєРѕСЃС‚СЊ }
+    S24: SmallInt;                     { +$24  РёРЅС‚РµР»Р»РµРєС‚ }
+    S26: SmallInt;                     { +$26  Р¶РёР·РЅСЊ }
+    S28: SmallInt;                     { +$28  Р¶РёР·РЅСЊ РјР°РєСЃ. }
     S2A: SmallInt;                     { +$2A }
     S2C: SmallInt;                     { +$2C }
     S2E: SmallInt;                     { +$2E }
@@ -6781,9 +7120,9 @@ var
 const
   gNoValue: string = 'error';
 begin
-  { Главный таймер: читает состояние персонажа из памяти клиента и раскладывает
-    его по сетке умений, двум панелям параметров и заголовку окна игры.
-    Откуда брать процесс -- решают два переключателя. }
+  { Р“Р»Р°РІРЅС‹Р№ С‚Р°Р№РјРµСЂ: С‡РёС‚Р°РµС‚ СЃРѕСЃС‚РѕСЏРЅРёРµ РїРµСЂСЃРѕРЅР°Р¶Р° РёР· РїР°РјСЏС‚Рё РєР»РёРµРЅС‚Р° Рё СЂР°СЃРєР»Р°РґС‹РІР°РµС‚
+    РµРіРѕ РїРѕ СЃРµС‚РєРµ СѓРјРµРЅРёР№, РґРІСѓРј РїР°РЅРµР»СЏРј РїР°СЂР°РјРµС‚СЂРѕРІ Рё Р·Р°РіРѕР»РѕРІРєСѓ РѕРєРЅР° РёРіСЂС‹.
+    РћС‚РєСѓРґР° Р±СЂР°С‚СЊ РїСЂРѕС†РµСЃСЃ -- СЂРµС€Р°СЋС‚ РґРІР° РїРµСЂРµРєР»СЋС‡Р°С‚РµР»СЏ. }
   Opened := False;
   if miSCPscript.Checked then
   begin
@@ -6805,7 +7144,7 @@ begin
   if Wnd = 0 then Exit;
   if sbShowSkills.Down then
   begin
-    { Таблица умений: 58 записей по два байта подряд. }
+    { РўР°Р±Р»РёС†Р° СѓРјРµРЅРёР№: 58 Р·Р°РїРёСЃРµР№ РїРѕ РґРІР° Р±Р°Р№С‚Р° РїРѕРґСЂСЏРґ. }
     Addr := ClientAddr[19, cbClVer.ItemIndex];
     ReadProcessMemory(Ph, Pointer(Addr), @Sk, $E6, Rd);
     for I := 0 to $39 do
@@ -6815,7 +7154,7 @@ begin
     end;
     if ClientAddr[6, cbClVer.ItemIndex] >= 4 then
       sgSkills.Cells[1, 15] := gSkillNames[15].Short;
-    { У версий 4 и 5 значения лежат во второй половине блока -- сдвигаем. }
+    { РЈ РІРµСЂСЃРёР№ 4 Рё 5 Р·РЅР°С‡РµРЅРёСЏ Р»РµР¶Р°С‚ РІРѕ РІС‚РѕСЂРѕР№ РїРѕР»РѕРІРёРЅРµ Р±Р»РѕРєР° -- СЃРґРІРёРіР°РµРј. }
     case ClientAddr[6, cbClVer.ItemIndex] of
       4, 5:
         for I := 1 to 57 do
@@ -6829,7 +7168,7 @@ begin
         Insert('0', S, 0);
       sgSkills.Cells[2, I] := S;
     end;
-    { Пузырьковая сортировка по названию: строка переставляется целиком. }
+    { РџСѓР·С‹СЂСЊРєРѕРІР°СЏ СЃРѕСЂС‚РёСЂРѕРІРєР° РїРѕ РЅР°Р·РІР°РЅРёСЋ: СЃС‚СЂРѕРєР° РїРµСЂРµСЃС‚Р°РІР»СЏРµС‚СЃСЏ С†РµР»РёРєРѕРј. }
     if miSortSkillList.Checked then
       for I := 0 to sgSkills.RowCount - 1 do
         for Addr := I + 1 to sgSkills.RowCount - 1 do
@@ -6847,7 +7186,7 @@ begin
           end;
   end;
   L1 := TStringList.Create;
-  { Указатель на блок состояния: у версии 1 он ещё раз разыменовывается. }
+  { РЈРєР°Р·Р°С‚РµР»СЊ РЅР° Р±Р»РѕРє СЃРѕСЃС‚РѕСЏРЅРёСЏ: Сѓ РІРµСЂСЃРёРё 1 РѕРЅ РµС‰С‘ СЂР°Р· СЂР°Р·С‹РјРµРЅРѕРІС‹РІР°РµС‚СЃСЏ. }
   Addr := ClientAddr[7, cbClVer.ItemIndex];
   ReadProcessMemory(Ph, Pointer(Addr), @Addr, 4, Rd);
   if ClientAddr[6, cbClVer.ItemIndex] = 1 then
@@ -6907,8 +7246,8 @@ begin
   end;
   mParamValue.Lines.Clear;
   mParamValue.Lines.Assign(L1);
-  { Текст последнего сообщения клиента: двойное разыменование, потом 256 байт
-    порциями по 16 -- так читается строка, лежащая не подряд. }
+  { РўРµРєСЃС‚ РїРѕСЃР»РµРґРЅРµРіРѕ СЃРѕРѕР±С‰РµРЅРёСЏ РєР»РёРµРЅС‚Р°: РґРІРѕР№РЅРѕРµ СЂР°Р·С‹РјРµРЅРѕРІР°РЅРёРµ, РїРѕС‚РѕРј 256 Р±Р°Р№С‚
+    РїРѕСЂС†РёСЏРјРё РїРѕ 16 -- С‚Р°Рє С‡РёС‚Р°РµС‚СЃСЏ СЃС‚СЂРѕРєР°, Р»РµР¶Р°С‰Р°СЏ РЅРµ РїРѕРґСЂСЏРґ. }
   Addr := ClientAddr[8, cbClVer.ItemIndex];
   ReadProcessMemory(Ph, Pointer(Addr), @Addr, 4, Rd);
   if Rd = 4 then
@@ -6932,7 +7271,7 @@ begin
   begin
     N := 0;
     T := '';
-    { Второй байт меньше пробела -- значит строка в UTF-16. }
+    { Р’С‚РѕСЂРѕР№ Р±Р°Р№С‚ РјРµРЅСЊС€Рµ РїСЂРѕР±РµР»Р° -- Р·РЅР°С‡РёС‚ СЃС‚СЂРѕРєР° РІ UTF-16. }
     if Buf[1] >= ' ' then
     begin
       while Buf[N] <> #0 do
@@ -6950,7 +7289,7 @@ begin
   end
   else
     LM := gNoValue;
-  { Сообщение «выпито зелье»: сверяется и целиком, и без средней части. }
+  { РЎРѕРѕР±С‰РµРЅРёРµ В«РІС‹РїРёС‚Рѕ Р·РµР»СЊРµВ»: СЃРІРµСЂСЏРµС‚СЃСЏ Рё С†РµР»РёРєРѕРј, Рё Р±РµР· СЃСЂРµРґРЅРµР№ С‡Р°СЃС‚Рё. }
   if (LM = gDrinkMsg1 + gDrinkMsg3) or (LM = gDrinkMsg1 + gDrinkMsg2 + gDrinkMsg3) then
   begin
     if gDrinkArmed <> 0 then
@@ -6970,7 +7309,7 @@ begin
   mLM.SelStart := 0;
   mLM.SelLength := 0;
   L2 := TStringList.Create;
-  { Координаты: три числа подряд, выводятся в обратном порядке. }
+  { РљРѕРѕСЂРґРёРЅР°С‚С‹: С‚СЂРё С‡РёСЃР»Р° РїРѕРґСЂСЏРґ, РІС‹РІРѕРґСЏС‚СЃСЏ РІ РѕР±СЂР°С‚РЅРѕРј РїРѕСЂСЏРґРєРµ. }
   Addr := ClientAddr[9, cbClVer.ItemIndex];
   if Addr > 0 then
     Addr := Addr - 4;
@@ -7143,7 +7482,7 @@ begin
     S := gNoValue;
   L2.Add(S);
   mParamValue2.Cols[0] := L2;
-  { Заголовок окна игры: к имени персонажа дописывается то, что отмечено. }
+  { Р—Р°РіРѕР»РѕРІРѕРє РѕРєРЅР° РёРіСЂС‹: Рє РёРјРµРЅРё РїРµСЂСЃРѕРЅР°Р¶Р° РґРѕРїРёСЃС‹РІР°РµС‚СЃСЏ С‚Рѕ, С‡С‚Рѕ РѕС‚РјРµС‡РµРЅРѕ. }
   if cbHits.Checked or cbMana.Checked or cbStam.Checked or cbAr.Checked or
      cbWght.Checked or cbGold.Checked or cbShowCoords.Checked or cbDrinkTimer.Checked then
   begin
@@ -7183,7 +7522,7 @@ begin
   L2.Free;
   L1.Free;
   if Opened then
-    CloseHandle(Ph);
+    FileClose(Ph); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
 end;
 
 procedure TfmSecond.sbStartUOClick(Sender: TObject);
@@ -7251,7 +7590,7 @@ begin
       Exit;
     end;
   end;
-  CloseHandle(gLoginProcess);
+  FileClose(gLoginProcess); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
   gLoginProcess := 0;
 end;
 
@@ -7268,10 +7607,10 @@ var
   Buf: array[0..255] of Char;
   Pc: PChar;
 begin
-  { Обратный вызов EnumWindows из ветки `killwindow` диспетчера команд:
-    L -- адрес строки-образца в нижнем регистре. Окно, чей заголовок её
-    содержит, убивается вместе с процессом. Result всегда True: перебор
-    идёт до конца. }
+  { РћР±СЂР°С‚РЅС‹Р№ РІС‹Р·РѕРІ EnumWindows РёР· РІРµС‚РєРё `killwindow` РґРёСЃРїРµС‚С‡РµСЂР° РєРѕРјР°РЅРґ:
+    L -- Р°РґСЂРµСЃ СЃС‚СЂРѕРєРё-РѕР±СЂР°Р·С†Р° РІ РЅРёР¶РЅРµРј СЂРµРіРёСЃС‚СЂРµ. РћРєРЅРѕ, С‡РµР№ Р·Р°РіРѕР»РѕРІРѕРє РµС‘
+    СЃРѕРґРµСЂР¶РёС‚, СѓР±РёРІР°РµС‚СЃСЏ РІРјРµСЃС‚Рµ СЃ РїСЂРѕС†РµСЃСЃРѕРј. Result РІСЃРµРіРґР° True: РїРµСЂРµР±РѕСЂ
+    РёРґС‘С‚ РґРѕ РєРѕРЅС†Р°. }
   Result := True;
   if IsWindow(H) and IsWindowVisible(H) then
   begin
@@ -7286,7 +7625,7 @@ begin
         GetWindowThreadProcessId(H, @N);
         N := OpenProcess(1, False, N);
         TerminateProcess(N, 5);
-        CloseHandle(N);
+        FileClose(N); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
       end;
     end;
   end;
@@ -7296,9 +7635,9 @@ function EnumStartUOWnd(H: HWND; L: LPARAM): Boolean; stdcall;
 var
   Pid: DWORD;
 begin
-  { Обратный вызов EnumWindows из TStartUOThread.Execute: ищет видимое окно,
-    принадлежащее только что запущенному процессу клиента. Найдя окно,
-    возвращает False и тем обрывает перебор. }
+  { РћР±СЂР°С‚РЅС‹Р№ РІС‹Р·РѕРІ EnumWindows РёР· TStartUOThread.Execute: РёС‰РµС‚ РІРёРґРёРјРѕРµ РѕРєРЅРѕ,
+    РїСЂРёРЅР°РґР»РµР¶Р°С‰РµРµ С‚РѕР»СЊРєРѕ С‡С‚Рѕ Р·Р°РїСѓС‰РµРЅРЅРѕРјСѓ РїСЂРѕС†РµСЃСЃСѓ РєР»РёРµРЅС‚Р°. РќР°Р№РґСЏ РѕРєРЅРѕ,
+    РІРѕР·РІСЂР°С‰Р°РµС‚ False Рё С‚РµРј РѕР±СЂС‹РІР°РµС‚ РїРµСЂРµР±РѕСЂ. }
   Result := True;
   if IsWindow(H) and IsWindowVisible(H) then
   begin
@@ -7362,14 +7701,14 @@ begin
       if gLangOffsety > 0 then
         MsgBox(PChar(LoadStr(gLangOffsety + $19B)), 'UOPilot Error Message', 0)
       else
-        MsgBox('Не могу найти рабочее окно', 'UOPilot Error Message', 0);
+        MsgBox('РќРµ РјРѕРіСѓ РЅР°Р№С‚Рё СЂР°Р±РѕС‡РµРµ РѕРєРЅРѕ', 'UOPilot Error Message', 0);
       TerminateProcess(PI.hProcess, 2);
-      CloseHandle(PI.hProcess);
+      FileClose(PI.hProcess); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
       SysUtils.Sleep(1);
     end
     else
     begin
-      CloseHandle(PI.hProcess);
+      FileClose(PI.hProcess); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
       W := Wnd;
       fmSecondfj.FClientProcess := OpenProcess($1F0FFF, True, Pid);
       Rd := GetLastError;
@@ -7415,7 +7754,7 @@ begin
         end;
       end;
       TerminateProcess(fmSecondfj.FClientProcess, 1);
-      CloseHandle(fmSecondfj.FClientProcess);
+      FileClose(fmSecondfj.FClientProcess); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
       Rd := GetLastError;
     end;
   end;
@@ -7468,7 +7807,7 @@ begin
         if gLangOffsety > 0 then
           MsgBox(PChar(LoadStr(gLangOffsety + $1A8)), 'UOPilot Error Message', 0)
         else
-          MsgBox('Ошибка определения GM Page', 'UOPilot Error Message', 0);
+          MsgBox('РћС€РёР±РєР° РѕРїСЂРµРґРµР»РµРЅРёСЏ GM Page', 'UOPilot Error Message', 0);
       end;
     end;
     P := @Buf;
@@ -7509,11 +7848,11 @@ var
   Nm: string;
   P: PChar;
 begin
-  { Имя обманывает: никаких горячих клавиш здесь нет -- это ЗАХВАТ КЛАВИШИ
-    МЕЖДУ ЭКЗЕМПЛЯРАМИ UoPilot через именованный мьютекс `UoPmutex_<текст>`.
-    Mode = 1 -- занять (получилось только если мьютекса ещё не было), иначе --
-    отпустить. Дескриптор возвращается в H (это элемент gHKNames, массива
-    Integer, а вовсе не имён). Первый и четвёртый параметры не используются. }
+  { РРјСЏ РѕР±РјР°РЅС‹РІР°РµС‚: РЅРёРєР°РєРёС… РіРѕСЂСЏС‡РёС… РєР»Р°РІРёС€ Р·РґРµСЃСЊ РЅРµС‚ -- СЌС‚Рѕ Р—РђРҐР’РђРў РљР›РђР’РРЁР
+    РњР•Р–Р”РЈ Р­РљР—Р•РњРџР›РЇР РђРњР UoPilot С‡РµСЂРµР· РёРјРµРЅРѕРІР°РЅРЅС‹Р№ РјСЊСЋС‚РµРєСЃ `UoPmutex_<С‚РµРєСЃС‚>`.
+    Mode = 1 -- Р·Р°РЅСЏС‚СЊ (РїРѕР»СѓС‡РёР»РѕСЃСЊ С‚РѕР»СЊРєРѕ РµСЃР»Рё РјСЊСЋС‚РµРєСЃР° РµС‰С‘ РЅРµ Р±С‹Р»Рѕ), РёРЅР°С‡Рµ --
+    РѕС‚РїСѓСЃС‚РёС‚СЊ. Р”РµСЃРєСЂРёРїС‚РѕСЂ РІРѕР·РІСЂР°С‰Р°РµС‚СЃСЏ РІ H (СЌС‚Рѕ СЌР»РµРјРµРЅС‚ gHKNames, РјР°СЃСЃРёРІР°
+    Integer, Р° РІРѕРІСЃРµ РЅРµ РёРјС‘РЅ). РџРµСЂРІС‹Р№ Рё С‡РµС‚РІС‘СЂС‚С‹Р№ РїР°СЂР°РјРµС‚СЂС‹ РЅРµ РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ. }
   if S = '' then
   begin
     Result := False;
@@ -7528,8 +7867,8 @@ begin
       H := CreateMutex(nil, True, P)
     else
     begin
-      { мьютекс уже есть -- клавишу держит другой экземпляр }
-      CloseHandle(H);
+      { РјСЊСЋС‚РµРєСЃ СѓР¶Рµ РµСЃС‚СЊ -- РєР»Р°РІРёС€Сѓ РґРµСЂР¶РёС‚ РґСЂСѓРіРѕР№ СЌРєР·РµРјРїР»СЏСЂ }
+      FileClose(H); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
       ReleaseMutex(H);
       H := 0;
       Result := False;
@@ -7537,7 +7876,7 @@ begin
     end;
     if GetLastError <> 0 then
     begin
-      CloseHandle(H);
+      FileClose(H); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
       ReleaseMutex(H);
       H := 0;
       Result := False;
@@ -7550,7 +7889,7 @@ begin
   end
   else
   begin
-    CloseHandle(H);
+    FileClose(H); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
     ReleaseMutex(H);
     H := 0;
     Result := False;
@@ -7559,15 +7898,15 @@ end;
 
 function HotKeyCaption(Nm: ShortString): ShortString;
 var
-  M: Byte;
+  I: THotKeyItem;
 begin
   Result := '';
   try
-    Result := gHotKeyMgr.HotKeyByName(Nm).HotKey;
-    M := Byte(gHotKeyMgr.HotKeyByName(Nm).ShiftState);
-    if (M and 1) <> 0 then Result := 'Shift + ' + Result;
-    if (M and 2) <> 0 then Result := 'Alt + ' + Result;
-    if (M and 4) <> 0 then Result := 'Ctrl + ' + Result;
+    I := gHotKeyMgr.HotKeyByName(Nm);
+    Result := I.HotKey;
+    if HotKeyMgr.ssShift in I.ShiftState then Result := 'Shift + ' + Result;
+    if HotKeyMgr.ssAlt in I.ShiftState then Result := 'Alt + ' + Result;
+    if HotKeyMgr.ssCtrl in I.ShiftState then Result := 'Ctrl + ' + Result;
   except
     Result := '';
   end;
@@ -7575,10 +7914,12 @@ end;
 
 function TryRegisterHotKey(Nm: ShortString; M: Byte;
   Key: ShortString; var Idx: Integer): Boolean;
+var
+  St: TShiftState;
 begin
-  { Заводит горячую клавишу в коллекции THotKeyManager. Обе строки --
-    короткие и по значению. Уже заведённая клавиша не трогается:
-    возвращается только её номер. }
+  { Р—Р°РІРѕРґРёС‚ РіРѕСЂСЏС‡СѓСЋ РєР»Р°РІРёС€Сѓ РІ РєРѕР»Р»РµРєС†РёРё THotKeyManager. РћР±Рµ СЃС‚СЂРѕРєРё --
+    РєРѕСЂРѕС‚РєРёРµ Рё РїРѕ Р·РЅР°С‡РµРЅРёСЋ. РЈР¶Рµ Р·Р°РІРµРґС‘РЅРЅР°СЏ РєР»Р°РІРёС€Р° РЅРµ С‚СЂРѕРіР°РµС‚СЃСЏ:
+    РІРѕР·РІСЂР°С‰Р°РµС‚СЃСЏ С‚РѕР»СЊРєРѕ РµС‘ РЅРѕРјРµСЂ. }
   Result := True;
   try
     if gHotKeyMgr.HotKeyByName(Nm) = nil then
@@ -7587,7 +7928,11 @@ begin
         Add;
         Idx := Count - 1;
         Items[Idx].Name := Nm;
-        Items[Idx].ShiftState := HotKeyMgr.TShiftState(M);
+        St := [];
+        if (M and 1) <> 0 then Include(St, HotKeyMgr.ssShift);
+        if (M and 2) <> 0 then Include(St, HotKeyMgr.ssAlt);
+        if (M and 4) <> 0 then Include(St, HotKeyMgr.ssCtrl);
+        Items[Idx].ShiftState := St;
         Items[Idx].HotKey := Key;
       end
     else
@@ -7609,10 +7954,11 @@ var
   N: Integer;
   Checked: Boolean;
   T: TScanThread;
+  St: TShiftState;
 begin
-  { Включение/выключение горячей клавиши. Имя элемента складывается из имени
-    компонента и номера скрипта, по нему клавиша ищется в коллекции
-    THotKeyManager и регистрируется либо снимается. }
+  { Р’РєР»СЋС‡РµРЅРёРµ/РІС‹РєР»СЋС‡РµРЅРёРµ РіРѕСЂСЏС‡РµР№ РєР»Р°РІРёС€Рё. РРјСЏ СЌР»РµРјРµРЅС‚Р° СЃРєР»Р°РґС‹РІР°РµС‚СЃСЏ РёР· РёРјРµРЅРё
+    РєРѕРјРїРѕРЅРµРЅС‚Р° Рё РЅРѕРјРµСЂР° СЃРєСЂРёРїС‚Р°, РїРѕ РЅРµРјСѓ РєР»Р°РІРёС€Р° РёС‰РµС‚СЃСЏ РІ РєРѕР»Р»РµРєС†РёРё
+    THotKeyManager Рё СЂРµРіРёСЃС‚СЂРёСЂСѓРµС‚СЃСЏ Р»РёР±Рѕ СЃРЅРёРјР°РµС‚СЃСЏ. }
   Sender := Sender;
   fld_14E8 := 0;
   if Sender is TCheckBox then
@@ -7646,7 +7992,7 @@ begin
       (Sender as TStringGrid).Row] = 'X';
   if not Checked then
   begin
-    { Снятие: ищем элемент по имени и гасим его. }
+    { РЎРЅСЏС‚РёРµ: РёС‰РµРј СЌР»РµРјРµРЅС‚ РїРѕ РёРјРµРЅРё Рё РіР°СЃРёРј РµРіРѕ. }
     if gHotKeyMgr <> nil then
     begin
       while (Idx < gHotKeyMgr.HotKeys.Count) and
@@ -7678,7 +8024,7 @@ begin
   if not RegisterHotKeyEntry(gHKEntrieslw[N - 1], Txt, Integer(gHKNames[N - 1]),
     Sender, 1) then
   begin
-    { Не встало -- сообщение в лог текущего скрипта и снятая галка. }
+    { РќРµ РІСЃС‚Р°Р»Рѕ -- СЃРѕРѕР±С‰РµРЅРёРµ РІ Р»РѕРі С‚РµРєСѓС‰РµРіРѕ СЃРєСЂРёРїС‚Р° Рё СЃРЅСЏС‚Р°СЏ РіР°Р»РєР°. }
     gHKEntrieslw[N - 1].Enabled := False;
     fld_14E8 := 1;
     if Sender is TCheckBox then
@@ -7688,6 +8034,13 @@ begin
     end
     else
       Cap := (Sender as TStringGrid).Cells[2, (Sender as TStringGrid).Row];
+    { T.Msg -- cp1251, Txt -- ASCII, Cap -- UTF-8 РёР· LCL Р»РёР±Рѕ cp1251 РёР·
+      СЃС‚Р°СЂРѕРіРѕ ini. РљРѕРЅРІРµСЂС‚РёСЂСѓРµРј С‚РѕР»СЊРєРѕ Р·Р°РІРµРґРѕРјРѕ РІР°Р»РёРґРЅС‹Р№ UTF-8, РёРЅР°С‡Рµ
+      РїРѕРІС‚РѕСЂРЅР°СЏ РєРѕРЅРІРµСЂС‚Р°С†РёСЏ РёСЃРїРѕСЂС‚РёС‚ СѓР¶Рµ cp1251-СЃС‚СЂРѕРєСѓ. }
+    if IsValidUTF8(Txt) then
+      Txt := UTF8ToCP1251(Txt);
+    if IsValidUTF8(Cap) then
+      Cap := UTF8ToCP1251(Cap);
     T := gScriptso3[StrToInt(tScript.Tabs[tScript.TabIndex])];
     T.Msg := PChar('Set hotkey error. ' + Txt + '  ' + Cap);
     gCoordCaptureddo := True;
@@ -7710,9 +8063,12 @@ begin
     fld_14E8 := 2;
     Exit;
   end;
-  { Клавиша принята: переносим её в добавленный элемент коллекции. }
-  gHotKeyMgr.HotKeys[Idx].ShiftState :=
-    HotKeyMgr.TShiftState(gHKEntrieslw[N - 1].Mods);
+  { РљР»Р°РІРёС€Р° РїСЂРёРЅСЏС‚Р°: РїРµСЂРµРЅРѕСЃРёРј РµС‘ РІ РґРѕР±Р°РІР»РµРЅРЅС‹Р№ СЌР»РµРјРµРЅС‚ РєРѕР»Р»РµРєС†РёРё. }
+  St := [];
+  if hkShift in gHKEntrieslw[N - 1].Mods then Include(St, HotKeyMgr.ssShift);
+  if hkAlt in gHKEntrieslw[N - 1].Mods then Include(St, HotKeyMgr.ssAlt);
+  if hkCtrl in gHKEntrieslw[N - 1].Mods then Include(St, HotKeyMgr.ssCtrl);
+  gHotKeyMgr.HotKeys[Idx].ShiftState := St;
   gHotKeyMgr.HotKeys[Idx].HotKey := gHKEntrieslw[N - 1].Text;
   gHotKeyMgr.HotKeys[Idx].OnHotKeyActivation := gHKEntrieslw[N - 1].Handler;
   THKItemFull(gHotKeyMgr.HotKeys[Idx]).Sound := gHKEntrieslw[N - 1].Sound;
@@ -7727,7 +8083,7 @@ begin
       5: (Sender as TStringGrid).Cells[4, (Sender as TStringGrid).Row] :=
         HotKeyCaption(gHKEntrieslw[N - 1].Name);
     end;
-  { Подсказка у элемента, которому принадлежит клавиша. }
+  { РџРѕРґСЃРєР°Р·РєР° Сѓ СЌР»РµРјРµРЅС‚Р°, РєРѕС‚РѕСЂРѕРјСѓ РїСЂРёРЅР°РґР»РµР¶РёС‚ РєР»Р°РІРёС€Р°. }
   case N of
     2: btStart.Hint := lhkSScript.Caption;
     3: miRec.Caption := Copy(miRec.Caption, 1, Pos(' ', miRec.Caption)) +
@@ -7767,12 +8123,17 @@ begin
     if gDlg596718 = nil then
     begin
       gDlg596718 := TForm.Create(fmSecondfj);
+      {$IFDEF FPC}
+      gDlg596718.PopupParent := fmSecondfj;
+      {$ENDIF}
       gDlg596718.BorderStyle := bsNone;
       gDlg596718.Caption := 'Macros';
       gDlg596718.ClientHeight := $16;
       gDlg596718.ClientWidth := $2E1;
       gDlg596718.FormStyle := fsStayOnTop;
+      {$IFnDEF FPC}
       gDlg596718.OldCreateOrder := True;
+      {$ENDIF}
       gDlg596718.Scaled := False;
       pMakrosPanel.Parent := gDlg596718;
       pMakrosPanel.Visible := True;
@@ -7986,7 +8347,11 @@ begin
           end;
           for J := I to sghkScriptHKList.RowCount - 1 do
           begin
+            {$IFDEF FPC}
+            TGridCracker(sghkScriptHKList).MoveColRow(False, J + 1, J);
+            {$ELSE}
             TGridCracker(sghkScriptHKList).MoveRow(J + 1, J);
+            {$ENDIF}
             sghkScriptHKList.Rows[J + 1].Clear;
           end;
           sghkScriptHKList.RowCount := sghkScriptHKList.RowCount - 1;
@@ -8014,9 +8379,9 @@ var
   I: Integer;
   S: string;
 begin
-  { Переключение вкладки скрипта: поток замораживается, редактор
-    перезаполняется строками этого скрипта, кнопки и флажки приводятся
-    к его состоянию. }
+  { РџРµСЂРµРєР»СЋС‡РµРЅРёРµ РІРєР»Р°РґРєРё СЃРєСЂРёРїС‚Р°: РїРѕС‚РѕРє Р·Р°РјРѕСЂР°Р¶РёРІР°РµС‚СЃСЏ, СЂРµРґР°РєС‚РѕСЂ
+    РїРµСЂРµР·Р°РїРѕР»РЅСЏРµС‚СЃСЏ СЃС‚СЂРѕРєР°РјРё СЌС‚РѕРіРѕ СЃРєСЂРёРїС‚Р°, РєРЅРѕРїРєРё Рё С„Р»Р°Р¶РєРё РїСЂРёРІРѕРґСЏС‚СЃСЏ
+    Рє РµРіРѕ СЃРѕСЃС‚РѕСЏРЅРёСЋ. }
   S := tScript.Tabs[tScript.TabIndex];
   N := StrToInt(S);
   if tcLog.TabIndex <> 0 then
@@ -8039,7 +8404,7 @@ begin
     edScript.Visible := False;
   edScript.Lines.Clear;
   for I := 0 to Length(gScriptso3[N].Lines) - 1 do
-    edScript.Lines.Add(gScriptso3[N].Lines[I]);
+    edScript.Lines.Add(CP1251ToUTF8(gScriptso3[N].Lines[I]));
   edScript.Visible := True;
   gScript.MaxValue := Length(gScriptso3[N].Lines);
   gScript.Progress := 0;
@@ -8058,7 +8423,7 @@ begin
   try
     RefreshVarPanel;
   except
-    Application.MessageBox('ошибка входа 0', 'еггог', 0);
+    Application.MessageBox('РѕС€РёР±РєР° РІС…РѕРґР° 0', 'РµРіРіРѕРі', 0);
   end;
   gScriptso3[N].AutoStart := True;
   gScriptso3[N].Resume;
@@ -8086,26 +8451,26 @@ var
   Cnt: Integer;
   N: Integer;
 begin
-  { Перед сменой вкладки текущий скрипт «замораживается»: текст, позиция
-    курсора, флаги и подпись окна переносятся в объект потока. }
+  { РџРµСЂРµРґ СЃРјРµРЅРѕР№ РІРєР»Р°РґРєРё С‚РµРєСѓС‰РёР№ СЃРєСЂРёРїС‚ В«Р·Р°РјРѕСЂР°Р¶РёРІР°РµС‚СЃСЏВ»: С‚РµРєСЃС‚, РїРѕР·РёС†РёСЏ
+    РєСѓСЂСЃРѕСЂР°, С„Р»Р°РіРё Рё РїРѕРґРїРёСЃСЊ РѕРєРЅР° РїРµСЂРµРЅРѕСЃСЏС‚СЃСЏ РІ РѕР±СЉРµРєС‚ РїРѕС‚РѕРєР°. }
   if FFlag14E4 then
     fmSecondfj.pRestWait.Visible := False;
-  { Сохраняем только при повторном входе (FFlag1467 уже взведён) или когда
-    вкладку переключила кнопка bAdd. }
+  { РЎРѕС…СЂР°РЅСЏРµРј С‚РѕР»СЊРєРѕ РїСЂРё РїРѕРІС‚РѕСЂРЅРѕРј РІС…РѕРґРµ (FFlag1467 СѓР¶Рµ РІР·РІРµРґС‘РЅ) РёР»Рё РєРѕРіРґР°
+    РІРєР»Р°РґРєСѓ РїРµСЂРµРєР»СЋС‡РёР»Р° РєРЅРѕРїРєР° bAdd. }
   if FFlag1467 or ((Sender is TSpeedButton) and ((Sender as TSpeedButton).Name = 'bAdd')) then
   begin
     N := StrToInt(tScript.Tabs[tScript.TabIndex]);
     if Assigned(gScriptso3[N]) then
     begin
       gScriptso3[N].Suspend;
-      { текст и строка паузы переносятся только для незапущенного или
-        приостановленного потока; остальные поля -- всегда }
+      { С‚РµРєСЃС‚ Рё СЃС‚СЂРѕРєР° РїР°СѓР·С‹ РїРµСЂРµРЅРѕСЃСЏС‚СЃСЏ С‚РѕР»СЊРєРѕ РґР»СЏ РЅРµР·Р°РїСѓС‰РµРЅРЅРѕРіРѕ РёР»Рё
+        РїСЂРёРѕСЃС‚Р°РЅРѕРІР»РµРЅРЅРѕРіРѕ РїРѕС‚РѕРєР°; РѕСЃС‚Р°Р»СЊРЅС‹Рµ РїРѕР»СЏ -- РІСЃРµРіРґР° }
       if (not gScriptso3[N].Flag91) or gScriptso3[N].Paused then
       begin
         Cnt := edScript.Lines.Count;
         SetLength(gScriptso3[N].Lines, Cnt);
         for I := 0 to Cnt - 1 do
-          gScriptso3[N].Lines[I] := edScript.Lines[I];
+          gScriptso3[N].Lines[I] := UTF8ToCP1251(edScript.Lines[I]);
         gScriptso3[N].PauseCmd := edPause.Text;
       end;
       gScriptso3[N].Modified := edScript.Modified or gScriptso3[N].Modified;
@@ -8120,8 +8485,8 @@ begin
   end
   else
   begin
-    { чужой источник события -- смену запрещаем и взводим флаг, чтобы
-      повторный вход (уже от самой вкладки) прошёл по первой ветке }
+    { С‡СѓР¶РѕР№ РёСЃС‚РѕС‡РЅРёРє СЃРѕР±С‹С‚РёСЏ -- СЃРјРµРЅСѓ Р·Р°РїСЂРµС‰Р°РµРј Рё РІР·РІРѕРґРёРј С„Р»Р°Рі, С‡С‚РѕР±С‹
+      РїРѕРІС‚РѕСЂРЅС‹Р№ РІС…РѕРґ (СѓР¶Рµ РѕС‚ СЃР°РјРѕР№ РІРєР»Р°РґРєРё) РїСЂРѕС€С‘Р» РїРѕ РїРµСЂРІРѕР№ РІРµС‚РєРµ }
     AllowChange := False;
     FFlag1467 := True;
   end;
@@ -8136,9 +8501,9 @@ var
   P: Boolean;
   S: string;
 begin
-  // Перезаполнение сетки переменных и таймеров открытой
-  // панели. Пока идёт чтение, поток скрипта приостанавливается
-  // (Suspend/Resume), Resume обёрнут в try..except.
+  // РџРµСЂРµР·Р°РїРѕР»РЅРµРЅРёРµ СЃРµС‚РєРё РїРµСЂРµРјРµРЅРЅС‹С… Рё С‚Р°Р№РјРµСЂРѕРІ РѕС‚РєСЂС‹С‚РѕР№
+  // РїР°РЅРµР»Рё. РџРѕРєР° РёРґС‘С‚ С‡С‚РµРЅРёРµ, РїРѕС‚РѕРє СЃРєСЂРёРїС‚Р° РїСЂРёРѕСЃС‚Р°РЅР°РІР»РёРІР°РµС‚СЃСЏ
+  // (Suspend/Resume), Resume РѕР±С‘СЂРЅСѓС‚ РІ try..except.
   if gDlg5966F0 <> nil then
   begin
     N := StrToInt(tScript.Tabs[tScript.TabIndex]);
@@ -8195,7 +8560,7 @@ begin
         if not P then
           gScriptso3[N].Resume;
       except
-        Application.MessageBox('ошибка входа33', 'еггог', 0);
+        Application.MessageBox('РѕС€РёР±РєР° РІС…РѕРґР°33', 'РµРіРіРѕРі', 0);
       end;
     end;
   end;
@@ -8207,7 +8572,7 @@ var
   Ini: TMyMemIniFile;
   I: Integer;
 begin
-  { Все макросы мыши уходят в ini секциями Makros_1..Makros_11. }
+  { Р’СЃРµ РјР°РєСЂРѕСЃС‹ РјС‹С€Рё СѓС…РѕРґСЏС‚ РІ ini СЃРµРєС†РёСЏРјРё Makros_1..Makros_11. }
   Sect := 'Makros_';
   Ini := TMyMemIniFile.Create(FOptionsFile);
   I := 1;
@@ -8228,7 +8593,7 @@ procedure TfmSecond.LastScriptItemClick(Sender: TObject);
 var
   S: ShortString;
 begin
-  { Пункт меню «последние скрипты», который заводит AfterOptionsLoaded. }
+  { РџСѓРЅРєС‚ РјРµРЅСЋ В«РїРѕСЃР»РµРґРЅРёРµ СЃРєСЂРёРїС‚С‹В», РєРѕС‚РѕСЂС‹Р№ Р·Р°РІРѕРґРёС‚ AfterOptionsLoaded. }
   S := (Sender as TMenuItem).Caption;
   LoadScriptFile(S);
   gStr59615C := S;
@@ -8241,9 +8606,9 @@ var
   Found: Boolean;
   Item, Root: TMenuItem;
 begin
-  { Имя метода историческое: файл он не пишет, а добавляет его в меню
-    «последние скрипты» (mnHotKey.Items[0].Items[3]) и подрезает список
-    до десяти пунктов. Зовётся из miSaveClick сразу после выбора файла. }
+  { РРјСЏ РјРµС‚РѕРґР° РёСЃС‚РѕСЂРёС‡РµСЃРєРѕРµ: С„Р°Р№Р» РѕРЅ РЅРµ РїРёС€РµС‚, Р° РґРѕР±Р°РІР»СЏРµС‚ РµРіРѕ РІ РјРµРЅСЋ
+    В«РїРѕСЃР»РµРґРЅРёРµ СЃРєСЂРёРїС‚С‹В» (mnHotKey.Items[0].Items[3]) Рё РїРѕРґСЂРµР·Р°РµС‚ СЃРїРёСЃРѕРє
+    РґРѕ РґРµСЃСЏС‚Рё РїСѓРЅРєС‚РѕРІ. Р—РѕРІС‘С‚СЃСЏ РёР· miSaveClick СЃСЂР°Р·Сѓ РїРѕСЃР»Рµ РІС‹Р±РѕСЂР° С„Р°Р№Р»Р°. }
   if FileName <> '' then
   begin
     I := Length(gTempFilefv);
@@ -8262,7 +8627,9 @@ begin
       Root.Delete(I - 1);
     Item := TMenuItem.Create(Root);
     Item.Caption := FileName;
+    {$IFNDEF FPC}
     Item.AutoHotkeys := maManual;
+    {$ENDIF}
     Item.OnClick := LastScriptItemClick;
     Root.Insert(0, Item);
     while Root.Count > 10 do
@@ -8288,14 +8655,77 @@ begin
     end;
 end;
 
+{ РџРѕР·РёС†РёСЏ РЅР°С‡Р°Р»Р° РїСЂРµРґС‹РґСѓС‰РµРіРѕ СЃР»РѕРІР° РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ С‚РѕС‡РєРё P (1-based, РєР°Рє РІ
+  СЃС‚Р°СЂРѕРј SynEdit.PrevWordPosEx): Р±СѓРєРІР°РјРё СЃР»РѕРІР° СЃС‡РёС‚Р°СЋС‚СЃСЏ ASCII-РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂС‹
+  UO Pilot. РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ РїРѕРґСЃРєР°Р·РєРµ РєРѕРјР°РЅРґС‹ РїРѕРґ РєСѓСЂСЃРѕСЂРѕРј Рё РІ РІРёРєРё-СЃРїСЂР°РІРєРµ. }
+function ScriptPrevWordPos(AEdit: TSynEdit; const P: TPoint): TPoint;
+var
+  CX, CY: Integer;
+  Line: string;
+
+  function IsWordChar(C: Char): Boolean;
+  begin
+    Result := C in ['0'..'9', 'A'..'Z', 'a'..'z', '_'];
+  end;
+
+  function RScan(const L: string; N: Integer; WordChars: Boolean): Integer;
+  begin
+    while (N >= 1) and (IsWordChar(L[N]) <> WordChars) do
+      Dec(N);
+    if N < 1 then
+      Result := 0
+    else
+      Result := N;
+  end;
+
+begin
+  CX := P.X;
+  CY := P.Y;
+  if (CY >= 1) and (CY <= AEdit.Lines.Count) then
+  begin
+    Line := AEdit.Lines[CY - 1];
+    if CX > Length(Line) + 1 then
+      CX := Length(Line) + 1;
+    if CX <= 1 then
+    begin
+      if CY > 1 then
+      begin
+        Dec(CY);
+        Line := AEdit.Lines[CY - 1];
+        CX := Length(Line) + 1;
+      end;
+    end
+    else
+    begin
+      if not IsWordChar(Line[CX - 1]) then
+        CX := RScan(Line, CX - 1, True);
+      if CX > 0 then
+        CX := RScan(Line, CX - 1, False) + 1;
+      if CX = 0 then
+      begin
+        if CY > 1 then
+        begin
+          Dec(CY);
+          Line := AEdit.Lines[CY - 1];
+          CX := Length(Line) + 1;
+        end
+        else
+          CX := 1;
+      end;
+    end;
+  end;
+  Result.X := CX;
+  Result.Y := CY;
+end;
+
 procedure TfmSecond.mmScriptKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
 var
   S: string;
   K: Char;
-  P: TBufferCoord;
+  P: TPoint;
   Y: Integer;
   I: Integer;
-  E: TSynMemo;
+  E: TSynEdit;
 
   function ScanMenu(M: TMenuItem): Boolean;
   var
@@ -8337,7 +8767,7 @@ begin
     Y := E.CaretY;
     P := E.CaretXY;
     S := edScript.GetWordAtRowCol(P);
-    // Список команд ищется в нижнем регистре.
+    // РЎРїРёСЃРѕРє РєРѕРјР°РЅРґ РёС‰РµС‚СЃСЏ РІ РЅРёР¶РЅРµРј СЂРµРіРёСЃС‚СЂРµ.
     I := gCmdListah7.IndexOf(AnsiLowerCase(S));
     if S = '' then
       I := -1;
@@ -8345,9 +8775,9 @@ begin
       I := gCmdList2jj.IndexOf(AnsiLowerCase(S));
     if S = '' then
       I := -1;
-    while (I < 0) and (Y = P.Line) and not ((P.Char = 1) and (P.Line = 1)) do
+    while (I < 0) and (Y = P.Y) and not ((P.X = 1) and (P.Y = 1)) do
     begin
-      P := edScript.PrevWordPosEx(P);
+      P := ScriptPrevWordPos(edScript, P);
       S := edScript.GetWordAtRowCol(P);
       I := gCmdListah7.IndexOf(AnsiLowerCase(S));
       if S = '' then
@@ -8364,8 +8794,8 @@ begin
     end;
   end;
   Exit;
-  // Дальше код недостижим (перед ним безусловный Exit), но оставлен:
-  // на Delete эмулируется Backspace через обработчик KeyPress.
+  // Р”Р°Р»СЊС€Рµ РєРѕРґ РЅРµРґРѕСЃС‚РёР¶РёРј (РїРµСЂРµРґ РЅРёРј Р±РµР·СѓСЃР»РѕРІРЅС‹Р№ Exit), РЅРѕ РѕСЃС‚Р°РІР»РµРЅ:
+  // РЅР° Delete СЌРјСѓР»РёСЂСѓРµС‚СЃСЏ Backspace С‡РµСЂРµР· РѕР±СЂР°Р±РѕС‚С‡РёРє KeyPress.
   if Key = 46 then
   begin
     K := #8;
@@ -8396,6 +8826,9 @@ begin
   if gDlg59670C = nil then
   begin
     gDlg59670C := TForm.Create(fmSecondfj);
+    {$IFDEF FPC}
+    gDlg59670C.PopupParent := fmSecondfj;
+    {$ENDIF}
     gDlg59670C.Parent := nil;
     gDlg59670C.BorderStyle := bsSizeToolWin;
     gDlg59670C.ClientHeight := pSelectUOserver.Height;
@@ -8435,11 +8868,14 @@ procedure TfmSecond.sbHouseControlClick(Sender: TObject);
 var
   S: string;
 begin
-  { Панель «House Control» на отдельном окне: позиция берётся из сохранённой,
-    иначе окно пристраивается справа от главного, под уже открытыми панелями. }
+  { РџР°РЅРµР»СЊ В«House ControlВ» РЅР° РѕС‚РґРµР»СЊРЅРѕРј РѕРєРЅРµ: РїРѕР·РёС†РёСЏ Р±РµСЂС‘С‚СЃСЏ РёР· СЃРѕС…СЂР°РЅС‘РЅРЅРѕР№,
+    РёРЅР°С‡Рµ РѕРєРЅРѕ РїСЂРёСЃС‚СЂР°РёРІР°РµС‚СЃСЏ СЃРїСЂР°РІР° РѕС‚ РіР»Р°РІРЅРѕРіРѕ, РїРѕРґ СѓР¶Рµ РѕС‚РєСЂС‹С‚С‹РјРё РїР°РЅРµР»СЏРјРё. }
   if gDlg5966E8 = nil then
   begin
     gDlg5966E8 := TForm.Create(fmSecondfj);
+    {$IFDEF FPC}
+    gDlg5966E8.PopupParent := fmSecondfj;
+    {$ENDIF}
     gDlg5966E8.Parent := nil;
     gDlg5966E8.Font := fmSecondfj.Font;
     gDlg5966E8.BorderStyle := bsToolWindow;
@@ -8505,6 +8941,9 @@ begin
   if gDlg596714 = nil then
   begin
     gDlg596714 := TForm.Create(fmSecondfj);
+    {$IFDEF FPC}
+    gDlg596714.PopupParent := fmSecondfj;
+    {$ENDIF}
     gDlg596714.BorderStyle := bsToolWindow;
     gDlg596714.Caption := pEditHouse.Hint;
     gDlg596714.ClientHeight := pEditHouse.Height;
@@ -8523,7 +8962,7 @@ begin
 
   if Assigned(gDlg5966E8) then
   begin
-    { Окно команд встаёт под панелью управления домом и прижимается к экрану }
+    { РћРєРЅРѕ РєРѕРјР°РЅРґ РІСЃС‚Р°С‘С‚ РїРѕРґ РїР°РЅРµР»СЊСЋ СѓРїСЂР°РІР»РµРЅРёСЏ РґРѕРјРѕРј Рё РїСЂРёР¶РёРјР°РµС‚СЃСЏ Рє СЌРєСЂР°РЅСѓ }
     Px := gDlg5966E8.Left +
       (gDlg5966E8.Width - gDlg596714.Width) div 2;
     Py := gDlg5966E8.Top + gDlg5966E8.Height;
@@ -8581,8 +9020,8 @@ var
   I: Integer;
   J: Integer;
 begin
-  // Показать в панели назначения текущую горячую клавишу элемента Name.
-  // Параметр значениевый: найденное имя клавиши пишется обратно в Name.
+  // РџРѕРєР°Р·Р°С‚СЊ РІ РїР°РЅРµР»Рё РЅР°Р·РЅР°С‡РµРЅРёСЏ С‚РµРєСѓС‰СѓСЋ РіРѕСЂСЏС‡СѓСЋ РєР»Р°РІРёС€Сѓ СЌР»РµРјРµРЅС‚Р° Name.
+  // РџР°СЂР°РјРµС‚СЂ Р·РЅР°С‡РµРЅРёРµРІС‹Р№: РЅР°Р№РґРµРЅРЅРѕРµ РёРјСЏ РєР»Р°РІРёС€Рё РїРёС€РµС‚СЃСЏ РѕР±СЂР°С‚РЅРѕ РІ Name.
   if TObject(fld_14E0) is TCheckBox then
     if (fmSecondfj.FindComponent('cb' + Name) as TCheckBox).Enabled then
       (fmSecondfj.FindComponent('cb' + Name) as TCheckBox).SetFocus;
@@ -8696,9 +9135,9 @@ var
   T1: string;
   T2: string;
 begin
-  { Раз в тик показывает в заголовке координаты курсора и цвет пикселя под
-    ним. Если GetPixel вернул 0 (окно закрыто слоем), цвет берётся через
-    временный битмап с BitBlt. }
+  { Р Р°Р· РІ С‚РёРє РїРѕРєР°Р·С‹РІР°РµС‚ РІ Р·Р°РіРѕР»РѕРІРєРµ РєРѕРѕСЂРґРёРЅР°С‚С‹ РєСѓСЂСЃРѕСЂР° Рё С†РІРµС‚ РїРёРєСЃРµР»СЏ РїРѕРґ
+    РЅРёРј. Р•СЃР»Рё GetPixel РІРµСЂРЅСѓР» 0 (РѕРєРЅРѕ Р·Р°РєСЂС‹С‚Рѕ СЃР»РѕРµРј), С†РІРµС‚ Р±РµСЂС‘С‚СЃСЏ С‡РµСЂРµР·
+    РІСЂРµРјРµРЅРЅС‹Р№ Р±РёС‚РјР°Рї СЃ BitBlt. }
   if gAppTitle = '' then
     gAppTitle := Application.Title;
   if gFormCaption = '' then
@@ -8745,8 +9184,8 @@ var
   U: string;
   N: Integer;
 begin
-  { Пауза скрипта. При снятии паузы отредактированный текст переносится
-    из редактора в массив строк потока, и поток возобновляется. }
+  { РџР°СѓР·Р° СЃРєСЂРёРїС‚Р°. РџСЂРё СЃРЅСЏС‚РёРё РїР°СѓР·С‹ РѕС‚СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРЅС‹Р№ С‚РµРєСЃС‚ РїРµСЂРµРЅРѕСЃРёС‚СЃСЏ
+    РёР· СЂРµРґР°РєС‚РѕСЂР° РІ РјР°СЃСЃРёРІ СЃС‚СЂРѕРє РїРѕС‚РѕРєР°, Рё РїРѕС‚РѕРє РІРѕР·РѕР±РЅРѕРІР»СЏРµС‚СЃСЏ. }
   N := StrToInt(tScript.Tabs[tScript.TabIndex]);
   if sbPause.Down then
   begin
@@ -8773,7 +9212,7 @@ begin
       Cnt := edScript.Lines.Count;
       SetLength(gScriptso3[N].Lines, Cnt);
       for I := 0 to Cnt - 1 do
-        gScriptso3[N].Lines[I] := edScript.Lines[I];
+        gScriptso3[N].Lines[I] := UTF8ToCP1251(edScript.Lines[I]);
     end;
     gScriptso3[N].LineCount := edScript.CaretY - 1;
     gScriptso3[N].Resume;
@@ -8788,11 +9227,14 @@ var
   Y: Integer;
   I: Integer;
 begin
-  { Список горячих клавиш выносится на отдельное окно, отцентрованное
-    по главной форме и прижатое к краям экрана, если не влезает. }
+  { РЎРїРёСЃРѕРє РіРѕСЂСЏС‡РёС… РєР»Р°РІРёС€ РІС‹РЅРѕСЃРёС‚СЃСЏ РЅР° РѕС‚РґРµР»СЊРЅРѕРµ РѕРєРЅРѕ, РѕС‚С†РµРЅС‚СЂРѕРІР°РЅРЅРѕРµ
+    РїРѕ РіР»Р°РІРЅРѕР№ С„РѕСЂРјРµ Рё РїСЂРёР¶Р°С‚РѕРµ Рє РєСЂР°СЏРј СЌРєСЂР°РЅР°, РµСЃР»Рё РЅРµ РІР»РµР·Р°РµС‚. }
   if gDlg596700 = nil then
   begin
     gDlg596700 := TForm.Create(fmSecondfj);
+    {$IFDEF FPC}
+    gDlg596700.PopupParent := fmSecondfj;
+    {$ENDIF}
     gDlg596700.BorderStyle := bsToolWindow;
     gDlg596700.Caption := 'Edit HotKeys';
     gDlg596700.ClientHeight := $153;
@@ -8819,7 +9261,7 @@ begin
     gDlg596700.Top := Y;
     gDlg596700.OnCloseQuery := HotKeyListClose;
     gDlg596700.Font := fmSecondfj.Font;
-    { Имена клавиш переливаются в cbHKList из таблицы HotKeyMgr.gHKNameTablee9. }
+    { РРјРµРЅР° РєР»Р°РІРёС€ РїРµСЂРµР»РёРІР°СЋС‚СЃСЏ РІ cbHKList РёР· С‚Р°Р±Р»РёС†С‹ HotKeyMgr.gHKNameTablee9. }
     for I := 0 to High(gHKNameTablee9) do
       cbHKList.Items.Add(gHKNameTablee9[I]);
   end;
@@ -8834,12 +9276,12 @@ var
   P: PDWORD;
   A: DWORD;
 begin
-  { Калибровка правит адрес прямо в таблице: сначала запоминает исходный,
-    потом читает по нему четыре байта из памяти клиента в ту же ячейку. }
+  { РљР°Р»РёР±СЂРѕРІРєР° РїСЂР°РІРёС‚ Р°РґСЂРµСЃ РїСЂСЏРјРѕ РІ С‚Р°Р±Р»РёС†Рµ: СЃРЅР°С‡Р°Р»Р° Р·Р°РїРѕРјРёРЅР°РµС‚ РёСЃС…РѕРґРЅС‹Р№,
+    РїРѕС‚РѕРј С‡РёС‚Р°РµС‚ РїРѕ РЅРµРјСѓ С‡РµС‚С‹СЂРµ Р±Р°Р№С‚Р° РёР· РїР°РјСЏС‚Рё РєР»РёРµРЅС‚Р° РІ С‚Сѓ Р¶Рµ СЏС‡РµР№РєСѓ. }
   if cbClVer.ItemIndex >= 4 then
   begin
     SetForegroundWindow(Application.Handle);
-    MsgBox('Начиная с версии 2.0.3 калибровка не требуется.',
+    MsgBox('РќР°С‡РёРЅР°СЏ СЃ РІРµСЂСЃРёРё 2.0.3 РєР°Р»РёР±СЂРѕРІРєР° РЅРµ С‚СЂРµР±СѓРµС‚СЃСЏ.',
       'UOPilot Error Message', 0);
   end
   else
@@ -8870,7 +9312,7 @@ begin
   if gLangOffsety > 0 then
     sdSave.Title := LoadStr(gLangOffsety + $1AC)
   else
-    sdSave.Title := 'Сохранить макрос как...';
+    sdSave.Title := 'РЎРѕС…СЂР°РЅРёС‚СЊ РјР°РєСЂРѕСЃ РєР°Рє...';
   if sdSave.Execute then
     MacroFileOp(1, sdSave.FileName);
   sdSave.DefaultExt := OldExt;
@@ -8894,7 +9336,7 @@ begin
   if gLangOffsety > 0 then
     odLoad.Title := LoadStr(gLangOffsety + $1AD)
   else
-    odLoad.Title := 'Загрузить макрос...';
+    odLoad.Title := 'Р—Р°РіСЂСѓР·РёС‚СЊ РјР°РєСЂРѕСЃ...';
   if odLoad.Execute then
     MacroFileOp(2, odLoad.FileName);
   odLoad.DefaultExt := OldExt;
@@ -8963,10 +9405,10 @@ const
     782, 783, 784, 785, 786, 896, 911, 992, 1024, 32768, 532, 533, 534, 536,
     537, 791, 792, 856, 863);
 begin
-  { Макрос мыши/клавиатуры <-> текстовый файл. Mode = 1 -- выгрузка потока
-    записи TheRecorder в текст (код сообщения переводится в имя по
-    gMsgCodes/gMsgNames), иначе -- разбор текста обратно в поток.
-    Весь метод с выключенным контролем ввода-вывода. }
+  { РњР°РєСЂРѕСЃ РјС‹С€Рё/РєР»Р°РІРёР°С‚СѓСЂС‹ <-> С‚РµРєСЃС‚РѕРІС‹Р№ С„Р°Р№Р». Mode = 1 -- РІС‹РіСЂСѓР·РєР° РїРѕС‚РѕРєР°
+    Р·Р°РїРёСЃРё TheRecorder РІ С‚РµРєСЃС‚ (РєРѕРґ СЃРѕРѕР±С‰РµРЅРёСЏ РїРµСЂРµРІРѕРґРёС‚СЃСЏ РІ РёРјСЏ РїРѕ
+    gMsgCodes/gMsgNames), РёРЅР°С‡Рµ -- СЂР°Р·Р±РѕСЂ С‚РµРєСЃС‚Р° РѕР±СЂР°С‚РЅРѕ РІ РїРѕС‚РѕРє.
+    Р’РµСЃСЊ РјРµС‚РѕРґ СЃ РІС‹РєР»СЋС‡РµРЅРЅС‹Рј РєРѕРЅС‚СЂРѕР»РµРј РІРІРѕРґР°-РІС‹РІРѕРґР°. }
   {$I-}
   AssignFile(F, FileName);
   try
@@ -9052,8 +9494,8 @@ var
   G: TStringGrid;
   N: Integer;
 begin
-  { Добавляет строку в список последних объектов/целей. Номер берётся из
-    последней строки и увеличивается; больше $226 не даёт. }
+  { Р”РѕР±Р°РІР»СЏРµС‚ СЃС‚СЂРѕРєСѓ РІ СЃРїРёСЃРѕРє РїРѕСЃР»РµРґРЅРёС… РѕР±СЉРµРєС‚РѕРІ/С†РµР»РµР№. РќРѕРјРµСЂ Р±РµСЂС‘С‚СЃСЏ РёР·
+    РїРѕСЃР»РµРґРЅРµР№ СЃС‚СЂРѕРєРё Рё СѓРІРµР»РёС‡РёРІР°РµС‚СЃСЏ; Р±РѕР»СЊС€Рµ $226 РЅРµ РґР°С‘С‚. }
   G := nil;
   case (Sender as TSpeedButton).Tag of
     1: G := sgLastObject;
@@ -9066,8 +9508,8 @@ begin
     try
       N := StrToInt(G.Cells[0, G.RowCount - 1]) + 1;
     except
-      { except не пустой: при неразбираемом номере берётся заведомо большое
-        значение, и следующая же проверка уводит в ветку с сообщением. }
+      { except РЅРµ РїСѓСЃС‚РѕР№: РїСЂРё РЅРµСЂР°Р·Р±РёСЂР°РµРјРѕРј РЅРѕРјРµСЂРµ Р±РµСЂС‘С‚СЃСЏ Р·Р°РІРµРґРѕРјРѕ Р±РѕР»СЊС€РѕРµ
+        Р·РЅР°С‡РµРЅРёРµ, Рё СЃР»РµРґСѓСЋС‰Р°СЏ Р¶Рµ РїСЂРѕРІРµСЂРєР° СѓРІРѕРґРёС‚ РІ РІРµС‚РєСѓ СЃ СЃРѕРѕР±С‰РµРЅРёРµРј. }
       N := $226;
     end;
     if N > $226 then
@@ -9076,7 +9518,7 @@ begin
       if gLangOffsety > 0 then
         MsgBox(PChar(LoadStr(gLangOffsety + $1AE)), 'UOPilot Error Message', 0)
       else
-        MsgBox('Перебор', 'UOPilot Error Message', 0);
+        MsgBox('РџРµСЂРµР±РѕСЂ', 'UOPilot Error Message', 0);
       Exit;
     end;
     G.RowCount := G.RowCount + 1;
@@ -9099,8 +9541,8 @@ var
   Ph: THandle;
   Wnd: HWND;
 begin
-  { Двойной щелчок по списку: в первой колонке вставляет значение в скрипт,
-    во второй -- читает адрес из памяти клиента и показывает его. }
+  { Р”РІРѕР№РЅРѕР№ С‰РµР»С‡РѕРє РїРѕ СЃРїРёСЃРєСѓ: РІ РїРµСЂРІРѕР№ РєРѕР»РѕРЅРєРµ РІСЃС‚Р°РІР»СЏРµС‚ Р·РЅР°С‡РµРЅРёРµ РІ СЃРєСЂРёРїС‚,
+    РІРѕ РІС‚РѕСЂРѕР№ -- С‡РёС‚Р°РµС‚ Р°РґСЂРµСЃ РёР· РїР°РјСЏС‚Рё РєР»РёРµРЅС‚Р° Рё РїРѕРєР°Р·С‹РІР°РµС‚ РµРіРѕ. }
   G := Sender as TStringGrid;
   GetCursorPos(P);
   Windows.ScreenToClient(G.Handle, P);
@@ -9142,7 +9584,7 @@ begin
     if (Col < 0) or (Row < 0) then
       G.Cells[2, G.Row] := '';
     if Opened then
-      CloseHandle(Ph);
+      FileClose(Ph); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
   end;
 end;
 
@@ -9172,8 +9614,8 @@ var
   P: TPoint;
   W: HWND;
 begin
-  { Локализованный текст берётся из строковых ресурсов по номеру
-    gLangOffsety + база. }
+  { Р›РѕРєР°Р»РёР·РѕРІР°РЅРЅС‹Р№ С‚РµРєСЃС‚ Р±РµСЂС‘С‚СЃСЏ РёР· СЃС‚СЂРѕРєРѕРІС‹С… СЂРµСЃСѓСЂСЃРѕРІ РїРѕ РЅРѕРјРµСЂСѓ
+    gLangOffsety + Р±Р°Р·Р°. }
   GetCursorPos(P);
   W := WindowFromPoint(P);
   if W = 0 then
@@ -9182,7 +9624,7 @@ begin
     if gLangOffsety > 0 then
       MsgBox(PChar(LoadStr(gLangOffsety + $19B)), 'UOPilot Error Message', 0)
     else
-      MsgBox('Не могу найти рабочее окно', 'UOPilot Error Message', 0);
+      MsgBox('РќРµ РјРѕРіСѓ РЅР°Р№С‚Рё СЂР°Р±РѕС‡РµРµ РѕРєРЅРѕ', 'UOPilot Error Message', 0);
   end
   else
   begin
@@ -9196,8 +9638,8 @@ var
   P: TPoint;
   W: HWND;
 begin
-  { Локализованный текст берётся из строковых ресурсов по номеру
-    gLangOffsety + база. }
+  { Р›РѕРєР°Р»РёР·РѕРІР°РЅРЅС‹Р№ С‚РµРєСЃС‚ Р±РµСЂС‘С‚СЃСЏ РёР· СЃС‚СЂРѕРєРѕРІС‹С… СЂРµСЃСѓСЂСЃРѕРІ РїРѕ РЅРѕРјРµСЂСѓ
+    gLangOffsety + Р±Р°Р·Р°. }
   GetCursorPos(P);
   W := WindowFromPoint(P);
   if W = 0 then
@@ -9206,7 +9648,7 @@ begin
     if gLangOffsety > 0 then
       MsgBox(PChar(LoadStr(gLangOffsety + $19B)), 'UOPilot Error Message', 0)
     else
-      MsgBox('Не могу найти рабочее окно', 'UOPilot Error Message', 0);
+      MsgBox('РќРµ РјРѕРіСѓ РЅР°Р№С‚Рё СЂР°Р±РѕС‡РµРµ РѕРєРЅРѕ', 'UOPilot Error Message', 0);
   end
   else
   begin
@@ -9220,8 +9662,8 @@ var
   P: TPoint;
   W: HWND;
 begin
-  { Локализованный текст берётся из строковых ресурсов по номеру
-    gLangOffsety + база. }
+  { Р›РѕРєР°Р»РёР·РѕРІР°РЅРЅС‹Р№ С‚РµРєСЃС‚ Р±РµСЂС‘С‚СЃСЏ РёР· СЃС‚СЂРѕРєРѕРІС‹С… СЂРµСЃСѓСЂСЃРѕРІ РїРѕ РЅРѕРјРµСЂСѓ
+    gLangOffsety + Р±Р°Р·Р°. }
   GetCursorPos(P);
   W := WindowFromPoint(P);
   if W = 0 then
@@ -9230,7 +9672,7 @@ begin
     if gLangOffsety > 0 then
       MsgBox(PChar(LoadStr(gLangOffsety + $19B)), 'UOPilot Error Message', 0)
     else
-      MsgBox('Не могу найти рабочее окно', 'UOPilot Error Message', 0);
+      MsgBox('РќРµ РјРѕРіСѓ РЅР°Р№С‚Рё СЂР°Р±РѕС‡РµРµ РѕРєРЅРѕ', 'UOPilot Error Message', 0);
   end
   else
   begin
@@ -9245,8 +9687,8 @@ var
   I: Integer;
   Th: TScanThread;
 begin
-  { Вкладка «99» -- это файл процедур, общий для всех скриптов. Если её ещё
-    нет, заводится отдельный поток TScanThread с типом '100'. }
+  { Р’РєР»Р°РґРєР° В«99В» -- СЌС‚Рѕ С„Р°Р№Р» РїСЂРѕС†РµРґСѓСЂ, РѕР±С‰РёР№ РґР»СЏ РІСЃРµС… СЃРєСЂРёРїС‚РѕРІ. Р•СЃР»Рё РµС‘ РµС‰С‘
+    РЅРµС‚, Р·Р°РІРѕРґРёС‚СЃСЏ РѕС‚РґРµР»СЊРЅС‹Р№ РїРѕС‚РѕРє TScanThread СЃ С‚РёРїРѕРј '100'. }
   Allow := True;
   tScriptChanging(Sender, Allow);
   I := 0;
@@ -9275,7 +9717,7 @@ begin
     if gLangOffsety > 0 then
       odLoad.Title := LoadStr(gLangOffsety + $1AF)
     else
-      odLoad.Title := 'Загрузить файл процедур...';
+      odLoad.Title := 'Р—Р°РіСЂСѓР·РёС‚СЊ С„Р°Р№Р» РїСЂРѕС†РµРґСѓСЂ...';
     odLoad.Execute;
   end;
   LoadScriptFile(odLoad.FileName);
@@ -9330,28 +9772,26 @@ var
   P: TPoint;
   R: TRect;
 begin
-  { Окно подсказки над вкладкой скрипта: создаётся, меряется под текст
-    C.Hint и показывается под вкладкой -- ActivateHint сам делает окно
-    видимым. И Bounds, и OffsetRect обязаны быть квалифицированы как
-    Types: иначе первый уйдёт в Classes.Bounds, второй -- в stdcall
-    из Windows.pas. }
+  { РћРєРЅРѕ РїРѕРґСЃРєР°Р·РєРё РЅР°Рґ РІРєР»Р°РґРєРѕР№ СЃРєСЂРёРїС‚Р°: СЃРѕР·РґР°С‘С‚СЃСЏ, РјРµСЂСЏРµС‚СЃСЏ РїРѕРґ С‚РµРєСЃС‚
+    C.Hint РЅР°С‚РёРІРЅС‹Рј CalcHintRect Рё РїРѕРєР°Р·С‹РІР°РµС‚СЃСЏ РїРѕРґ РІРєР»Р°РґРєРѕР№ --
+    ActivateHint СЃР°Рј РґРµР»Р°РµС‚ РѕРєРЅРѕ РІРёРґРёРјС‹Рј. OffsetRect РѕР±СЏР·Р°РЅ Р±С‹С‚СЊ
+    РєРІР°Р»РёС„РёС†РёСЂРѕРІР°РЅ РєР°Рє Types: РёРЅР°С‡Рµ СЂРµР·РѕР»РІРёС‚СЃСЏ РІ stdcall РёР· Windows.pas. }
   Result := THintWindow.Create(C);
+  {$IFDEF FPC}
+  Result.Color := RGBToColor(255,255,128);   // РєР»Р°СЃСЃРёС‡РµСЃРєРёР№ Р¶С‘Р»С‚С‹Р№ РІРјРµСЃС‚Рѕ С‚РµРјС‹
+  {$ENDIF}
   S := C.Hint;
   P := C.ClientOrigin;
   Inc(P.Y, C.Height + 8);
-  R := Types.Bounds(0, 0, Screen.Width, 0);
-  DrawText(Result.Canvas.Handle, PChar(S), -1, R,
-    DT_CALCRECT or DT_WORDBREAK or DT_NOPREFIX);
+  R := Result.CalcHintRect(Screen.Width, S, nil);
   Types.OffsetRect(R, P.X, P.Y);
-  Inc(R.Right, 6);
-  Inc(R.Bottom, 2);
   Result.ActivateHint(R, S);
 end;
 
 procedure TfmSecond.CharParamsFormClose(Sender: TObject;
       var Action: TCloseAction);
 begin
-  // закрытие окна параметров персонажа
+  // Р·Р°РєСЂС‹С‚РёРµ РѕРєРЅР° РїР°СЂР°РјРµС‚СЂРѕРІ РїРµСЂСЃРѕРЅР°Р¶Р°
 end;
 
 procedure TfmSecond.HideHintWindow(var W: TObject);
@@ -9375,9 +9815,9 @@ end;
 
 procedure TfmSecond.ScriptTabWndProc(var Message: TMessage);
 begin
-  { $B013 и $B014 -- CM_MOUSEENTER и CM_MOUSELEAVE: курсор вошёл на ярлык
-    вкладки и ушёл с него. Значения идут подряд, поэтому цепочка case-а
-    сворачивается в вычитание с двумя переходами. }
+  { $B013 Рё $B014 -- CM_MOUSEENTER Рё CM_MOUSELEAVE: РєСѓСЂСЃРѕСЂ РІРѕС€С‘Р» РЅР° СЏСЂР»С‹Рє
+    РІРєР»Р°РґРєРё Рё СѓС€С‘Р» СЃ РЅРµРіРѕ. Р—РЅР°С‡РµРЅРёСЏ РёРґСѓС‚ РїРѕРґСЂСЏРґ, РїРѕСЌС‚РѕРјСѓ С†РµРїРѕС‡РєР° case-Р°
+    СЃРІРѕСЂР°С‡РёРІР°РµС‚СЃСЏ РІ РІС‹С‡РёС‚Р°РЅРёРµ СЃ РґРІСѓРјСЏ РїРµСЂРµС…РѕРґР°РјРё. }
   case Message.Msg of
     CM_MOUSELEAVE:
       begin
@@ -9395,9 +9835,9 @@ var
   M: TMonitor;
   I: Integer;
 begin
-  { Панель параметров чара: какая именно панель показывается, определяется
-    маской нажатых кнопок sbCFCP1..8 -- ровно одна из них должна быть нажата,
-    иначе форма не опознана. }
+  { РџР°РЅРµР»СЊ РїР°СЂР°РјРµС‚СЂРѕРІ С‡Р°СЂР°: РєР°РєР°СЏ РёРјРµРЅРЅРѕ РїР°РЅРµР»СЊ РїРѕРєР°Р·С‹РІР°РµС‚СЃСЏ, РѕРїСЂРµРґРµР»СЏРµС‚СЃСЏ
+    РјР°СЃРєРѕР№ РЅР°Р¶Р°С‚С‹С… РєРЅРѕРїРѕРє sbCFCP1..8 -- СЂРѕРІРЅРѕ РѕРґРЅР° РёР· РЅРёС… РґРѕР»Р¶РЅР° Р±С‹С‚СЊ РЅР°Р¶Р°С‚Р°,
+    РёРЅР°С‡Рµ С„РѕСЂРјР° РЅРµ РѕРїРѕР·РЅР°РЅР°. }
   Mask := Ord(sbCFCP8.Down) shl 6 + Ord(sbCFCP7.Down) shl 5 +
           Ord(sbCFCP1.Down) shl 4 + Ord(sbCFCP2.Down) shl 3 +
           Ord(sbCFCP3.Down) shl 2 + Ord(sbCFCP4.Down) * 2 +
@@ -9408,12 +9848,15 @@ begin
     if gLangOffsety > 0 then
       MsgBox(PChar(LoadStr(gLangOffsety + $1B0)), 'UOPilot Error Message', 0)
     else
-      MsgBox('Не могу определить тип формы.', 'UOPilot Error Message', 0);
+      MsgBox('РќРµ РјРѕРіСѓ РѕРїСЂРµРґРµР»РёС‚СЊ С‚РёРї С„РѕСЂРјС‹.', 'UOPilot Error Message', 0);
     Exit;
   end;
   if gDlg5966F0 = nil then
   begin
     gDlg5966F0 := TForm.Create(fmSecondfj);
+    {$IFDEF FPC}
+    gDlg5966F0.PopupParent := fmSecondfj;
+    {$ENDIF}
     gDlg5966F0.Parent := nil;
     gDlg5966F0.Font := fmSecondfj.Font;
     gDlg5966F0.BorderStyle := bsToolWindow;
@@ -9426,21 +9869,21 @@ begin
     if gLangOffsety > 0 then
       gDlg5966F0.Caption := LoadStr(gLangOffsety + $1B1)
     else
-      gDlg5966F0.Caption := 'Параметры чара';
+      gDlg5966F0.Caption := 'РџР°СЂР°РјРµС‚СЂС‹ С‡Р°СЂР°';
     pCPLastObjects.Parent := gDlg5966F0;
     pCPVar.Parent := gDlg5966F0;
     pCPDTimer.Parent := gDlg5966F0;
     pCharParams.Parent := gDlg5966F0;
     gDlg5966F0.HorzScrollBar.Visible := False;
     gDlg5966F0.VertScrollBar.Visible := False;
-    { обработчик снят на время перестановки панелей }
+    { РѕР±СЂР°Р±РѕС‚С‡РёРє СЃРЅСЏС‚ РЅР° РІСЂРµРјСЏ РїРµСЂРµСЃС‚Р°РЅРѕРІРєРё РїР°РЅРµР»РµР№ }
     gDlg5966F0.OnResize := nil;
     if pCPVar.Tag = 0 then
     begin
       pCPVar.Tag := pCPVar.Width;
       gWidth596A64 := 0;
     end;
-    { какая панель показывается -- определяет обработчик соответствующей кнопки }
+    { РєР°РєР°СЏ РїР°РЅРµР»СЊ РїРѕРєР°Р·С‹РІР°РµС‚СЃСЏ -- РѕРїСЂРµРґРµР»СЏРµС‚ РѕР±СЂР°Р±РѕС‚С‡РёРє СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РµР№ РєРЅРѕРїРєРё }
     case Mask of
       1: sbCFCP5Click(Sender);
       2: sbCFCP4Click(Sender);
@@ -9481,13 +9924,13 @@ begin
     gDlg5966F0.OnCloseQuery := CharParamsCloseQuery;
     gDlg5966F0.Visible := True;
     Application.OnDeactivate := AppActivateKeepTopmost;
-    { раскладку надо посчитать сразу, не дожидаясь первого WM_SIZE }
+    { СЂР°СЃРєР»Р°РґРєСѓ РЅР°РґРѕ РїРѕСЃС‡РёС‚Р°С‚СЊ СЃСЂР°Р·Сѓ, РЅРµ РґРѕР¶РёРґР°СЏСЃСЊ РїРµСЂРІРѕРіРѕ WM_SIZE }
     CFCPRelayout(Sender);
   end
   else
   begin
-    { форма уже открыта -- запоминаем позицию, возвращаем панели на главную
-      форму и освобождаем окно }
+    { С„РѕСЂРјР° СѓР¶Рµ РѕС‚РєСЂС‹С‚Р° -- Р·Р°РїРѕРјРёРЅР°РµРј РїРѕР·РёС†РёСЋ, РІРѕР·РІСЂР°С‰Р°РµРј РїР°РЅРµР»Рё РЅР° РіР»Р°РІРЅСѓСЋ
+      С„РѕСЂРјСѓ Рё РѕСЃРІРѕР±РѕР¶РґР°РµРј РѕРєРЅРѕ }
     gWinPos[0] := gDlg5966F0.Top;
     gWinPos[1] := gDlg5966F0.Left;
     case gDlg5966F0.Tag of
@@ -9528,8 +9971,8 @@ end;
 
 function TfmSecond.CanCloseOrActivate: Boolean;
 begin
-  // Окно можно закрыть/активировать, если открыто хоть одно вспомогательное
-  // окно, ЛИБО взведён флажок «поверх всех».
+  // РћРєРЅРѕ РјРѕР¶РЅРѕ Р·Р°РєСЂС‹С‚СЊ/Р°РєС‚РёРІРёСЂРѕРІР°С‚СЊ, РµСЃР»Рё РѕС‚РєСЂС‹С‚Рѕ С…РѕС‚СЊ РѕРґРЅРѕ РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅРѕРµ
+  // РѕРєРЅРѕ, Р›РР‘Рћ РІР·РІРµРґС‘РЅ С„Р»Р°Р¶РѕРє В«РїРѕРІРµСЂС… РІСЃРµС…В».
   if (gDlg5966F4 <> nil) or
      (gDlg5966E8 <> nil) or
      (gDlg5966E4 <> nil) or
@@ -9577,8 +10020,8 @@ var
   I: Integer;
   S: string;
 begin
-  { Переключение показа адресов: шестнадцатеричные значения получают
-    префикс 0x, обратно -- разворачиваются в десятичные. }
+  { РџРµСЂРµРєР»СЋС‡РµРЅРёРµ РїРѕРєР°Р·Р° Р°РґСЂРµСЃРѕРІ: С€РµСЃС‚РЅР°РґС†Р°С‚РµСЂРёС‡РЅС‹Рµ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СѓС‡Р°СЋС‚
+    РїСЂРµС„РёРєСЃ 0x, РѕР±СЂР°С‚РЅРѕ -- СЂР°Р·РІРѕСЂР°С‡РёРІР°СЋС‚СЃСЏ РІ РґРµСЃСЏС‚РёС‡РЅС‹Рµ. }
   if miShowHex.Checked then
     btColor.Caption := '0x' + IntToHex(StrToInt(btColor.Caption), 6)
   else
@@ -9631,9 +10074,9 @@ var
   F: TextFile;
 begin
 {$I-}
-  { Загрузка/сохранение таблицы последних объектов. Один обработчик на два
-    пункта меню: который из них нажали, видно по имени Sender.
-    Настройки диалога подменяются на время вызова и возвращаются обратно. }
+  { Р—Р°РіСЂСѓР·РєР°/СЃРѕС…СЂР°РЅРµРЅРёРµ С‚Р°Р±Р»РёС†С‹ РїРѕСЃР»РµРґРЅРёС… РѕР±СЉРµРєС‚РѕРІ. РћРґРёРЅ РѕР±СЂР°Р±РѕС‚С‡РёРє РЅР° РґРІР°
+    РїСѓРЅРєС‚Р° РјРµРЅСЋ: РєРѕС‚РѕСЂС‹Р№ РёР· РЅРёС… РЅР°Р¶Р°Р»Рё, РІРёРґРЅРѕ РїРѕ РёРјРµРЅРё Sender.
+    РќР°СЃС‚СЂРѕР№РєРё РґРёР°Р»РѕРіР° РїРѕРґРјРµРЅСЏСЋС‚СЃСЏ РЅР° РІСЂРµРјСЏ РІС‹Р·РѕРІР° Рё РІРѕР·РІСЂР°С‰Р°СЋС‚СЃСЏ РѕР±СЂР°С‚РЅРѕ. }
   if pmSaveLoadLO.PopupComponent = sgLastObject then
     G := sgLastObject
   else
@@ -9649,13 +10092,13 @@ begin
     if gLangOffsety > 0 then
       odLoad.Filter := LoadStr(gLangOffsety + $1B2)
     else
-      odLoad.Filter := 'Файлы таблиц (*.tbl)|*.tbl|Все файлы (*.*)|*.*';
+      odLoad.Filter := 'Р¤Р°Р№Р»С‹ С‚Р°Р±Р»РёС† (*.tbl)|*.tbl|Р’СЃРµ С„Р°Р№Р»С‹ (*.*)|*.*';
     odLoad.FilterIndex := 0;
     odLoad.InitialDir := ExtractFilePath(Application.ExeName) + 'Scripts';
     if gLangOffsety > 0 then
       odLoad.Title := LoadStr(gLangOffsety + $1B3)
     else
-      odLoad.Title := 'Загрузить таблицу...';
+      odLoad.Title := 'Р—Р°РіСЂСѓР·РёС‚СЊ С‚Р°Р±Р»РёС†Сѓ...';
     if odLoad.Execute then
     begin
       AssignFile(F, odLoad.FileName);
@@ -9683,13 +10126,13 @@ begin
     if gLangOffsety > 0 then
       sdSave.Filter := LoadStr(gLangOffsety + $1B2)
     else
-      sdSave.Filter := 'Файлы таблиц (*.tbl)|*.tbl|Все файлы (*.*)|*.*';
+      sdSave.Filter := 'Р¤Р°Р№Р»С‹ С‚Р°Р±Р»РёС† (*.tbl)|*.tbl|Р’СЃРµ С„Р°Р№Р»С‹ (*.*)|*.*';
     sdSave.FilterIndex := 0;
     sdSave.InitialDir := ExtractFilePath(Application.ExeName) + 'Scripts';
     if gLangOffsety > 0 then
       sdSave.Title := LoadStr(gLangOffsety + $1B4)
     else
-      sdSave.Title := 'Сохранить таблицу как...';
+      sdSave.Title := 'РЎРѕС…СЂР°РЅРёС‚СЊ С‚Р°Р±Р»РёС†Сѓ РєР°Рє...';
     if sdSave.Execute then
     begin
       AssignFile(F, sdSave.FileName);
@@ -9762,9 +10205,9 @@ var
   MI: TMenuItem;
   Addr: Cardinal;
 begin
-  { Переключатели «имена/прозрачность/подсветка преступников/поиск пути»
-    правят байт прямо в памяти клиента: адрес берётся из таблицы по выбранной
-    версии клиента, а какой именно флаг -- по Tag пункта меню. }
+  { РџРµСЂРµРєР»СЋС‡Р°С‚РµР»Рё В«РёРјРµРЅР°/РїСЂРѕР·СЂР°С‡РЅРѕСЃС‚СЊ/РїРѕРґСЃРІРµС‚РєР° РїСЂРµСЃС‚СѓРїРЅРёРєРѕРІ/РїРѕРёСЃРє РїСѓС‚РёВ»
+    РїСЂР°РІСЏС‚ Р±Р°Р№С‚ РїСЂСЏРјРѕ РІ РїР°РјСЏС‚Рё РєР»РёРµРЅС‚Р°: Р°РґСЂРµСЃ Р±РµСЂС‘С‚СЃСЏ РёР· С‚Р°Р±Р»РёС†С‹ РїРѕ РІС‹Р±СЂР°РЅРЅРѕР№
+    РІРµСЂСЃРёРё РєР»РёРµРЅС‚Р°, Р° РєР°РєРѕР№ РёРјРµРЅРЅРѕ С„Р»Р°Рі -- РїРѕ Tag РїСѓРЅРєС‚Р° РјРµРЅСЋ. }
   Wnd := FindWindow('Ultima Online', nil);
   GetWindowThreadProcessId(Wnd, @Pid);
   Ph := OpenProcess($638, False, Pid);
@@ -9791,13 +10234,13 @@ begin
       B := Byte(MI.Checked);
       WriteProcessMemory(Ph, Pointer(Addr), @B, 1, N);
     end;
-  CloseHandle(Ph);
+  FileClose(Ph); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
 end;
 
 procedure TfmSecond.miScriptFontSelectClick(Sender: TObject);
 begin
-  { Один обработчик на два пункта меню: шрифт редактора и шрифт лога.
-    Высота вкладок лога считается как -Font.Height * 20 div 12. }
+  { РћРґРёРЅ РѕР±СЂР°Р±РѕС‚С‡РёРє РЅР° РґРІР° РїСѓРЅРєС‚Р° РјРµРЅСЋ: С€СЂРёС„С‚ СЂРµРґР°РєС‚РѕСЂР° Рё С€СЂРёС„С‚ Р»РѕРіР°.
+    Р’С‹СЃРѕС‚Р° РІРєР»Р°РґРѕРє Р»РѕРіР° СЃС‡РёС‚Р°РµС‚СЃСЏ РєР°Рє -Font.Height * 20 div 12. }
   if Sender = miScriptFontSelect then
   begin
     gFontTarget := 1;
@@ -9835,7 +10278,7 @@ procedure TfmSecond.ApplyLogFont;
 var
   DC: HDC;
   Old: HGDIOBJ;
-  TM: TTextMetric;
+  TM: Windows.TTextMetric;
   H: Integer;
 begin
   H := 0;
@@ -9970,7 +10413,7 @@ begin
     pCharParams.Visible := True;
     pCPDTimer.Visible := True;
     pCPVar.Visible := True;
-    { Если окно вылезло за правый край экрана -- прижать его к краю }
+    { Р•СЃР»Рё РѕРєРЅРѕ РІС‹Р»РµР·Р»Рѕ Р·Р° РїСЂР°РІС‹Р№ РєСЂР°Р№ СЌРєСЂР°РЅР° -- РїСЂРёР¶Р°С‚СЊ РµРіРѕ Рє РєСЂР°СЋ }
     if Screen.DesktopWidth < gDlg5966F0.Width + gDlg5966F0.Left then
       gDlg5966F0.Left := Screen.DesktopWidth - gDlg5966F0.Width;
     gDlg5966F0.Constraints.MinHeight := gDlg5966F0.Height;
@@ -10133,17 +10576,20 @@ var
   mmWM, mmYM, mmThanks, mmDonate: TMemo;
   S: string;
 begin
-  { Окно «О программе» строится целиком кодом, без DFM: форма создаётся один
-    раз и дальше только показывается/прячется. Под каждый элемент заведена
-    своя переменная. }
+  { РћРєРЅРѕ В«Рћ РїСЂРѕРіСЂР°РјРјРµВ» СЃС‚СЂРѕРёС‚СЃСЏ С†РµР»РёРєРѕРј РєРѕРґРѕРј, Р±РµР· DFM: С„РѕСЂРјР° СЃРѕР·РґР°С‘С‚СЃСЏ РѕРґРёРЅ
+    СЂР°Р· Рё РґР°Р»СЊС€Рµ С‚РѕР»СЊРєРѕ РїРѕРєР°Р·С‹РІР°РµС‚СЃСЏ/РїСЂСЏС‡РµС‚СЃСЏ. РџРѕРґ РєР°Р¶РґС‹Р№ СЌР»РµРјРµРЅС‚ Р·Р°РІРµРґРµРЅР°
+    СЃРІРѕСЏ РїРµСЂРµРјРµРЅРЅР°СЏ. }
   if gAboutForm = nil then
   begin
     gAboutForm := TForm.Create(fmSecondfj);
+    {$IFDEF FPC}
+    gAboutForm.PopupParent := fmSecondfj;
+    {$ENDIF}
     gAboutForm.BorderStyle := bsDialog;
     if gLangOffsety > 0 then
       gAboutForm.Caption := LoadStr(gLangOffsety + $1B5)
     else
-      gAboutForm.Caption := ' О программе UoPilot';
+      gAboutForm.Caption := ' Рћ РїСЂРѕРіСЂР°РјРјРµ UoPilot';
     gAboutForm.OnCloseQuery := AboutFormClose;
     gAboutForm.ClientHeight := $142;
     gAboutForm.ClientHeight := gAboutForm.ClientHeight + $14 + $3C - $E;
@@ -10164,7 +10610,7 @@ begin
     gAboutForm.Top := Y;
     SetWindowPos(gAboutForm.Handle, HWND_TOPMOST, 1, 1, 1, 1,
       SWP_NOSIZE or SWP_NOMOVE or SWP_NOACTIVATE);
-    { иконка приложения }
+    { РёРєРѕРЅРєР° РїСЂРёР»РѕР¶РµРЅРёСЏ }
     Img := TImage.Create(gAboutForm);
     Img.Parent := gAboutForm;
     Img.Left := $21;
@@ -10173,7 +10619,7 @@ begin
     Img.Height := $20;
     Img.AutoSize := True;
     Img.Picture.Icon.Handle := Application.Icon.Handle;
-    { строка версии собирается в четыре приёма прямо в Caption метки }
+    { СЃС‚СЂРѕРєР° РІРµСЂСЃРёРё СЃРѕР±РёСЂР°РµС‚СЃСЏ РІ С‡РµС‚С‹СЂРµ РїСЂРёС‘РјР° РїСЂСЏРјРѕ РІ Caption РјРµС‚РєРё }
     lbVer := TLabel.Create(gAboutForm);
     lbVer.Parent := gAboutForm;
     lbVer.Left := $49;
@@ -10195,10 +10641,10 @@ begin
     lbCopy.Height := $D;
     lbCopy.Alignment := taCenter;
     lbCopy.AutoSize := False;
-    { год берётся не константой, а вырезкой из строки даты сборки }
+    { РіРѕРґ Р±РµСЂС‘С‚СЃСЏ РЅРµ РєРѕРЅСЃС‚Р°РЅС‚РѕР№, Р° РІС‹СЂРµР·РєРѕР№ РёР· СЃС‚СЂРѕРєРё РґР°С‚С‹ СЃР±РѕСЂРєРё }
     lbCopy.Caption := 'Copyright (c) 2002-' + Copy(cBuildDate, 7, 4) +
       ' by White Knight';
-    { ссылка на сайт: русский раздел подставляется только для русской локали }
+    { СЃСЃС‹Р»РєР° РЅР° СЃР°Р№С‚: СЂСѓСЃСЃРєРёР№ СЂР°Р·РґРµР» РїРѕРґСЃС‚Р°РІР»СЏРµС‚СЃСЏ С‚РѕР»СЊРєРѕ РґР»СЏ СЂСѓСЃСЃРєРѕР№ Р»РѕРєР°Р»Рё }
     wlSite := TWebLabel.Create(gAboutForm);
     wlSite.Parent := gAboutForm;
     wlSite.Left := $72;
@@ -10217,7 +10663,7 @@ begin
     wlSite.Font.Color := clBlue;
     wlSite.Cursor := crHandPoint;
     wlSite.Font.Style := wlSite.Font.Style - [fsUnderline];
-    { адрес форума переехал: до 2012 года -- ultimasoft.ru, дальше uokit.com }
+    { Р°РґСЂРµСЃ С„РѕСЂСѓРјР° РїРµСЂРµРµС…Р°Р»: РґРѕ 2012 РіРѕРґР° -- ultimasoft.ru, РґР°Р»СЊС€Рµ uokit.com }
     wlForum := TWebLabel.Create(gAboutForm);
     wlForum.Parent := gAboutForm;
     wlForum.Left := $2D;
@@ -10237,7 +10683,7 @@ begin
     wlForum.Font.Color := clBlue;
     wlForum.Cursor := crHandPoint;
     wlForum.Font.Style := wlForum.Font.Style - [fsUnderline];
-    { почта: в теме письма уходит заголовок главного окна }
+    { РїРѕС‡С‚Р°: РІ С‚РµРјРµ РїРёСЃСЊРјР° СѓС…РѕРґРёС‚ Р·Р°РіРѕР»РѕРІРѕРє РіР»Р°РІРЅРѕРіРѕ РѕРєРЅР° }
     wlMail := TWebLabel.Create(gAboutForm);
     wlMail.Parent := gAboutForm;
     wlMail.Left := $7A;
@@ -10256,8 +10702,8 @@ begin
     wlMail.Cursor := crHandPoint;
     wlMail.Font.Style := wlMail.Font.Style - [fsUnderline];
     S := '';
-    { метка со скрытой строкой: Caption у только что созданной метки пуст,
-      поэтому цикл не выполняется ни разу }
+    { РјРµС‚РєР° СЃРѕ СЃРєСЂС‹С‚РѕР№ СЃС‚СЂРѕРєРѕР№: Caption Сѓ С‚РѕР»СЊРєРѕ С‡С‚Рѕ СЃРѕР·РґР°РЅРЅРѕР№ РјРµС‚РєРё РїСѓСЃС‚,
+      РїРѕСЌС‚РѕРјСѓ С†РёРєР» РЅРµ РІС‹РїРѕР»РЅСЏРµС‚СЃСЏ РЅРё СЂР°Р·Сѓ }
     lbHidden := TLabel.Create(gAboutForm);
     lbHidden.Parent := gAboutForm;
     lbHidden.Left := $26;
@@ -10282,8 +10728,8 @@ begin
     lbWM.AutoSize := False;
     lbWM.Caption := 'WebMoney';
     S := '';
-    { номера кошельков собраны из IntToStr по цифрам -- чтобы их не нашли
-      поиском строки в exe }
+    { РЅРѕРјРµСЂР° РєРѕС€РµР»СЊРєРѕРІ СЃРѕР±СЂР°РЅС‹ РёР· IntToStr РїРѕ С†РёС„СЂР°Рј -- С‡С‚РѕР±С‹ РёС… РЅРµ РЅР°С€Р»Рё
+      РїРѕРёСЃРєРѕРј СЃС‚СЂРѕРєРё РІ exe }
     mmWM := TMemo.Create(gAboutForm);
     mmWM.Parent := gAboutForm;
     mmWM.Left := $41;
@@ -10291,7 +10737,7 @@ begin
     mmWM.Width := $55;
     mmWM.Height := $27;
     mmWM.Alignment := taCenter;
-    { без квалификатора: это AutoSize самой формы, а не мемо }
+    { Р±РµР· РєРІР°Р»РёС„РёРєР°С‚РѕСЂР°: СЌС‚Рѕ AutoSize СЃР°РјРѕР№ С„РѕСЂРјС‹, Р° РЅРµ РјРµРјРѕ }
     AutoSize := False;
     mmWM.BorderStyle := bsNone;
     mmWM.ReadOnly := True;
@@ -10321,7 +10767,7 @@ begin
     mmYM.ReadOnly := True;
     mmYM.Text := IntToStr(4) + IntToStr(100) + IntToStr(114) + IntToStr(22) +
       IntToStr(5) + IntToStr(50) + IntToStr(40) + IntToStr(5);
-    { благодарности }
+    { Р±Р»Р°РіРѕРґР°СЂРЅРѕСЃС‚Рё }
     mmThanks := TMemo.Create(gAboutForm);
     mmThanks.Parent := gAboutForm;
     mmThanks.Lines.Add('under construction');
@@ -10337,29 +10783,29 @@ begin
     mmThanks.TabOrder := 0;
     mmThanks.Font.Height := -8;
     mmThanks.Lines.Text := 'Thanks to:'#13#10 +
-        'Blade[RBG] (blade17@rambler.ru): за оригинальную версию и ее исходники;'#13#10 +
-        'Destruction (UltimaSoft.ru): за форум, тестирование, моральную и материальную поддержку, и прочие полезности;'#13#10 +
-        'Anonymous (internet_mail@hotbox.ru): за форум, поиск адресов, тестирование и прочие полезности;'#13#10 +
-        'GM F@got[FL] (rv3fs@afaru.ru): за поддержку клиента версии 1.26.4e;'#13#10 +
-        'SVS RUSSIAN (svs_russian@hotmail.com): за помощь в переводе UoPilot''a на английский язык;'#13#10 +
-        'Edred (tercia@spb.lanck.net): за создание нормального хелпа по языку скриптов;'#13#10 +
-        'Gustavo (theyue@ibest.com.br): за помощь в переводе UoPilot''a на португальский язык;'#13#10 +
-        'Vladimir ''SirZ'' K : за полную поддержку клиента версии 6.0.12.3-4, 6.0.13.0, 6.0.14.1-2, 7.0.4.3-5, 7.0.5.0, 7.0.6.3;'#13#10 +
-        'Николай С : за начальную поддержку клиента MU 1.04J. (3 сезон);'#13#10 +
-        'Alexey ''Basket'' Andreev: перевод на Немецкий язык;'#13#10 +
-        'Оксана Погодина (pogodinamusic.ru): перевод на Беларуский язык;'#13#10 +
-        'ARSI & Small: перевод на Украинский язык;'#13#10 +
-        'DarkMaster: саппорт на форуме, UOWiki, материальную поддержку;'#13#10 +
-        'Zeleax: саппорт на форуме, латание багов пилота внешними самописными программами, материальную поддержку;'#13#10 +
-        'Peter Below: исправил ошибку в VCL Delphi 7 на 64 битных Windows;'#13#10 +
+        'Blade[RBG] (blade17@rambler.ru): Р·Р° РѕСЂРёРіРёРЅР°Р»СЊРЅСѓСЋ РІРµСЂСЃРёСЋ Рё РµРµ РёСЃС…РѕРґРЅРёРєРё;'#13#10 +
+        'Destruction (UltimaSoft.ru): Р·Р° С„РѕСЂСѓРј, С‚РµСЃС‚РёСЂРѕРІР°РЅРёРµ, РјРѕСЂР°Р»СЊРЅСѓСЋ Рё РјР°С‚РµСЂРёР°Р»СЊРЅСѓСЋ РїРѕРґРґРµСЂР¶РєСѓ, Рё РїСЂРѕС‡РёРµ РїРѕР»РµР·РЅРѕСЃС‚Рё;'#13#10 +
+        'Anonymous (internet_mail@hotbox.ru): Р·Р° С„РѕСЂСѓРј, РїРѕРёСЃРє Р°РґСЂРµСЃРѕРІ, С‚РµСЃС‚РёСЂРѕРІР°РЅРёРµ Рё РїСЂРѕС‡РёРµ РїРѕР»РµР·РЅРѕСЃС‚Рё;'#13#10 +
+        'GM F@got[FL] (rv3fs@afaru.ru): Р·Р° РїРѕРґРґРµСЂР¶РєСѓ РєР»РёРµРЅС‚Р° РІРµСЂСЃРёРё 1.26.4e;'#13#10 +
+        'SVS RUSSIAN (svs_russian@hotmail.com): Р·Р° РїРѕРјРѕС‰СЊ РІ РїРµСЂРµРІРѕРґРµ UoPilot''a РЅР° Р°РЅРіР»РёР№СЃРєРёР№ СЏР·С‹Рє;'#13#10 +
+        'Edred (tercia@spb.lanck.net): Р·Р° СЃРѕР·РґР°РЅРёРµ РЅРѕСЂРјР°Р»СЊРЅРѕРіРѕ С…РµР»РїР° РїРѕ СЏР·С‹РєСѓ СЃРєСЂРёРїС‚РѕРІ;'#13#10 +
+        'Gustavo (theyue@ibest.com.br): Р·Р° РїРѕРјРѕС‰СЊ РІ РїРµСЂРµРІРѕРґРµ UoPilot''a РЅР° РїРѕСЂС‚СѓРіР°Р»СЊСЃРєРёР№ СЏР·С‹Рє;'#13#10 +
+        'Vladimir ''SirZ'' K : Р·Р° РїРѕР»РЅСѓСЋ РїРѕРґРґРµСЂР¶РєСѓ РєР»РёРµРЅС‚Р° РІРµСЂСЃРёРё 6.0.12.3-4, 6.0.13.0, 6.0.14.1-2, 7.0.4.3-5, 7.0.5.0, 7.0.6.3;'#13#10 +
+        'РќРёРєРѕР»Р°Р№ РЎ : Р·Р° РЅР°С‡Р°Р»СЊРЅСѓСЋ РїРѕРґРґРµСЂР¶РєСѓ РєР»РёРµРЅС‚Р° MU 1.04J. (3 СЃРµР·РѕРЅ);'#13#10 +
+        'Alexey ''Basket'' Andreev: РїРµСЂРµРІРѕРґ РЅР° РќРµРјРµС†РєРёР№ СЏР·С‹Рє;'#13#10 +
+        'РћРєСЃР°РЅР° РџРѕРіРѕРґРёРЅР° (pogodinamusic.ru): РїРµСЂРµРІРѕРґ РЅР° Р‘РµР»Р°СЂСѓСЃРєРёР№ СЏР·С‹Рє;'#13#10 +
+        'ARSI & Small: РїРµСЂРµРІРѕРґ РЅР° РЈРєСЂР°РёРЅСЃРєРёР№ СЏР·С‹Рє;'#13#10 +
+        'DarkMaster: СЃР°РїРїРѕСЂС‚ РЅР° С„РѕСЂСѓРјРµ, UOWiki, РјР°С‚РµСЂРёР°Р»СЊРЅСѓСЋ РїРѕРґРґРµСЂР¶РєСѓ;'#13#10 +
+        'Zeleax: СЃР°РїРїРѕСЂС‚ РЅР° С„РѕСЂСѓРјРµ, Р»Р°С‚Р°РЅРёРµ Р±Р°РіРѕРІ РїРёР»РѕС‚Р° РІРЅРµС€РЅРёРјРё СЃР°РјРѕРїРёСЃРЅС‹РјРё РїСЂРѕРіСЂР°РјРјР°РјРё, РјР°С‚РµСЂРёР°Р»СЊРЅСѓСЋ РїРѕРґРґРµСЂР¶РєСѓ;'#13#10 +
+        'Peter Below: РёСЃРїСЂР°РІРёР» РѕС€РёР±РєСѓ РІ VCL Delphi 7 РЅР° 64 Р±РёС‚РЅС‹С… Windows;'#13#10 +
         'Code highlighting based on SynEdit 2.0.3 - http://synedit.sourceforge.net;'#13#10 +
-        'Alexandr Petrovich Sysoev : за модуль поиска по маске;'#13#10 +
-        'За материальную поддержку:'#13#10 +
-        'stepanian, команде L2Farm, Tomas1917, nick, veiron,Crox'#13#10 +
-        'Dalamar81 : за алгоритм чтения содержимого бакпака;'#13#10 +
-        'cirus : за саппорт на форуме;'#13#10 +
-        'Cockney : за саппорт на форуме;'#13#10;
-    { просьба о поддержке -- по языку интерфейса }
+        'Alexandr Petrovich Sysoev : Р·Р° РјРѕРґСѓР»СЊ РїРѕРёСЃРєР° РїРѕ РјР°СЃРєРµ;'#13#10 +
+        'Р—Р° РјР°С‚РµСЂРёР°Р»СЊРЅСѓСЋ РїРѕРґРґРµСЂР¶РєСѓ:'#13#10 +
+        'stepanian, РєРѕРјР°РЅРґРµ L2Farm, Tomas1917, nick, veiron,Crox'#13#10 +
+        'Dalamar81 : Р·Р° Р°Р»РіРѕСЂРёС‚Рј С‡С‚РµРЅРёСЏ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ Р±Р°РєРїР°РєР°;'#13#10 +
+        'cirus : Р·Р° СЃР°РїРїРѕСЂС‚ РЅР° С„РѕСЂСѓРјРµ;'#13#10 +
+        'Cockney : Р·Р° СЃР°РїРїРѕСЂС‚ РЅР° С„РѕСЂСѓРјРµ;'#13#10;
+    { РїСЂРѕСЃСЊР±Р° Рѕ РїРѕРґРґРµСЂР¶РєРµ -- РїРѕ СЏР·С‹РєСѓ РёРЅС‚РµСЂС„РµР№СЃР° }
     mmDonate := TMemo.Create(gAboutForm);
     mmDonate.Parent := gAboutForm;
     mmDonate.Lines.Add('under construction');
@@ -10377,14 +10823,14 @@ begin
     mmDonate.TabOrder := 0;
     mmDonate.Font.Height := -11;
     if (gLangOffsety = 2000) or (gLangOffsety = 0) then
-      mmDonate.Lines.Text := '    UoPilot абсолютно бесплатная программа, это значит, что Вы не должны платить за ее использование.'#13#10 +
-        '    Однако если Вам нравится наш проект и Вы заинтересованы в его дальнейшем развитии и регулярных обновлениях, окажите нам поддержку, отправив денежный перевод.'
+      mmDonate.Lines.Text := '    UoPilot Р°Р±СЃРѕР»СЋС‚РЅРѕ Р±РµСЃРїР»Р°С‚РЅР°СЏ РїСЂРѕРіСЂР°РјРјР°, СЌС‚Рѕ Р·РЅР°С‡РёС‚, С‡С‚Рѕ Р’С‹ РЅРµ РґРѕР»Р¶РЅС‹ РїР»Р°С‚РёС‚СЊ Р·Р° РµРµ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ.'#13#10 +
+        '    РћРґРЅР°РєРѕ РµСЃР»Рё Р’Р°Рј РЅСЂР°РІРёС‚СЃСЏ РЅР°С€ РїСЂРѕРµРєС‚ Рё Р’С‹ Р·Р°РёРЅС‚РµСЂРµСЃРѕРІР°РЅС‹ РІ РµРіРѕ РґР°Р»СЊРЅРµР№С€РµРј СЂР°Р·РІРёС‚РёРё Рё СЂРµРіСѓР»СЏСЂРЅС‹С… РѕР±РЅРѕРІР»РµРЅРёСЏС…, РѕРєР°Р¶РёС‚Рµ РЅР°Рј РїРѕРґРґРµСЂР¶РєСѓ, РѕС‚РїСЂР°РІРёРІ РґРµРЅРµР¶РЅС‹Р№ РїРµСЂРµРІРѕРґ.'
     else
       mmDonate.Lines.Text := '    UoPilot is freeware, meaning you don''t have to pay to use it.'#13#10 +
         '    If You like our project, and You are interested in its further development and regular updates, support us by making a donation.';
     SetChildFontHeight(gAboutForm);
   end;
-  { пока окно открыто, главная форма выключена -- окно ведёт себя как модальное }
+  { РїРѕРєР° РѕРєРЅРѕ РѕС‚РєСЂС‹С‚Рѕ, РіР»Р°РІРЅР°СЏ С„РѕСЂРјР° РІС‹РєР»СЋС‡РµРЅР° -- РѕРєРЅРѕ РІРµРґС‘С‚ СЃРµР±СЏ РєР°Рє РјРѕРґР°Р»СЊРЅРѕРµ }
   if gAboutForm.Visible then
   begin
     fmSecondfj.Enabled := True;
@@ -10399,29 +10845,38 @@ begin
   end;
 end;
 
+procedure SetTrayTip(const Tip: string);
+{$IFDEF FPC}
+var
+  WS: UnicodeString;
+{$ENDIF}
+begin
+{$IFDEF FPC}
+  WS := UTF8Decode(Tip);
+  lstrcpynW(@gTrayIcon.szTip[0], PWideChar(WS), High(gTrayIcon.szTip) + 1);
+{$ELSE}
+  StrPLCopy(gTrayIcon.szTip, Tip, High(gTrayIcon.szTip));
+{$ENDIF}
+end;
+
+function TrayNotifyIcon(dwMessage: DWORD; lpData: PTrayNotifyIconData): Boolean;
+begin
+{$IFDEF FPC}
+  Result := Shell_NotifyIconW(dwMessage, lpData);
+{$ELSE}
+  Result := Shell_NotifyIcon(dwMessage, lpData);
+{$ENDIF}
+end;
+
 procedure TfmSecond.FormDestroy(Sender: TObject);
 begin
   try
-    Shell_NotifyIcon(NIM_DELETE, @gTrayIcon);
+    TrayNotifyIcon(NIM_DELETE, @gTrayIcon);
     DestroyIcon(gIconRun);
     DestroyIcon(gIconPause);
     DestroyIcon(gIconStop);
   except
   end;
-end;
-
-procedure TfmSecond.FormShow(Sender: TObject);
-var
-  St: Cardinal;
-begin
-  if miMinToTray.Checked then
-  begin
-    St := GetWindowLong(fmSecondfj.Handle, GWL_EXSTYLE);
-    if St and WS_EX_APPWINDOW > 0 then
-      St := St - WS_EX_APPWINDOW;
-    SetWindowLong(fmSecondfj.Handle, GWL_EXSTYLE, St);
-  end;
-  ShowWindow(Application.Handle, SW_HIDE);
 end;
 
 procedure TfmSecond.IconCallBackMessage(var Msg: TMessage);
@@ -10433,7 +10888,7 @@ begin
       begin
         fmSecondfj.Show;
         fmSecondfj.WindowState := wsNormal;
-        SetForegroundWindow(Application.Handle);
+        SetForegroundWindow(fmSecondfj.Handle);
       end;
     WM_RBUTTONDOWN:
       begin
@@ -10450,21 +10905,30 @@ end;
 
 procedure TfmSecond.WndProc(var Message: TMessage);
 begin
-  { Переопределённый WndProc формы: три перехвата и передача всего
-    остального предку. Тело целиком в try..except: любая ошибка внутри
-    помечается фиктивным Tag = $48 и гасится. }
+  { РџРµСЂРµРѕРїСЂРµРґРµР»С‘РЅРЅС‹Р№ WndProc С„РѕСЂРјС‹: С‚СЂРё РїРµСЂРµС…РІР°С‚Р° Рё РїРµСЂРµРґР°С‡Р° РІСЃРµРіРѕ
+    РѕСЃС‚Р°Р»СЊРЅРѕРіРѕ РїСЂРµРґРєСѓ. РўРµР»Рѕ С†РµР»РёРєРѕРј РІ try..except: Р»СЋР±Р°СЏ РѕС€РёР±РєР° РІРЅСѓС‚СЂРё
+    РїРѕРјРµС‡Р°РµС‚СЃСЏ С„РёРєС‚РёРІРЅС‹Рј Tag = $48 Рё РіР°СЃРёС‚СЃСЏ. }
   try
-    { «Сворачивать в трей»: SC_MINIMIZE не доходит до предка вовсе,
-      форма просто прячется. }
-    if (Message.Msg = WM_SYSCOMMAND) and (Message.WParam = SC_MINIMIZE) and
+    { В«РЎРІРѕСЂР°С‡РёРІР°С‚СЊ РІ С‚СЂРµР№В»: SC_MINIMIZE РЅРµ РґРѕС…РѕРґРёС‚ РґРѕ РїСЂРµРґРєР° РІРѕРІСЃРµ,
+      С„РѕСЂРјР° РїСЂРѕСЃС‚Рѕ РїСЂСЏС‡РµС‚СЃСЏ. }
+    if (Message.Msg = WM_SYSCOMMAND) and
+       ((Message.WParam and $FFF0) = SC_MINIMIZE) and
        miMinToTray.Checked then
     begin
-      if fmSecondfj.Visible then
-        fmSecondfj.Hide;
+      fmSecondfj.Hide;
+      fmSecondfj.WindowState := wsNormal;
+      Message.Result := 0;
+      {$IFDEF FPC}
+      { LCL РїРѕСЃР»Рµ РґРѕСЃС‚Р°РІРєРё СЃРѕРѕР±С‰РµРЅРёСЏ РІСЃС‘ СЂР°РІРЅРѕ РІС‹Р·С‹РІР°РµС‚ DefWindowProc.
+        РћР±РЅСѓР»СЏРµРј Msg, С‡С‚РѕР±С‹ РёРЅС‚РµСЂС„РµР№СЃ РЅРµ РїРµСЂРµРґР°Р» WM_SYSCOMMAND РґР°Р»СЊС€Рµ Рё
+        Windows РЅРµ СЃРІРµСЂРЅСѓР» СѓР¶Рµ СЃРєСЂС‹С‚СѓСЋ С„РѕСЂРјСѓ (РёРЅР°С‡Рµ РѕСЃС‚Р°С‘С‚СЃСЏ РєРЅРѕРїРєР° РЅР°
+        РїР°РЅРµР»Рё Р·Р°РґР°С‡ Рё Р»РѕРјР°РµС‚СЃСЏ РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёРµ). }
+      Message.Msg := 0; // WM_NULL
+      {$ENDIF}
       Exit;
     end;
-    { Активация: круговое окно поднимается поверх всех, а если «поверх лога»
-      не отмечено -- возвращается под главную форму. }
+    { РђРєС‚РёРІР°С†РёСЏ: РєСЂСѓРіРѕРІРѕРµ РѕРєРЅРѕ РїРѕРґРЅРёРјР°РµС‚СЃСЏ РїРѕРІРµСЂС… РІСЃРµС…, Р° РµСЃР»Рё В«РїРѕРІРµСЂС… Р»РѕРіР°В»
+      РЅРµ РѕС‚РјРµС‡РµРЅРѕ -- РІРѕР·РІСЂР°С‰Р°РµС‚СЃСЏ РїРѕРґ РіР»Р°РІРЅСѓСЋ С„РѕСЂРјСѓ. }
     if Message.Msg = WM_ACTIVATE then
     begin
       if (gDlg5966F8c6 <> nil) and gDlg5966F8c6.Visible then
@@ -10479,10 +10943,10 @@ begin
         SWP_NOSIZE or SWP_NOMOVE);
       Exit;
     end;
-    { Explorer перезапустился -- вернуть иконку в трей. }
-    if Message.Msg = gTaskbarMsg then
+    { Explorer РїРµСЂРµР·Р°РїСѓСЃС‚РёР»СЃСЏ -- РІРµСЂРЅСѓС‚СЊ РёРєРѕРЅРєСѓ РІ С‚СЂРµР№. }
+    if (gTaskbarMsg <> 0) and (Message.Msg = gTaskbarMsg) then
     begin
-      Shell_NotifyIcon(NIM_ADD, @gTrayIcon);
+      TrayNotifyIcon(NIM_ADD, @gTrayIcon);
       Exit;
     end;
     inherited WndProc(Message);
@@ -10497,90 +10961,61 @@ begin
 end;
 
 procedure TfmSecond.MinimizeToTray;
-var
-  S: string;
-  I: Integer;
-  L: Cardinal;
 begin
-  { Показ/снятие иконки в трее. }
-  case miMinToTray.Checked of
-    True:
-      begin
-        if gTaskbarMsg = 0 then
-          gTaskbarMsg := RegisterWindowMessage('TaskbarCreated');
-        gTrayIcon.cbSize := SizeOf(TNotifyIconData);
-        gTrayIcon.Wnd := fmSecondfj.Handle;
-        gTrayIcon.uID := fmSecondfj.Handle;
-        gTrayIcon.uFlags := NIF_MESSAGE or NIF_ICON or NIF_TIP;
-        S := fmSecondfj.Caption;
-        I := 0;
-        while I <= Length(S) - 1 do
-        begin
-          gTrayIcon.szTip[I] := S[I + 1];
-          Inc(I);
-        end;
-        gTrayIcon.hIcon := gIconRun;
-        gTrayIcon.uCallbackMessage := $464;
-        Shell_NotifyIcon(NIM_ADD, @gTrayIcon);
-        { Снять WS_EX_APPWINDOW -- убрать кнопку с панели задач; следом тот же
-          бит переключается ещё раз через xor: так окно перерисовывает свой
-          стиль. }
-        L := GetWindowLong(fmSecondfj.Handle, GWL_EXSTYLE);
-        if (L and WS_EX_APPWINDOW) > 0 then
-          L := L - WS_EX_APPWINDOW;
-        SetWindowLong(fmSecondfj.Handle, GWL_EXSTYLE, L);
-        SetWindowLong(fmSecondfj.Handle, GWL_EXSTYLE,
-          GetWindowLong(fmSecondfj.Handle, GWL_EXSTYLE) xor WS_EX_APPWINDOW);
-        ShowWindow(fmSecondfj.Handle, SW_HIDE);
-        if not gNoFocusStealfq then
-          ShowWindow(fmSecondfj.Handle, SW_SHOW);
-        ShowWindow(Application.Handle, SW_HIDE);
-      end;
-    False:
-      begin
-        Shell_NotifyIcon(NIM_DELETE, @gTrayIcon);
-        L := GetWindowLong(fmSecondfj.Handle, GWL_EXSTYLE);
-        if (L and WS_EX_APPWINDOW) <= 0 then
-          L := L + WS_EX_APPWINDOW;
-        SetWindowLong(fmSecondfj.Handle, GWL_EXSTYLE, L);
-        fmSecondfj.Hide;
-        fmSecondfj.Show;
-      end;
-  end;
+  { РџРѕРєР°Р·/СЃРЅСЏС‚РёРµ РёРєРѕРЅРєРё РІ С‚СЂРµРµ. }
+  if miMinToTray.Checked then
+  begin
+    if gTaskbarMsg = 0 then
+      gTaskbarMsg := RegisterWindowMessage('TaskbarCreated');
+    gTrayIcon.cbSize := SizeOf(gTrayIcon);
+    gTrayIcon.Wnd := fmSecondfj.Handle;
+    gTrayIcon.uID := fmSecondfj.Handle;
+    gTrayIcon.uFlags := NIF_MESSAGE or NIF_ICON or NIF_TIP;
+    SetTrayTip(fmSecondfj.Caption);
+    gTrayIcon.hIcon := gIconRun;
+    gTrayIcon.uCallbackMessage := $464;
+    TrayNotifyIcon(NIM_ADD, @gTrayIcon);
+  end
+  else
+    TrayNotifyIcon(NIM_DELETE, @gTrayIcon);
 end;
 
 procedure TfmSecond.tScriptDrawTab(Control: TCustomTabControl; TabIndex: Integer; const Rect: TRect; Active: Boolean);
 var
+  R: TRect;
+begin
+  {$IFnDEF FPC}
+  if Control.Tag = 1 then R := tScriptDesc.TabRect(TabIndex)
+                     else R := tScript.TabRect(TabIndex);
+  DrawScriptTabBody(Control.Canvas, Control.Tag = 1, TabIndex, R, Active);
+  {$ENDIF}
+end;
+
+procedure TfmSecond.DrawScriptTabBody(Canvas: TCanvas; IsDesc: Boolean; TabIndex: Integer; R: TRect; Active: Boolean);
+var
   N: Integer;
   OldColor: TColor;
-  IsDesc: Boolean;
-  R: TRect;
   R2: TRect;
   R3: TRect;
   W: Integer;
   C: Integer;
   Lx: Integer;
 begin
-  { Отрисовка вкладки скрипта: цвет надписи показывает состояние потока
-    (красный -- пауза, зелёный -- работает), справа рисуется красный квадрат
-    для несохранённых, слева-снизу -- полоски кнопок «пуск» и «стоп». }
-  IsDesc := Control.Tag = 1;
-  OldColor := Control.Canvas.Brush.Color;
-  if IsDesc then
-    R := tScriptDesc.TabRect(TabIndex)
-  else
-    R := tScript.TabRect(TabIndex);
+  { РћС‚СЂРёСЃРѕРІРєР° РІРєР»Р°РґРєРё СЃРєСЂРёРїС‚Р°: С†РІРµС‚ РЅР°РґРїРёСЃРё РїРѕРєР°Р·С‹РІР°РµС‚ СЃРѕСЃС‚РѕСЏРЅРёРµ РїРѕС‚РѕРєР°
+    (РєСЂР°СЃРЅС‹Р№ -- РїР°СѓР·Р°, Р·РµР»С‘РЅС‹Р№ -- СЂР°Р±РѕС‚Р°РµС‚), СЃРїСЂР°РІР° СЂРёСЃСѓРµС‚СЃСЏ РєСЂР°СЃРЅС‹Р№ РєРІР°РґСЂР°С‚
+    РґР»СЏ РЅРµСЃРѕС…СЂР°РЅС‘РЅРЅС‹С…, СЃР»РµРІР°-СЃРЅРёР·Сѓ -- РїРѕР»РѕСЃРєРё РєРЅРѕРїРѕРє В«РїСѓСЃРєВ» Рё В«СЃС‚РѕРїВ». }
+  OldColor := Canvas.Brush.Color;
   if Active then
   begin
     Inc(R.Bottom);
     if IsDesc then
-      Control.Canvas.Font.Style := [];
+      Canvas.Font.Style := [];
   end;
   R2 := R;
   R2.Right := R2.Right - 2;
   R2.Left := R2.Left + 2;
   R2.Top := R2.Top + 2;
-  Control.Canvas.FillRect(R2);
+  Canvas.FillRect(R2);
   R2 := R;
   R3 := R;
   N := StrToInt(tScript.Tabs[TabIndex]);
@@ -10588,22 +11023,22 @@ begin
   begin
     try
       if gScriptso3[N].Paused then
-        Control.Canvas.Font.Color := $FF
+        Canvas.Font.Color := $FF
       else if gScriptso3[N].Flag91 then
-        Control.Canvas.Font.Color := $D629
+        Canvas.Font.Color := $D629
       else
-        Control.Canvas.Font.Color := $FF000008;
+        Canvas.Font.Color := $FF000008;
     except
-      Control.Canvas.Font.Color := $FF000008;
+      Canvas.Font.Color := $FF000008;
     end;
   end
   else
-    Control.Canvas.Font.Color := $FF000008;
-  Control.Canvas.Brush.Color := $FF00000F;
+    Canvas.Font.Color := $FF000008;
+  Canvas.Brush.Color := $FF00000F;
   if IsDesc then
-    W := Control.Canvas.TextWidth(tScriptDesc.Tabs[TabIndex])
+    W := Canvas.TextWidth(tScriptDesc.Tabs[TabIndex])
   else
-    W := Control.Canvas.TextWidth(tScript.Tabs[TabIndex]);
+    W := Canvas.TextWidth(tScript.Tabs[TabIndex]);
   C := (R.Right - R.Left) div 2 + R.Left - W div 2 - 1;
   if C > R.Left then
   begin
@@ -10615,11 +11050,11 @@ begin
     if R.Top >= 2 then
       R.Top := R.Top - 2;
   if IsDesc then
-    Control.Canvas.TextRect(R, R.Left, R.Top, tScriptDesc.Tabs[TabIndex])
+    Canvas.TextRect(R, R.Left, R.Top, tScriptDesc.Tabs[TabIndex])
   else
-    Control.Canvas.TextRect(R, R.Left, R.Top, tScript.Tabs[TabIndex]);
+    Canvas.TextRect(R, R.Left, R.Top, tScript.Tabs[TabIndex]);
   if Active and IsDesc then
-    Control.Canvas.Font.Style := [fsBold];
+    Canvas.Font.Style := [fsBold];
   if cbShowUnsavedScripts.Checked then
     if gScriptso3[N].Modified then
     begin
@@ -10629,16 +11064,16 @@ begin
       R2.Top := R2.Top + 2;
       if Active then
         Dec(R2.Bottom);
-      Control.Canvas.Brush.Color := $FF;
-      Control.Canvas.FillRect(R2);
+      Canvas.Brush.Color := $FF;
+      Canvas.FillRect(R2);
       R2 := R3;
     end;
   if IsDesc then
   begin
     R2 := R3;
     R2.Top := R2.Bottom - 2;
-    Control.Canvas.Brush.Color := 0;
-    Control.Canvas.FillRect(R2);
+    Canvas.Brush.Color := 0;
+    Canvas.FillRect(R2);
     R2 := R3;
   end;
   if FFlag1464 then
@@ -10651,16 +11086,24 @@ begin
     R3.Top := R3.Bottom - 6;
     R3.Left := R3.Left + 2;
     R3.Right := R3.Left + 8;
-    Control.Canvas.Brush.Color := $D629;
-    Control.Canvas.FillRect(R3);
+    Canvas.Brush.Color := $D629;
+    Canvas.FillRect(R3);
     R2.Top := R3.Top;
     R2.Right := R2.Right - 2;
     R2.Left := R2.Right - 8;
-    Control.Canvas.Brush.Color := $D7;
-    Control.Canvas.FillRect(R2);
+    Canvas.Brush.Color := $D7;
+    Canvas.FillRect(R2);
   end;
-  Control.Canvas.Brush.Color := OldColor;
+  Canvas.Brush.Color := OldColor;
 end;
+
+{$IFDEF FPC}
+procedure TfmSecond.tScriptDrawTabFPC(Sender: TFixedTabControl; Canvas: TCanvas;
+  TabIndex: Integer; const Rect: TRect; Active: Boolean);
+begin
+  DrawScriptTabBody(Canvas, Sender.Tag = 1, TabIndex, Rect, Active);
+end;
+{$ENDIF}
 
 procedure TfmSecond.miShowRuningScriptOnTaskbarClick(Sender: TObject);
 begin
@@ -10695,14 +11138,14 @@ var
   Title: string;
   Name: string;
   R: TRect;
-  Tip: string[64];
+  Tip: string;
   N: Integer;
   AnyPause: Boolean;
 begin
-  { Раз в тик обновляет вкладки скриптов, подпись в трее и заголовок формы.
-    Перерисовка вкладки делается только когда флаг скрипта изменился --
-    поэтому рядом с gScriptso3 живут два кэша прошлых значений. }
-  { прямоугольник обнуляется по полям }
+  { Р Р°Р· РІ С‚РёРє РѕР±РЅРѕРІР»СЏРµС‚ РІРєР»Р°РґРєРё СЃРєСЂРёРїС‚РѕРІ, РїРѕРґРїРёСЃСЊ РІ С‚СЂРµРµ Рё Р·Р°РіРѕР»РѕРІРѕРє С„РѕСЂРјС‹.
+    РџРµСЂРµСЂРёСЃРѕРІРєР° РІРєР»Р°РґРєРё РґРµР»Р°РµС‚СЃСЏ С‚РѕР»СЊРєРѕ РєРѕРіРґР° С„Р»Р°Рі СЃРєСЂРёРїС‚Р° РёР·РјРµРЅРёР»СЃСЏ --
+    РїРѕСЌС‚РѕРјСѓ СЂСЏРґРѕРј СЃ gScriptso3 Р¶РёРІСѓС‚ РґРІР° РєСЌС€Р° РїСЂРѕС€Р»С‹С… Р·РЅР°С‡РµРЅРёР№. }
+  { РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє РѕР±РЅСѓР»СЏРµС‚СЃСЏ РїРѕ РїРѕР»СЏРј }
   R.Left := 0;
   R.Top := 0;
   R.Right := 0;
@@ -10722,19 +11165,29 @@ begin
         if gScriptso3[N].Paused <> gPausedCache[N] then
         begin
           gPausedCache[N] := gScriptso3[N].Paused;
+          {$IFDEF FPC}
+          tScript.InvalidateTabs;
+          tScriptDesc.InvalidateTabs;
+          {$ELSE}
           if tScriptDesc.Visible then
             tScriptDrawTab(tScriptDesc, I, R, tScript.TabIndex = I)
           else
             tScriptDrawTab(tScript, I, R, tScript.TabIndex = I);
+          {$ENDIF}
           Redraw := True;
         end
         else if gScriptso3[N].Flag91 <> gRunCache[N] then
         begin
           gRunCache[N] := gScriptso3[N].Flag91;
+          {$IFDEF FPC}
+          tScript.InvalidateTabs;
+          tScriptDesc.InvalidateTabs;
+          {$ELSE}
           if tScriptDesc.Visible then
             tScriptDrawTab(tScriptDesc, I, R, tScript.TabIndex = I)
           else
             tScriptDrawTab(tScript, I, R, tScript.TabIndex = I);
+          {$ENDIF}
           Redraw := True;
         end;
       end;
@@ -10761,7 +11214,7 @@ begin
       AnyPause := AnyPause or (gPausedCache[N] <> False);
     end;
   end;
-  StrPCopy(gTrayIcon.szTip, Tip);
+  SetTrayTip(Tip);
   if AnyRun or AnyPause then
   begin
     gTrayBlink := not gTrayBlink;
@@ -10772,12 +11225,12 @@ begin
         gTrayIcon.hIcon := gIconPause
     else
       gTrayIcon.hIcon := gIconRun;
-    Shell_NotifyIcon(NIM_MODIFY, @gTrayIcon);
+    TrayNotifyIcon(NIM_MODIFY, @gTrayIcon);
   end
   else if Redraw then
   begin
     gTrayIcon.hIcon := gIconRun;
-    Shell_NotifyIcon(NIM_MODIFY, @gTrayIcon);
+    TrayNotifyIcon(NIM_MODIFY, @gTrayIcon);
   end;
   if miShowRuningScriptOnTaskbar.Checked then
   begin
@@ -10804,9 +11257,9 @@ var
   Row: Integer;
   P: TPoint;
 begin
-  { Щелчок по сетке горячих клавиш. Колонки 2 и 5 -- галки «включено» и
-    «пауза», колонки 3 и 4 открывают редактор клавиши для обычного и
-    паузного действия, прочие колонки гасят панель назначения. }
+  { Р©РµР»С‡РѕРє РїРѕ СЃРµС‚РєРµ РіРѕСЂСЏС‡РёС… РєР»Р°РІРёС€. РљРѕР»РѕРЅРєРё 2 Рё 5 -- РіР°Р»РєРё В«РІРєР»СЋС‡РµРЅРѕВ» Рё
+    В«РїР°СѓР·Р°В», РєРѕР»РѕРЅРєРё 3 Рё 4 РѕС‚РєСЂС‹РІР°СЋС‚ СЂРµРґР°РєС‚РѕСЂ РєР»Р°РІРёС€Рё РґР»СЏ РѕР±С‹С‡РЅРѕРіРѕ Рё
+    РїР°СѓР·РЅРѕРіРѕ РґРµР№СЃС‚РІРёСЏ, РїСЂРѕС‡РёРµ РєРѕР»РѕРЅРєРё РіР°СЃСЏС‚ РїР°РЅРµР»СЊ РЅР°Р·РЅР°С‡РµРЅРёСЏ. }
   GetCursorPos(P);
   Windows.ScreenToClient(sghkScriptHKList.Handle, P);
   sghkScriptHKList.MouseToCell(P.X, P.Y, Col, Row);
@@ -10857,7 +11310,7 @@ begin
           EditHotKey(Nm);
         end;
     else
-      { Клик мимо рабочих колонок -- панель назначения клавиши сбрасывается }
+      { РљР»РёРє РјРёРјРѕ СЂР°Р±РѕС‡РёС… РєРѕР»РѕРЅРѕРє -- РїР°РЅРµР»СЊ РЅР°Р·РЅР°С‡РµРЅРёСЏ РєР»Р°РІРёС€Рё СЃР±СЂР°СЃС‹РІР°РµС‚СЃСЏ }
       cbHKList.ItemIndex := -1;
       cbShift.Checked := False;
       cbAlt.Checked := False;
@@ -10871,20 +11324,40 @@ end;
 
 procedure DrawGridCellText(Grid: TStringGrid; Cv: TCanvas;
       const R: TRect; const S: string; W: Word; B: ShortInt; C: ShortInt);
+{$IFDEF FPC}
+var
+  WS: UnicodeString;
+begin
+  { LCL С…СЂР°РЅРёС‚ СЃС‚СЂРѕРєРё РІ UTF-8, Р° ExtTextOut РІ FPC -- СЌС‚Рѕ ExtTextOutA.
+    Р”РµРєРѕРґРёСЂСѓРµРј Рё РѕС‚РґР°С‘Рј GDI С€РёСЂРѕРєРёРµ СЃРёРјРІРѕР»С‹. }
+  WS := UTF8Decode(S);
+  { РњРµС‚РєРё 2 Рё 1 СЃС‚РѕСЏС‚ РІ СЌС‚РѕРј РїРѕСЂСЏРґРєРµ РЅР°СЂРѕС‡РЅРѕ: W = 1 -- С†РµРЅС‚СЂ,
+    W = 2 -- РїСЂР°РІС‹Р№ РєСЂР°Р№. }
+  case W of
+    0: Windows.ExtTextOutW(Cv.Handle, R.Left + B, R.Top + C, 6, @R,
+        PWideChar(WS), Length(WS), nil);
+    2: Windows.ExtTextOutW(Cv.Handle, R.Right - Cv.TextWidth(S) - 3, R.Top + C, 6, @R,
+        PWideChar(WS), Length(WS), nil);
+    1: Windows.ExtTextOutW(Cv.Handle, R.Left + (R.Right - R.Left - Cv.TextWidth(S)) div 2,
+        R.Top + C, 6, @R, PWideChar(WS), Length(WS), nil);
+  end;
+end;
+{$ELSE}
 var
   Buf: array[0..255] of Char;
 begin
-  { Метки 2 и 1 стоят в этом порядке нарочно: W = 1 -- центр,
-    W = 2 -- правый край. }
+  { РњРµС‚РєРё 2 Рё 1 СЃС‚РѕСЏС‚ РІ СЌС‚РѕРј РїРѕСЂСЏРґРєРµ РЅР°СЂРѕС‡РЅРѕ: W = 1 -- С†РµРЅС‚СЂ,
+    W = 2 -- РїСЂР°РІС‹Р№ РєСЂР°Р№. }
   case W of
     0: ExtTextOut(Cv.Handle, R.Left + B, R.Top + C, 6, @R,
-         StrPCopy(Buf, S), Length(S), nil);
+        StrPCopy(Buf, S), Length(S), nil);
     2: ExtTextOut(Cv.Handle, R.Right - Cv.TextWidth(S) - 3, R.Top + C, 6, @R,
-         StrPCopy(Buf, S), Length(S), nil);
+        StrPCopy(Buf, S), Length(S), nil);
     1: ExtTextOut(Cv.Handle, R.Left + (R.Right - R.Left - Cv.TextWidth(S)) div 2,
-         R.Top + C, 6, @R, StrPCopy(Buf, S), Length(S), nil);
+        R.Top + C, 6, @R, StrPCopy(Buf, S), Length(S), nil);
   end;
 end;
+{$ENDIF}
 
 procedure TfmSecond.sghkScriptHKListDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect;
   State: TGridDrawState);
@@ -10894,9 +11367,9 @@ var
   C: Byte;
   X: Integer;
 begin
-  { Раскраска ячейки списка горячих клавиш. Колонки переставлены: 0->1,
-    1->2, 2->0, остальные как есть; W -- выравнивание, B/C -- цвета.
-    Жирный шрифт ставится для колонок 0 и 5, они же теряют выравнивание. }
+  { Р Р°СЃРєСЂР°СЃРєР° СЏС‡РµР№РєРё СЃРїРёСЃРєР° РіРѕСЂСЏС‡РёС… РєР»Р°РІРёС€. РљРѕР»РѕРЅРєРё РїРµСЂРµСЃС‚Р°РІР»РµРЅС‹: 0->1,
+    1->2, 2->0, РѕСЃС‚Р°Р»СЊРЅС‹Рµ РєР°Рє РµСЃС‚СЊ; W -- РІС‹СЂР°РІРЅРёРІР°РЅРёРµ, B/C -- С†РІРµС‚Р°.
+    Р–РёСЂРЅС‹Р№ С€СЂРёС„С‚ СЃС‚Р°РІРёС‚СЃСЏ РґР»СЏ РєРѕР»РѕРЅРѕРє 0 Рё 5, РѕРЅРё Р¶Рµ С‚РµСЂСЏСЋС‚ РІС‹СЂР°РІРЅРёРІР°РЅРёРµ. }
   W := 1;
   B := 2;
   C := 2;
@@ -10944,7 +11417,7 @@ begin
   if gScriptso3[I] = nil then
   begin
     if gLangOffsety > 0 then
-      gScriptso3[I].Msg := LoadStr(gLangOffsety + $1D9)
+      gScriptso3[I].Msg := LoadStrCP1251(gLangOffsety + $1D9)
     else
       gScriptso3[I].Msg := 'System error: script not created.';
     ShowScriptMsg(TScanThread(gScriptso3[I]));
@@ -10979,7 +11452,7 @@ begin
         begin
           SetLength(gScriptso3[I].Lines, edScript.Lines.Count);
           for J := 0 to edScript.Lines.Count - 1 do
-            gScriptso3[I].Lines[J] := edScript.Lines[J];
+            gScriptso3[I].Lines[J] := UTF8ToCP1251(edScript.Lines[J]);
           if Length(gScriptso3[I].Lines) = 0 then
           begin
             gSZ[I].StopScriptThread;
@@ -11008,7 +11481,7 @@ begin
             GetWindowThreadProcessId(gScriptso3[I].ClientWnd, @Pid);
             gScriptso3[I].ProcessId := Pid;
             if gScriptso3[I].ProcessHandle <> 0 then
-              CloseHandle(gScriptso3[I].ProcessHandle);
+              FileClose(gScriptso3[I].ProcessHandle); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
             gScriptso3[I].ProcessHandle := OpenProcess($638, True, Pid);
           end;
           gScriptso3[I].Flag91 := True;
@@ -11044,6 +11517,9 @@ begin
   if gDlg5966F4 = nil then
   begin
     gDlg5966F4 := TForm.Create(fmSecondfj);
+    {$IFDEF FPC}
+    gDlg5966F4.PopupParent := fmSecondfj;
+    {$ENDIF}
     gDlg5966F4.Parent := nil;
     gDlg5966F4.Font := fmSecondfj.Font;
     gDlg5966F4.BorderStyle := bsToolWindow;
@@ -11120,9 +11596,9 @@ var
   N: Integer;
   I: Integer;
 begin
-  { Правка значения переменной или таймера прямо в таблице. Имя переменной
-    начинается с '#', имя таймера -- с любого другого символа; первый символ
-    в обоих случаях отбрасывается. }
+  { РџСЂР°РІРєР° Р·РЅР°С‡РµРЅРёСЏ РїРµСЂРµРјРµРЅРЅРѕР№ РёР»Рё С‚Р°Р№РјРµСЂР° РїСЂСЏРјРѕ РІ С‚Р°Р±Р»РёС†Рµ. РРјСЏ РїРµСЂРµРјРµРЅРЅРѕР№
+    РЅР°С‡РёРЅР°РµС‚СЃСЏ СЃ '#', РёРјСЏ С‚Р°Р№РјРµСЂР° -- СЃ Р»СЋР±РѕРіРѕ РґСЂСѓРіРѕРіРѕ СЃРёРјРІРѕР»Р°; РїРµСЂРІС‹Р№ СЃРёРјРІРѕР»
+    РІ РѕР±РѕРёС… СЃР»СѓС‡Р°СЏС… РѕС‚Р±СЂР°СЃС‹РІР°РµС‚СЃСЏ. }
   if Value <> '' then
   begin
     try
@@ -11169,8 +11645,8 @@ var
   S: string;
   T: string;
 begin
-  { Привязывает ВСЕ открытые скрипты к одному окну клиента: каждому кладётся
-    хэндл окна, идентификатор процесса и свежий OpenProcess. }
+  { РџСЂРёРІСЏР·С‹РІР°РµС‚ Р’РЎР• РѕС‚РєСЂС‹С‚С‹Рµ СЃРєСЂРёРїС‚С‹ Рє РѕРґРЅРѕРјСѓ РѕРєРЅСѓ РєР»РёРµРЅС‚Р°: РєР°Р¶РґРѕРјСѓ РєР»Р°РґС‘С‚СЃСЏ
+    С…СЌРЅРґР» РѕРєРЅР°, РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїСЂРѕС†РµСЃСЃР° Рё СЃРІРµР¶РёР№ OpenProcess. }
   GetCursorPos(P);
   W := WindowFromPoint(P);
   if W = 0 then
@@ -11179,14 +11655,14 @@ begin
     if gLangOffsety > 0 then
       MsgBox(PChar(LoadStr(gLangOffsety + $19B)), 'UOPilot Error Message', 0)
     else
-      MsgBox('Не могу найти рабочее окно', 'UOPilot Error Message', 0);
+      MsgBox('РќРµ РјРѕРіСѓ РЅР°Р№С‚Рё СЂР°Р±РѕС‡РµРµ РѕРєРЅРѕ', 'UOPilot Error Message', 0);
   end
   else
   begin
     GetWindowThreadProcessId(W, @Pid);
     FTargetWnd := W;
     if FClientProcess <> 0 then
-      CloseHandle(FClientProcess);
+      FileClose(FClientProcess); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
     FClientProcess := OpenProcess($638, False, Pid);
     for I := 0 to tScript.Tabs.Count - 1 do
     begin
@@ -11194,7 +11670,7 @@ begin
       gScriptso3[N].ClientWnd := W;
       gScriptso3[N].ProcessId := Pid;
       if gScriptso3[N].ProcessHandle <> 0 then
-        CloseHandle(gScriptso3[N].ProcessHandle);
+        FileClose(gScriptso3[N].ProcessHandle); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
       gScriptso3[N].ProcessHandle := OpenProcess($638, True, Pid);
     end;
   end;
@@ -11211,9 +11687,9 @@ var
   W: HWND;
   P: PChar;
 begin
-  { Забирает текст консоли прямо из памяти клиента: по адресу из таблицы
-    лежит указатель, а по нему -- Pascal-строка (длина в первом байте,
-    сами символы со смещения 4). }
+  { Р—Р°Р±РёСЂР°РµС‚ С‚РµРєСЃС‚ РєРѕРЅСЃРѕР»Рё РїСЂСЏРјРѕ РёР· РїР°РјСЏС‚Рё РєР»РёРµРЅС‚Р°: РїРѕ Р°РґСЂРµСЃСѓ РёР· С‚Р°Р±Р»РёС†С‹
+    Р»РµР¶РёС‚ СѓРєР°Р·Р°С‚РµР»СЊ, Р° РїРѕ РЅРµРјСѓ -- Pascal-СЃС‚СЂРѕРєР° (РґР»РёРЅР° РІ РїРµСЂРІРѕРј Р±Р°Р№С‚Рµ,
+    СЃР°РјРё СЃРёРјРІРѕР»С‹ СЃРѕ СЃРјРµС‰РµРЅРёСЏ 4). }
   W := FindWindow('Ultima Online', nil);
   GetWindowThreadProcessId(W, @Pid);
   Ph := OpenProcess($638, False, Pid);
@@ -11232,9 +11708,9 @@ begin
       else
         S := 'Error reading memory';
     end;
-    Clipboard.AsText := S;
+    SetClipboardText(Clipboard, S);
   end;
-  CloseHandle(Ph);
+  FileClose(Ph); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
 end;
 
 procedure TfmSecond.CreateParams(var Params: TCreateParams);
@@ -11242,6 +11718,236 @@ begin
   inherited CreateParams(Params);
   Params.WndParent := GetDesktopWindow;
   Params.ExStyle := Params.ExStyle or $10;
+end;
+
+{$IFDEF FPC}
+function LoadStr(Ident: Integer): string;
+var
+  Buf: array[0..4095] of WideChar;
+  Len: Integer;
+  WS: WideString;
+begin
+  Result := '';
+  if Ident <= 0 then
+    Exit;
+  Len := LoadStringW(HInstance, Ident, Buf, Length(Buf));
+  if Len > 0 then
+  begin
+    SetString(WS, Buf, Len);
+    Result := UTF8Encode(WS);
+  end;
+end;
+{$ENDIF}
+
+function LoadStrCP1251(Ident: Integer): string;
+{$IFDEF FPC}
+var
+  Buf: array[0..4095] of WideChar;
+  Len, N: Integer;
+  WS: WideString;
+begin
+  Result := '';
+  if Ident <= 0 then
+    Exit;
+  Len := LoadStringW(HInstance, Ident, Buf, Length(Buf));
+  if Len > 0 then
+  begin
+    SetString(WS, Buf, Len);
+    N := WideCharToMultiByte(1251, 0, PWideChar(WS), Len, nil, 0, nil, nil);
+    SetLength(Result, N);
+    if N > 0 then
+      WideCharToMultiByte(1251, 0, PWideChar(WS), Len, PChar(Result), N, nil, nil);
+  end;
+end;
+{$ELSE}
+begin
+  Result := LoadStr(Ident);
+end;
+{$ENDIF}
+
+function UTF8ToCP1251(const S: string): string;
+var
+  WS: WideString;
+  N: Integer;
+begin
+  Result := '';
+  if S = '' then
+    Exit;
+  N := MultiByteToWideChar(CP_UTF8, 0, PChar(S), Length(S), nil, 0);
+  SetLength(WS, N);
+  if N > 0 then
+    MultiByteToWideChar(CP_UTF8, 0, PChar(S), Length(S), PWideChar(WS), N);
+  N := WideCharToMultiByte(1251, 0, PWideChar(WS), Length(WS), nil, 0, nil, nil);
+  SetLength(Result, N);
+  if N > 0 then
+    WideCharToMultiByte(1251, 0, PWideChar(WS), Length(WS), PChar(Result), N, nil, nil);
+end;
+
+function CP1251ToUTF8(const S: string): string;
+var
+  WS: WideString;
+  N: Integer;
+begin
+  Result := '';
+  if S = '' then
+    Exit;
+  N := MultiByteToWideChar(1251, 0, PChar(S), Length(S), nil, 0);
+  SetLength(WS, N);
+  if N > 0 then
+    MultiByteToWideChar(1251, 0, PChar(S), Length(S), PWideChar(WS), N);
+  N := WideCharToMultiByte(CP_UTF8, 0, PWideChar(WS), Length(WS), nil, 0, nil, nil);
+  SetLength(Result, N);
+  if N > 0 then
+    WideCharToMultiByte(CP_UTF8, 0, PWideChar(WS), Length(WS), PChar(Result), N, nil, nil);
+end;
+
+function CP1251UpperCase(const S: string): string;
+{$IFDEF FPC}
+var
+  WS: WideString;
+  N: Integer;
+begin
+  Result := S;
+  if S = '' then
+    Exit;
+  N := MultiByteToWideChar(1251, 0, PChar(S), Length(S), nil, 0);
+  SetLength(WS, N);
+  if N > 0 then
+    MultiByteToWideChar(1251, 0, PChar(S), Length(S), PWideChar(WS), N);
+  CharUpperBuffW(PWideChar(WS), N);
+  N := WideCharToMultiByte(1251, 0, PWideChar(WS), Length(WS), nil, 0, nil, nil);
+  SetLength(Result, N);
+  if N > 0 then
+    WideCharToMultiByte(1251, 0, PWideChar(WS), Length(WS), PChar(Result), N, nil, nil);
+end;
+{$ELSE}
+begin
+  Result := AnsiUpperCase(S);
+end;
+{$ENDIF}
+
+function CP1251LowerCase(const S: string): string;
+{$IFDEF FPC}
+var
+  WS: WideString;
+  N: Integer;
+begin
+  Result := S;
+  if S = '' then
+    Exit;
+  N := MultiByteToWideChar(1251, 0, PChar(S), Length(S), nil, 0);
+  SetLength(WS, N);
+  if N > 0 then
+    MultiByteToWideChar(1251, 0, PChar(S), Length(S), PWideChar(WS), N);
+  CharLowerBuffW(PWideChar(WS), N);
+  N := WideCharToMultiByte(1251, 0, PWideChar(WS), Length(WS), nil, 0, nil, nil);
+  SetLength(Result, N);
+  if N > 0 then
+    WideCharToMultiByte(1251, 0, PWideChar(WS), Length(WS), PChar(Result), N, nil, nil);
+end;
+{$ELSE}
+begin
+  Result := AnsiLowerCase(S);
+end;
+{$ENDIF}
+
+function CP1251StringReplace(const S, OldPattern, NewPattern: string;
+  Flags: TReplaceFlags): string;
+var
+  LS, LO, Tail: string;
+  Idx, OldLen, PosInTail: Integer;
+begin
+  { Р РµРіРёСЃС‚СЂРѕРЅРµР·Р°РІРёСЃРёРјР°СЏ Р·Р°РјРµРЅР° РґР»СЏ cp1251. РЁС‚Р°С‚РЅС‹Р№ StringReplace СЃ
+    rfIgnoreCase РІ FPC СЃРєР»Р°РґС‹РІР°РµС‚ СЂРµРіРёСЃС‚СЂ С‡РµСЂРµР· AnsiUpperCase/AnsiLowerCase,
+    РєРѕС‚РѕСЂС‹Рµ Р±РµР· cwstring ASCII-only Рё РЅРµ С‚СЂРѕРіР°СЋС‚ Р±Р°Р№С‚С‹ 0xC0-0xFF, РїРѕСЌС‚РѕРјСѓ
+    РєРёСЂРёР»Р»РёС†Сѓ РЅРµ Р·Р°РјРµРЅСЏРµС‚. Р—РґРµСЃСЊ РѕР±Рµ СЃС‚СЂРѕРєРё СЃРІРѕСЂР°С‡РёРІР°СЋС‚СЃСЏ С‡РµСЂРµР· CP1251LowerCase
+    (cp1251->UTF-16->cp1251), Р° РІ СЂРµР·СѓР»СЊС‚Р°С‚ РїРѕРґСЃС‚Р°РІР»СЏСЋС‚СЃСЏ РёСЃС…РѕРґРЅС‹Рµ РїРѕРґСЃС‚СЂРѕРєРё S
+    Рё NewPattern РєР°Рє РµСЃС‚СЊ -- СЃРµРјР°РЅС‚РёРєР° СЃРѕРІРїР°РґР°РµС‚ СЃ Delphi. }
+  if not (rfIgnoreCase in Flags) then
+  begin
+    Result := StringReplace(S, OldPattern, NewPattern, Flags);
+    Exit;
+  end;
+  if OldPattern = '' then
+  begin
+    Result := S;
+    Exit;
+  end;
+  LS := CP1251LowerCase(S);
+  LO := CP1251LowerCase(OldPattern);
+  OldLen := Length(OldPattern);
+  Result := '';
+  Idx := 1;
+  while Idx <= Length(S) do
+  begin
+    Tail := Copy(LS, Idx, Length(LS) - Idx + 1);
+    PosInTail := Pos(LO, Tail);
+    if PosInTail = 0 then
+    begin
+      Result := Result + Copy(S, Idx, Length(S) - Idx + 1);
+      Break;
+    end;
+    Result := Result + Copy(S, Idx, PosInTail - 1) + NewPattern;
+    Idx := Idx + PosInTail - 1 + OldLen;
+    if not (rfReplaceAll in Flags) then
+    begin
+      Result := Result + Copy(S, Idx, Length(S) - Idx + 1);
+      Break;
+    end;
+  end;
+end;
+
+function IsValidUTF8(const S: string): Boolean;
+var
+  I, N: Integer;
+  C: Byte;
+begin
+  { РїРѕР±Р°Р№С‚РѕРІР°СЏ РїСЂРѕРІРµСЂРєР°: СЃС‚СЂРѕРєР° РІР°Р»РёРґРЅС‹Р№ UTF-8? РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РїСЂРё С‡С‚РµРЅРёРё
+    С„Р°Р№Р»РѕРІ СЃРєСЂРёРїС‚РѕРІ, С‡С‚РѕР±С‹ РѕС‚Р»РёС‡РёС‚СЊ РЅРѕРІС‹Рµ UTF-8-С„Р°Р№Р»С‹ РѕС‚ СЃС‚Р°СЂС‹С… cp1251. }
+  Result := True;
+  I := 1;
+  N := Length(S);
+  while I <= N do
+  begin
+    C := Byte(S[I]);
+    if C < $80 then
+      Inc(I)
+    else if (C >= $C2) and (C <= $DF) then
+    begin
+      if (I + 1 > N) or ((Byte(S[I + 1]) and $C0) <> $80) then
+      begin
+        Result := False;
+        Exit;
+      end;
+      Inc(I, 2);
+    end
+    else if (C >= $E0) and (C <= $EF) then
+    begin
+      if (I + 2 > N) or ((Byte(S[I + 1]) and $C0) <> $80) or
+         ((Byte(S[I + 2]) and $C0) <> $80) then
+      begin
+        Result := False;
+        Exit;
+      end;
+      Inc(I, 3);
+    end
+    else if (C >= $F0) and (C <= $F4) then
+    begin
+      if (I + 3 > N) or ((Byte(S[I + 1]) and $C0) <> $80) or
+         ((Byte(S[I + 2]) and $C0) <> $80) or
+         ((Byte(S[I + 3]) and $C0) <> $80) then
+      begin
+        Result := False;
+        Exit;
+      end;
+      Inc(I, 4);
+    end
+    else
+    begin
+      Result := False;
+      Exit;
+    end;
+  end;
 end;
 
 procedure TfmSecond.ApplyLanguage(Code: Integer);
@@ -11643,7 +12349,7 @@ end;
 
 procedure TfmSecond.miLangSelect(Sender: TObject);
 begin
-  { Tag пунктов меню -- не порядковые номера, а коды языков. }
+  { Tag РїСѓРЅРєС‚РѕРІ РјРµРЅСЋ -- РЅРµ РїРѕСЂСЏРґРєРѕРІС‹Рµ РЅРѕРјРµСЂР°, Р° РєРѕРґС‹ СЏР·С‹РєРѕРІ. }
   (Sender as TMenuItem).Checked := True;
   case (Sender as TMenuItem).Tag of
     25:
@@ -11680,7 +12386,7 @@ begin
       if gLangOffsety > 0 then
         MsgBox(PChar(LoadStr(gLangOffsety + $1B7)), 'UOPilot Error Message', 0)
       else
-        MsgBox('Выбран язык по умолчанию.'#13'Необходим перезапуск.', 'Info', 0);
+        MsgBox('Р’С‹Р±СЂР°РЅ СЏР·С‹Рє РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ.'#13'РќРµРѕР±С…РѕРґРёРј РїРµСЂРµР·Р°РїСѓСЃРє.', 'Info', 0);
   else
     gLangOffsety := $3E8;
     ApplyLanguage(gLangOffsety);
@@ -11692,15 +12398,15 @@ var
   S: string;
 begin
   case tbUOPriority.Position of
-    1: if gLangOffsety > 0 then S := LoadStr(gLangOffsety + $14A) else S := 'ниже';
-    3: if gLangOffsety > 0 then S := LoadStr(gLangOffsety + $14B) else S := 'выше';
+    1: if gLangOffsety > 0 then S := LoadStr(gLangOffsety + $14A) else S := 'РЅРёР¶Рµ';
+    3: if gLangOffsety > 0 then S := LoadStr(gLangOffsety + $14B) else S := 'РІС‹С€Рµ';
   else
-    if gLangOffsety > 0 then S := LoadStr(gLangOffsety + $14C) else S := 'нормальный';
+    if gLangOffsety > 0 then S := LoadStr(gLangOffsety + $14C) else S := 'РЅРѕСЂРјР°Р»СЊРЅС‹Р№';
   end;
   if gLangOffsety > 0 then
     S := LoadStr(gLangOffsety + $14D) + ' (' + S + ')'
   else
-    S := 'Приоритет для запускаемых клиентов (' + S + ')';
+    S := 'РџСЂРёРѕСЂРёС‚РµС‚ РґР»СЏ Р·Р°РїСѓСЃРєР°РµРјС‹С… РєР»РёРµРЅС‚РѕРІ (' + S + ')';
   tbUOPriority.Hint := S;
 end;
 
@@ -11709,11 +12415,11 @@ var
   S: string;
 begin
   case tbScriptPriority.Position of
-    0: if gLangOffsety > 0 then S := LoadStr(gLangOffsety + $168) else S := 'пониженный';
-    2: if gLangOffsety > 0 then S := LoadStr(gLangOffsety + $16A) else S := 'средний';
-    3: if gLangOffsety > 0 then S := LoadStr(gLangOffsety + $16B) else S := 'максимальный';
+    0: if gLangOffsety > 0 then S := LoadStr(gLangOffsety + $168) else S := 'РїРѕРЅРёР¶РµРЅРЅС‹Р№';
+    2: if gLangOffsety > 0 then S := LoadStr(gLangOffsety + $16A) else S := 'СЃСЂРµРґРЅРёР№';
+    3: if gLangOffsety > 0 then S := LoadStr(gLangOffsety + $16B) else S := 'РјР°РєСЃРёРјР°Р»СЊРЅС‹Р№';
   else
-    if gLangOffsety > 0 then S := LoadStr(gLangOffsety + $169) else S := 'нормальный';
+    if gLangOffsety > 0 then S := LoadStr(gLangOffsety + $169) else S := 'РЅРѕСЂРјР°Р»СЊРЅС‹Р№';
   end;
   tbScriptPriority.Hint := S;
 end;
@@ -11758,22 +12464,22 @@ begin
   GetWindowThreadProcessId(H, @Pid);
   H := OpenProcess($418, False, Pid);
   UpdateClientFlags(H);
-  CloseHandle(H);
+  FileClose(H); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
 end;
 
 procedure TfmSecond.miTrayRestoreClick(Sender: TObject);
 begin
   fmSecondfj.Show;
   fmSecondfj.WindowState := wsNormal;
-  SetForegroundWindow(Application.Handle);
+  SetForegroundWindow(fmSecondfj.Handle);
 end;
 
 procedure TfmSecond.pcAllChange(Sender: TObject);
 var
   Saved: Boolean;
 begin
-  { При переходе на вкладку скрипта окно распахивается до сохранённого размера
-    и снимаются ограничения; при уходе с неё ограничения возвращаются. }
+  { РџСЂРё РїРµСЂРµС…РѕРґРµ РЅР° РІРєР»Р°РґРєСѓ СЃРєСЂРёРїС‚Р° РѕРєРЅРѕ СЂР°СЃРїР°С…РёРІР°РµС‚СЃСЏ РґРѕ СЃРѕС…СЂР°РЅС‘РЅРЅРѕРіРѕ СЂР°Р·РјРµСЂР°
+    Рё СЃРЅРёРјР°СЋС‚СЃСЏ РѕРіСЂР°РЅРёС‡РµРЅРёСЏ; РїСЂРё СѓС…РѕРґРµ СЃ РЅРµС‘ РѕРіСЂР°РЅРёС‡РµРЅРёСЏ РІРѕР·РІСЂР°С‰Р°СЋС‚СЃСЏ. }
   if pcAll.ActivePage = tsScript then
   begin
     gInScriptTab := True;
@@ -11799,16 +12505,28 @@ begin
   end
   else
   begin
-    pcAll.Constraints.MaxHeight := pcAll.Constraints.MinHeight;
-    pcAll.Constraints.MaxWidth := pcAll.Constraints.MinWidth;
     Saved := gFlag5969EE;
     if gFlag5969EE then
     begin
       ShowWindow(fmSecondfj.Handle, SW_RESTORE);
       gFlag5969EE := True;
     end;
-    fmSecondfj.Constraints.MaxHeight := fmSecondfj.Constraints.MinHeight;
-    fmSecondfj.Constraints.MaxWidth := fmSecondfj.Constraints.MinWidth;
+    { РћРєРЅРѕ СѓР¶Рµ РїРѕРєР°Р·Р°РЅРѕ, РїРѕСЌС‚РѕРјСѓ РєР»РёРµРЅС‚СЃРєРёР№ СЂР°Р·РјРµСЂ Р·Р°РґР°С‘С‚СЃСЏ СЃ СѓС‡С‘С‚РѕРј СЂРµР°Р»СЊРЅРѕР№
+      СЂР°РјРєРё, Р·Р°РіРѕР»РѕРІРєР° Рё РјРµРЅСЋ. РџСЂРµР¶РЅРёРµ РѕРіСЂР°РЅРёС‡РµРЅРёСЏ СЃРЅРёРјР°СЋС‚СЃСЏ, С‡С‚РѕР±С‹ РЅРµ Р·Р°Р¶Р°С‚СЊ
+      РїСЂРёСЃРІР°РёРІР°РЅРёРµ. РЎРЅР°С‡Р°Р»Р° С€РёСЂРёРЅР°, Р·Р°С‚РµРј РІС‹СЃРѕС‚Р°. }
+    fmSecondfj.Constraints.MinHeight := 0;
+    fmSecondfj.Constraints.MinWidth := 0;
+    fmSecondfj.Constraints.MaxHeight := 0;
+    fmSecondfj.Constraints.MaxWidth := 0;
+    fmSecondfj.ClientWidth := HorSize.Width;
+    fmSecondfj.ClientHeight := VertSize.Height;
+    pcAll.Constraints.MaxHeight := pcAll.Constraints.MinHeight;
+    pcAll.Constraints.MaxWidth := pcAll.Constraints.MinWidth;
+    { С„Р°РєС‚РёС‡РµСЃРєРёР№ РІРЅРµС€РЅРёР№ СЂР°Р·РјРµСЂ С„РёРєСЃРёСЂСѓРµС‚СЃСЏ РєР°Рє РјРёРЅРёРјСѓРј Рё РјР°РєСЃРёРјСѓРј }
+    fmSecondfj.Constraints.MinHeight := fmSecondfj.Height;
+    fmSecondfj.Constraints.MinWidth := fmSecondfj.Width;
+    fmSecondfj.Constraints.MaxHeight := fmSecondfj.Height;
+    fmSecondfj.Constraints.MaxWidth := fmSecondfj.Width;
     gFlag5969EE := Saved;
     gInScriptTab := False;
   end;
@@ -11816,9 +12534,9 @@ end;
 
 procedure TfmSecond.WMNCHitTest(var Msg: TMessage);
 begin
-  { Пока открыта НЕ вкладка скрипта, окно тянуть за рамку нельзя: все
-    попадания в рамку и кнопку разворота ($09..$11) подменяются заголовком,
-    и рамка перестаёт тянуться. HTZOOM = HTMAXBUTTON = 9,
+  { РџРѕРєР° РѕС‚РєСЂС‹С‚Р° РќР• РІРєР»Р°РґРєР° СЃРєСЂРёРїС‚Р°, РѕРєРЅРѕ С‚СЏРЅСѓС‚СЊ Р·Р° СЂР°РјРєСѓ РЅРµР»СЊР·СЏ: РІСЃРµ
+    РїРѕРїР°РґР°РЅРёСЏ РІ СЂР°РјРєСѓ Рё РєРЅРѕРїРєСѓ СЂР°Р·РІРѕСЂРѕС‚Р° ($09..$11) РїРѕРґРјРµРЅСЏСЋС‚СЃСЏ Р·Р°РіРѕР»РѕРІРєРѕРј,
+    Рё СЂР°РјРєР° РїРµСЂРµСЃС‚Р°С‘С‚ С‚СЏРЅСѓС‚СЊСЃСЏ. HTZOOM = HTMAXBUTTON = 9,
     HTBOTTOMRIGHT = 17. }
   inherited;
   if not gInScriptTab then
@@ -11829,8 +12547,8 @@ end;
 
 procedure TfmSecond.WMSize(var Msg: TMessage);
 begin
-  { Запоминает, развёрнуто ли окно: тем же флагом pcAllChange решает,
-    разворачивать ли его обратно. Ветка SIZE_MINIMIZED не делает ничего. }
+  { Р—Р°РїРѕРјРёРЅР°РµС‚, СЂР°Р·РІС‘СЂРЅСѓС‚Рѕ Р»Рё РѕРєРЅРѕ: С‚РµРј Р¶Рµ С„Р»Р°РіРѕРј pcAllChange СЂРµС€Р°РµС‚,
+    СЂР°Р·РІРѕСЂР°С‡РёРІР°С‚СЊ Р»Рё РµРіРѕ РѕР±СЂР°С‚РЅРѕ. Р’РµС‚РєР° SIZE_MINIMIZED РЅРµ РґРµР»Р°РµС‚ РЅРёС‡РµРіРѕ. }
   inherited;
   case Msg.WParam of
     SIZE_MAXIMIZED: gFlag5969EE := True;
@@ -11840,8 +12558,8 @@ end;
 
 procedure TfmSecond.WMSysCommand(var Msg: TMessage);
 begin
-  { Перед разворотом окна запоминается его размер, чтобы pcAllChange
-    вернул именно его. Сравнение точное, без маски $FFF0. }
+  { РџРµСЂРµРґ СЂР°Р·РІРѕСЂРѕС‚РѕРј РѕРєРЅР° Р·Р°РїРѕРјРёРЅР°РµС‚СЃСЏ РµРіРѕ СЂР°Р·РјРµСЂ, С‡С‚РѕР±С‹ pcAllChange
+    РІРµСЂРЅСѓР» РёРјРµРЅРЅРѕ РµРіРѕ. РЎСЂР°РІРЅРµРЅРёРµ С‚РѕС‡РЅРѕРµ, Р±РµР· РјР°СЃРєРё $FFF0. }
   if Msg.WParam = SC_MAXIMIZE then
   begin
     gSavedWidth := fmSecondfj.Width;
@@ -11852,8 +12570,8 @@ end;
 
 procedure TfmSecond.WMNCLButtonDblClk(var Msg: TMessage);
 begin
-  { То же, что и WMSysCommand, но для двойного щелчка по заголовку
-    (HTCAPTION = 2). Предка тут нет: inherited уходит в DefaultHandler. }
+  { РўРѕ Р¶Рµ, С‡С‚Рѕ Рё WMSysCommand, РЅРѕ РґР»СЏ РґРІРѕР№РЅРѕРіРѕ С‰РµР»С‡РєР° РїРѕ Р·Р°РіРѕР»РѕРІРєСѓ
+    (HTCAPTION = 2). РџСЂРµРґРєР° С‚СѓС‚ РЅРµС‚: inherited СѓС…РѕРґРёС‚ РІ DefaultHandler. }
   if Msg.WParam = HTCAPTION then
   begin
     gSavedWidth := fmSecondfj.Width;
@@ -11915,7 +12633,10 @@ end;
 
 procedure TfmSecond.sbWinListClick(Sender: TObject);
 var
-  Buf: PChar;
+  Buf: array[0..$FF] of WideChar;
+  WLen: Integer;
+  WS: WideString;
+  Title: string;
   IsWin: Boolean;
   Show: Boolean;
   Vis: Boolean;
@@ -11928,9 +12649,9 @@ var
   W: HWND;
   N: HWND;
 begin
-  { Перебор всех окон верхнего уровня: заголовок, признак видимости и наличие
-    дочерних окон складываются в подпись, хэндлы -- в gWinHandles. Прежний
-    выбор восстанавливается по совпадению заголовка и хэндла. }
+  { РџРµСЂРµР±РѕСЂ РІСЃРµС… РѕРєРѕРЅ РІРµСЂС…РЅРµРіРѕ СѓСЂРѕРІРЅСЏ: Р·Р°РіРѕР»РѕРІРѕРє, РїСЂРёР·РЅР°Рє РІРёРґРёРјРѕСЃС‚Рё Рё РЅР°Р»РёС‡РёРµ
+    РґРѕС‡РµСЂРЅРёС… РѕРєРѕРЅ СЃРєР»Р°РґС‹РІР°СЋС‚СЃСЏ РІ РїРѕРґРїРёСЃСЊ, С…СЌРЅРґР»С‹ -- РІ gWinHandles. РџСЂРµР¶РЅРёР№
+    РІС‹Р±РѕСЂ РІРѕСЃСЃС‚Р°РЅР°РІР»РёРІР°РµС‚СЃСЏ РїРѕ СЃРѕРІРїР°РґРµРЅРёСЋ Р·Р°РіРѕР»РѕРІРєР° Рё С…СЌРЅРґР»Р°. }
   if (cbWinList.ItemIndex <= Length(gWinHandles)) and
      (cbWinList.ItemIndex >= 0) then
     Cur := gWinHandles[cbWinList.ItemIndex]
@@ -11945,16 +12666,17 @@ begin
       W := N;
   until N = 0;
   W := GetWindow(W, GW_HWNDFIRST);
-  Buf := StrAlloc(100);
   SetLength(gWinHandles, 0);
   repeat
-    GetWindowText(W, Buf, $50);
+    WLen := GetWindowTextW(W, Buf, Length(Buf));
+    SetString(WS, Buf, WLen);
+    Title := UTF8Encode(WS);
     IsWin := IsWindow(W);
     Vis := IsWindowVisible(W);
     HasOwn := GetWindow(W, GW_OWNER) <> 0;
     S := '';
     Show := Vis or miShowAllWindows.Checked;
-    if (StrComp(Buf, '') <> 0) and IsWin then
+    if (Title <> '') and IsWin then
       if Show then
       begin
         GetWindowThreadProcessId(W, @Pid);
@@ -11965,8 +12687,8 @@ begin
           S := S + '> ';
         if not Vis then
           S := S + '* ';
-        cbWinList.Items.Add(T + ' ' + S + Buf);
-        if (Buf = Old) and (W = Cur) then
+        cbWinList.Items.Add(T + ' ' + S + Title);
+        if (Title = Old) and (W = Cur) then
         begin
           cbWinList.Tag := 1;
           cbWinList.ItemIndex := cbWinList.Items.Count - 1;
@@ -11979,7 +12701,6 @@ begin
     if N <> 0 then
       W := N;
   until N = 0;
-  StrDispose(Buf);
   SendMessage(cbWinList.Handle, $14F, 1, 0);
 end;
 
@@ -12002,7 +12723,7 @@ begin
     gScriptso3[I].ProcessId := Pid;
 
     if gScriptso3[I].ProcessHandle <> 0 then
-      CloseHandle(gScriptso3[I].ProcessHandle);
+      FileClose(gScriptso3[I].ProcessHandle); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
 
     gScriptso3[I].ProcessHandle := OpenProcess($638, False, Pid);
     gScriptso3[I].ProcessHandle2 := gScriptso3[I].ProcessHandle;
@@ -12113,7 +12834,7 @@ begin
                   GetWindowThreadProcessId(gScriptso3[I].ClientWnd, @Pid);
                   gScriptso3[I].ProcessId := Pid;
                   if gScriptso3[I].ProcessHandle <> 0 then
-                    CloseHandle(gScriptso3[I].ProcessHandle);
+                    FileClose(gScriptso3[I].ProcessHandle); { *РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРѕ РёР· CloseHandle* }
                   gScriptso3[I].ProcessHandle := OpenProcess($638, True, Pid);
                 end;
                 gScriptso3[I].Flag91 := True;
@@ -12179,12 +12900,13 @@ end;
 procedure TfmSecond.bFindNextClick(Sender: TObject);
 var
   Text: string;
+  WText: WideString;
   Dir: Integer;
   Flags: Integer;
   V: OleVariant;
 begin
-  { Поиск по справке идёт поздним связыванием через DOM браузера:
-    у документа берётся body.CreateTextRange, найденное подсвечивается
+  { РџРѕРёСЃРє РїРѕ СЃРїСЂР°РІРєРµ РёРґС‘С‚ РїРѕР·РґРЅРёРј СЃРІСЏР·С‹РІР°РЅРёРµРј С‡РµСЂРµР· DOM Р±СЂР°СѓР·РµСЂР°:
+    Сѓ РґРѕРєСѓРјРµРЅС‚Р° Р±РµСЂС‘С‚СЃСЏ body.CreateTextRange, РЅР°Р№РґРµРЅРЅРѕРµ РїРѕРґСЃРІРµС‡РёРІР°РµС‚СЃСЏ
     execCommand. }
   case pcHelp.TabIndex of
     0:
@@ -12192,9 +12914,10 @@ begin
         Text := eFindText.Text;
         if Text <> '' then
         begin
+          WText := Text;
           case rbFindDown.Checked of
-            True: Dir := 1;
-            False: Dir := -1;
+            True: Dir := 1000000000;
+            False: Dir := -1000000000;
           end;
           case cbCaseSens.Checked of
             True: Flags := 4;
@@ -12206,11 +12929,12 @@ begin
             gTextRange := V.body.CreateTextRange;
             eFindText.Modified := False;
           end;
-          if not gTextRange.FindText(Text, Dir, Flags) then
+          if not gTextRange.FindText(WText, Dir, Flags) then
           begin
             V := wbWiki.Document;
             gTextRange := V.body.CreateTextRange;
-            gTextRange.FindText(Text, Dir, Flags);
+            if not gTextRange.FindText(WText, Dir, Flags) then
+              Exit;
           end;
           gTextRange.execCommand('BackColor', '', 'yellow');
           gTextRange.execCommand('ForeColor', '', 'red');
@@ -12257,14 +12981,14 @@ var
   MC: Boolean;
   C: Char;
 begin
-  { OnFind/OnReplace обоих диалогов (fhFindDialog и fhReplaceDialog, см.
-    FormCreate), а также поиск по вкладке истории из bFindNextClick.
-    Один обработчик обслуживает два приёмника текста: SynEdit со скриптом и
-    TMemo окна справки. Какой из них -- говорит FFlag1438, а сам объект лежит
-    в fld_1434, поэтому на одно значение заведены две переменные разного типа.
-    Ищется не по строке, а по копии текста в PChar-буфере: для поиска ВВЕРХ
-    буфер и образец разворачиваются задом наперёд, и дальше работает обычный
-    StrPos вниз. }
+  { OnFind/OnReplace РѕР±РѕРёС… РґРёР°Р»РѕРіРѕРІ (fhFindDialog Рё fhReplaceDialog, СЃРј.
+    FormCreate), Р° С‚Р°РєР¶Рµ РїРѕРёСЃРє РїРѕ РІРєР»Р°РґРєРµ РёСЃС‚РѕСЂРёРё РёР· bFindNextClick.
+    РћРґРёРЅ РѕР±СЂР°Р±РѕС‚С‡РёРє РѕР±СЃР»СѓР¶РёРІР°РµС‚ РґРІР° РїСЂРёС‘РјРЅРёРєР° С‚РµРєСЃС‚Р°: SynEdit СЃРѕ СЃРєСЂРёРїС‚РѕРј Рё
+    TMemo РѕРєРЅР° СЃРїСЂР°РІРєРё. РљР°РєРѕР№ РёР· РЅРёС… -- РіРѕРІРѕСЂРёС‚ FFlag1438, Р° СЃР°Рј РѕР±СЉРµРєС‚ Р»РµР¶РёС‚
+    РІ fld_1434, РїРѕСЌС‚РѕРјСѓ РЅР° РѕРґРЅРѕ Р·РЅР°С‡РµРЅРёРµ Р·Р°РІРµРґРµРЅС‹ РґРІРµ РїРµСЂРµРјРµРЅРЅС‹Рµ СЂР°Р·РЅРѕРіРѕ С‚РёРїР°.
+    РС‰РµС‚СЃСЏ РЅРµ РїРѕ СЃС‚СЂРѕРєРµ, Р° РїРѕ РєРѕРїРёРё С‚РµРєСЃС‚Р° РІ PChar-Р±СѓС„РµСЂРµ: РґР»СЏ РїРѕРёСЃРєР° Р’Р’Р•Р РҐ
+    Р±СѓС„РµСЂ Рё РѕР±СЂР°Р·РµС† СЂР°Р·РІРѕСЂР°С‡РёРІР°СЋС‚СЃСЏ Р·Р°РґРѕРј РЅР°РїРµСЂС‘Рґ, Рё РґР°Р»СЊС€Рµ СЂР°Р±РѕС‚Р°РµС‚ РѕР±С‹С‡РЅС‹Р№
+    StrPos РІРЅРёР·. }
   Memo := TMemo(fld_1434);
   Ed := TSynEdit(fld_1434);
   if Sender is TReplaceDialog then
@@ -12274,8 +12998,8 @@ begin
     MC := frMatchCase in (Sender as TReplaceDialog).Options;
     b1 := Pos(sFind, sRepl) > 0;
     b2 := Pos(AnsiLowerCase(sFind), AnsiLowerCase(sRepl)) > 0;
-    { «заменить всё», когда замена сама содержит образец, -- это бесконечный
-      цикл: пищим и уходим, ничего не тронув }
+    { В«Р·Р°РјРµРЅРёС‚СЊ РІСЃС‘В», РєРѕРіРґР° Р·Р°РјРµРЅР° СЃР°РјР° СЃРѕРґРµСЂР¶РёС‚ РѕР±СЂР°Р·РµС†, -- СЌС‚Рѕ Р±РµСЃРєРѕРЅРµС‡РЅС‹Р№
+      С†РёРєР»: РїРёС‰РёРј Рё СѓС…РѕРґРёРј, РЅРёС‡РµРіРѕ РЅРµ С‚СЂРѕРЅСѓРІ }
     if (frReplaceAll in (Sender as TReplaceDialog).Options) and
       (b1 and MC or not MC and b2) then
     begin
@@ -12288,14 +13012,20 @@ begin
   StrPCopy(FindBuf, Dlg.FindText);
   while True do
   begin
-    TextLen := Memo.GetTextLen + 1;
-    GetMem(TextBuf, TextLen);
     if FFlag1438 then
-      Memo.GetTextBuf(TextBuf, TextLen)
+    begin
+      TextLen := Memo.GetTextLen + 1;
+      GetMem(TextBuf, TextLen);
+      Memo.GetTextBuf(TextBuf, TextLen);
+    end
     else
-      Ed.GetTextBuf(TextBuf, TextLen);
-    { без учёта регистра сравниваем в верхнем: оба буфера прогоняются
-      через AnsiStrUpper прямо на месте }
+    begin
+      TextLen := Length(Ed.Text) + 1;
+      GetMem(TextBuf, TextLen);
+      StrPLCopy(TextBuf, Ed.Text, TextLen - 1);
+    end;
+    { Р±РµР· СѓС‡С‘С‚Р° СЂРµРіРёСЃС‚СЂР° СЃСЂР°РІРЅРёРІР°РµРј РІ РІРµСЂС…РЅРµРј: РѕР±Р° Р±СѓС„РµСЂР° РїСЂРѕРіРѕРЅСЏСЋС‚СЃСЏ
+      С‡РµСЂРµР· AnsiStrUpper РїСЂСЏРјРѕ РЅР° РјРµСЃС‚Рµ }
     if not (frMatchCase in Dlg.Options) then
     begin
       TextBuf := AnsiStrUpper(TextBuf);
@@ -12321,15 +13051,15 @@ begin
         FindBuf[FindLen - I - 1] := C;
         Inc(I);
       end;
-      { в перевёрнутом буфере курсору соответствует зеркальное смещение;
-        при замене отсчёт идёт от НАЧАЛА выделения, при поиске -- от конца }
+      { РІ РїРµСЂРµРІС‘СЂРЅСѓС‚РѕРј Р±СѓС„РµСЂРµ РєСѓСЂСЃРѕСЂСѓ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓРµС‚ Р·РµСЂРєР°Р»СЊРЅРѕРµ СЃРјРµС‰РµРЅРёРµ;
+        РїСЂРё Р·Р°РјРµРЅРµ РѕС‚СЃС‡С‘С‚ РёРґС‘С‚ РѕС‚ РќРђР§РђР›Рђ РІС‹РґРµР»РµРЅРёСЏ, РїСЂРё РїРѕРёСЃРєРµ -- РѕС‚ РєРѕРЅС†Р° }
       if FFlag1438 then
         P := TextBuf + (TextLen - 1) - Memo.SelStart
       else if (Sender is TReplaceDialog) and
         (frReplace in (Sender as TReplaceDialog).Options) then
-        P := TextBuf + (TextLen - 1) - Ed.SelStart - Ed.SelLength
+        P := TextBuf + (TextLen - Ed.SelEnd)
       else
-        P := TextBuf + (TextLen - 1) - Ed.SelStart;
+        P := TextBuf + (TextLen - Ed.SelStart);
     end
     else
     begin
@@ -12337,12 +13067,12 @@ begin
         P := TextBuf + Memo.SelStart + Memo.SelLength
       else if (Sender is TReplaceDialog) and
         (frReplace in (Sender as TReplaceDialog).Options) then
-        P := TextBuf + Ed.SelStart
+        P := TextBuf + (Ed.SelStart - 1)
       else
-        P := TextBuf + Ed.SelStart + Ed.SelLength;
+        P := TextBuf + (Ed.SelEnd - 1);
     end;
     P := StrPos(P, FindBuf);
-    { до конца не нашли -- заходим на второй круг от начала текста }
+    { РґРѕ РєРѕРЅС†Р° РЅРµ РЅР°С€Р»Рё -- Р·Р°С…РѕРґРёРј РЅР° РІС‚РѕСЂРѕР№ РєСЂСѓРі РѕС‚ РЅР°С‡Р°Р»Р° С‚РµРєСЃС‚Р° }
     if P = nil then
     begin
       P := TextBuf;
@@ -12352,7 +13082,7 @@ begin
         if FFlag1438 then
           Memo.SelLength := 0
         else
-          Ed.SelLength := 0;
+          Ed.SelEnd := Ed.SelStart;
         MessageBeep(0);
         FreeMem(FindBuf, Length(Dlg.FindText) + 1);
         FreeMem(TextBuf, TextLen);
@@ -12369,11 +13099,11 @@ begin
     end
     else
     begin
-      Ed.SelStart := I;
-      Ed.SelLength := Length(Dlg.FindText);
+      Ed.SelStart := I + 1;
+      Ed.SelEnd := Ed.SelStart + Length(Dlg.FindText);
     end;
-    { «заменить всё» -- заменили, встали за заменой и пошли на следующий круг
-      уже по изменённому тексту; текстовый буфер перечитывается заново }
+    { В«Р·Р°РјРµРЅРёС‚СЊ РІСЃС‘В» -- Р·Р°РјРµРЅРёР»Рё, РІСЃС‚Р°Р»Рё Р·Р° Р·Р°РјРµРЅРѕР№ Рё РїРѕС€Р»Рё РЅР° СЃР»РµРґСѓСЋС‰РёР№ РєСЂСѓРі
+      СѓР¶Рµ РїРѕ РёР·РјРµРЅС‘РЅРЅРѕРјСѓ С‚РµРєСЃС‚Сѓ; С‚РµРєСЃС‚РѕРІС‹Р№ Р±СѓС„РµСЂ РїРµСЂРµС‡РёС‚С‹РІР°РµС‚СЃСЏ Р·Р°РЅРѕРІРѕ }
     if frReplaceAll in Dlg.Options then
     begin
       if FFlag1438 then
@@ -12384,7 +13114,7 @@ begin
       else
       begin
         Ed.SelText := sRepl;
-        Ed.SelStart := Length(sRepl) + I;
+        Ed.SelStart := Length(sRepl) + I + 1;
       end;
       FreeMem(TextBuf, TextLen);
     end
@@ -12400,8 +13130,8 @@ begin
         else
         begin
           Ed.SelText := sRepl;
-          Ed.SelStart := I;
-          Ed.SelLength := Length(sRepl);
+          Ed.SelStart := I + 1;
+          Ed.SelEnd := Ed.SelStart + Length(sRepl);
         end;
       FreeMem(FindBuf, Length(Dlg.FindText) + 1);
       FreeMem(TextBuf, TextLen);
@@ -12414,11 +13144,14 @@ procedure TfmSecond.miLogWindowClick(Sender: TObject);
 var
   V: Integer;
 begin
-  { Окно лога: размеры и позиция берутся из сохранённых, а если вызов пришёл
-    от самой формы -- из полей FLogWin, запомненных при закрытии. }
+  { РћРєРЅРѕ Р»РѕРіР°: СЂР°Р·РјРµСЂС‹ Рё РїРѕР·РёС†РёСЏ Р±РµСЂСѓС‚СЃСЏ РёР· СЃРѕС…СЂР°РЅС‘РЅРЅС‹С…, Р° РµСЃР»Рё РІС‹Р·РѕРІ РїСЂРёС€С‘Р»
+    РѕС‚ СЃР°РјРѕР№ С„РѕСЂРјС‹ -- РёР· РїРѕР»РµР№ FLogWin, Р·Р°РїРѕРјРЅРµРЅРЅС‹С… РїСЂРё Р·Р°РєСЂС‹С‚РёРё. }
   if gDlg5966F8c6 = nil then
   begin
     gDlg5966F8c6 := TForm.Create(fmSecondfj);
+    {$IFDEF FPC}
+    gDlg5966F8c6.PopupParent := fmSecondfj;
+    {$ENDIF}
     gDlg5966F8c6.Parent := nil;
     gDlg5966F8c6.BorderStyle := bsSizeable;
     if miSOTLogWindow.Checked then
@@ -12508,7 +13241,7 @@ var
   S: string;
   W: string;
   N: Integer;
-  E: TSynMemo;
+  E: TSynEdit;
 begin
   case Key of
     38:
@@ -12568,7 +13301,7 @@ begin
     if Shift = [ssCtrl] then
     begin
       FFlag1438 := False;
-      fld_1434 := Integer(Sender as TSynMemo);
+      fld_1434 := Integer(Sender as TSynEdit);
       fhFindDialog.OnFind := ScriptFindDialogFind;
       fhFindDialog.Execute;
     end;
@@ -12581,7 +13314,7 @@ begin
       Key := 0;
       Shift := [];
       gFlag596A40 := True;
-      fld_1434 := Integer(Sender as TSynMemo);
+      fld_1434 := Integer(Sender as TSynEdit);
       fhReplaceDialog.OnFind := ScriptFindDialogFind;
       fhReplaceDialog.OnReplace := ScriptFindDialogFind;
       fhReplaceDialog.Execute;
@@ -12610,6 +13343,10 @@ var
   I: Integer;
   R: TRect;
 begin
+  {$IFDEF FPC}
+  tScript.InvalidateTabs;
+  tScriptDesc.InvalidateTabs;
+  {$ELSE}
   for I := 0 to tScript.Tabs.Count - 1 do
   begin
     R.Left := 0;
@@ -12621,6 +13358,7 @@ begin
     else
       tScriptDrawTab(tScript, I, R, I = tScript.TabIndex);
   end;
+  {$ENDIF}
 end;
 
 procedure TfmSecond.cbClVerChange(Sender: TObject);
@@ -12632,6 +13370,9 @@ begin
     if gDlg596708 = nil then
     begin
       gDlg596708 := TForm.Create(fmSecondfj);
+      {$IFDEF FPC}
+      gDlg596708.PopupParent := fmSecondfj;
+      {$ENDIF}
       gDlg596708.Parent := nil;
       gDlg596708.BorderStyle := bsSizeToolWin;
       gDlg596708.ClientHeight := pCustomClient.Height;
@@ -12744,7 +13485,9 @@ var
               begin
                 NewMi := TMenuItem.Create(Mi);
                 NewMi.Caption := Name;
+                {$IFNDEF FPC}
                 NewMi.AutoHotkeys := maManual;
+                {$ENDIF}
                 Mi.Insert(0, NewMi);
                 Mi := NewMi;
               end;
@@ -12771,7 +13514,9 @@ var
                   begin
                     NewMi := TMenuItem.Create(Mi);
                     NewMi.Caption := Part;
+                    {$IFNDEF FPC}
                     NewMi.AutoHotkeys := maManual;
+                    {$ENDIF}
                     Mi.Insert(0, NewMi);
                     Mi := NewMi;
                   end;
@@ -12780,7 +13525,9 @@ var
               end;
               NewMi := TMenuItem.Create(Mi);
               NewMi.Caption := S;
+              {$IFNDEF FPC}
               NewMi.AutoHotkeys := maManual;
+              {$ENDIF}
               NewMi.OnClick := Form.miPluginsClick;
               Mi.Insert(0, NewMi);
               Dec(gPluginFuncsgm^.Count);
@@ -12812,9 +13559,9 @@ var
   end;
 
 begin
-  { Обход Plugins\*.dll. Вся работа с одним файлом -- во вложенной
-    RegisterPlugin. Пустое второе имя -- перезагрузить всё, непустое --
-    дозагрузить один плагин. }
+  { РћР±С…РѕРґ Plugins\*.dll. Р’СЃСЏ СЂР°Р±РѕС‚Р° СЃ РѕРґРЅРёРј С„Р°Р№Р»РѕРј -- РІРѕ РІР»РѕР¶РµРЅРЅРѕР№
+    RegisterPlugin. РџСѓСЃС‚РѕРµ РІС‚РѕСЂРѕРµ РёРјСЏ -- РїРµСЂРµР·Р°РіСЂСѓР·РёС‚СЊ РІСЃС‘, РЅРµРїСѓСЃС‚РѕРµ --
+    РґРѕР·Р°РіСЂСѓР·РёС‚СЊ РѕРґРёРЅ РїР»Р°РіРёРЅ. }
   Err := '';
   Ver := 2.37;
   Dir := 'Plugins\';
@@ -12828,8 +13575,8 @@ begin
       repeat
         RegPlugin(SR.Name);
       until FindNext(SR) <> 0;
-    { FindClose обязан быть КВАЛИФИЦИРОВАН: Windows.FindClose(THandle)
-      перекрывает SysUtils.FindClose(var TSearchRec) }
+    { FindClose РѕР±СЏР·Р°РЅ Р±С‹С‚СЊ РљР’РђР›РР¤РР¦РР РћР’РђРќ: Windows.FindClose(THandle)
+      РїРµСЂРµРєСЂС‹РІР°РµС‚ SysUtils.FindClose(var TSearchRec) }
     SysUtils.FindClose(SR);
   end
   else
@@ -12838,13 +13585,13 @@ end;
 
 procedure AttachClientWindow;
 begin
-  // Тело живёт во вложенной процедуре FormCreate: автозапуск скриптов,
-  // помеченных ключом /rN.
+  // РўРµР»Рѕ Р¶РёРІС‘С‚ РІРѕ РІР»РѕР¶РµРЅРЅРѕР№ РїСЂРѕС†РµРґСѓСЂРµ FormCreate: Р°РІС‚РѕР·Р°РїСѓСЃРє СЃРєСЂРёРїС‚РѕРІ,
+  // РїРѕРјРµС‡РµРЅРЅС‹С… РєР»СЋС‡РѕРј /rN.
 end;
 
 procedure RegisterPlugin(Form: TfmSecond; const Name: string);
 begin
-  // Тело живёт во вложенной процедуре LoadPlugins.
+  // РўРµР»Рѕ Р¶РёРІС‘С‚ РІРѕ РІР»РѕР¶РµРЅРЅРѕР№ РїСЂРѕС†РµРґСѓСЂРµ LoadPlugins.
 end;
 
 procedure DonePlugins(Form: TfmSecond; Name: string);
@@ -12857,10 +13604,10 @@ var
   N: Integer;
   Found: Boolean;
 begin
-  { Выгрузка плагинов. Пустое имя -- выгрузить все, иначе только названный.
-    Список живёт в чужом юните (gPlugins), в Objects лежит HMODULE.
-    Меню чистится снизу вверх: у каждого пункта обрывается самый глубокий
-    лист, его команда убирается из gCmdListah7, и так пока лист не кончится. }
+  { Р’С‹РіСЂСѓР·РєР° РїР»Р°РіРёРЅРѕРІ. РџСѓСЃС‚РѕРµ РёРјСЏ -- РІС‹РіСЂСѓР·РёС‚СЊ РІСЃРµ, РёРЅР°С‡Рµ С‚РѕР»СЊРєРѕ РЅР°Р·РІР°РЅРЅС‹Р№.
+    РЎРїРёСЃРѕРє Р¶РёРІС‘С‚ РІ С‡СѓР¶РѕРј СЋРЅРёС‚Рµ (gPlugins), РІ Objects Р»РµР¶РёС‚ HMODULE.
+    РњРµРЅСЋ С‡РёСЃС‚РёС‚СЃСЏ СЃРЅРёР·Сѓ РІРІРµСЂС…: Сѓ РєР°Р¶РґРѕРіРѕ РїСѓРЅРєС‚Р° РѕР±СЂС‹РІР°РµС‚СЃСЏ СЃР°РјС‹Р№ РіР»СѓР±РѕРєРёР№
+    Р»РёСЃС‚, РµРіРѕ РєРѕРјР°РЅРґР° СѓР±РёСЂР°РµС‚СЃСЏ РёР· gCmdListah7, Рё С‚Р°Рє РїРѕРєР° Р»РёСЃС‚ РЅРµ РєРѕРЅС‡РёС‚СЃСЏ. }
   if Length(Name) <= 0 then
   begin
     for I := 0 to gPluginListjr.Count - 1 do
@@ -12987,20 +13734,20 @@ var
   N: Integer;
   gSZ: TScriptArrayS absolute gScriptso3;
 begin
-  { Номер скрипта -- хвост имени горячей клавиши после ВТОРОГО подчёркивания. }
+  { РќРѕРјРµСЂ СЃРєСЂРёРїС‚Р° -- С…РІРѕСЃС‚ РёРјРµРЅРё РіРѕСЂСЏС‡РµР№ РєР»Р°РІРёС€Рё РїРѕСЃР»Рµ Р’РўРћР РћР“Рћ РїРѕРґС‡С‘СЂРєРёРІР°РЅРёСЏ. }
   S := (Sender as THotKeyItem).Name;
   Delete(S, 1, PosEx('_', S, Pos('_', S) + 1));
   N := StrToInt(S);
   if gScriptso3[N] = nil then
   begin
     if gLangOffsety > 0 then
-      gScriptso3[0].Msg := LoadStr(gLangOffsety + $1D9)
+      gScriptso3[0].Msg := LoadStrCP1251(gLangOffsety + $1D9)
     else
       gScriptso3[0].Msg := 'System error: script ' + IntToStr(N) + ' not created.';
     ShowScriptMsg(TScanThread(gScriptso3[0]));
     Exit;
   end;
-  { $91 -- скрипт запущен, $92 -- стоит на паузе. Снятие с паузы будит поток. }
+  { $91 -- СЃРєСЂРёРїС‚ Р·Р°РїСѓС‰РµРЅ, $92 -- СЃС‚РѕРёС‚ РЅР° РїР°СѓР·Рµ. РЎРЅСЏС‚РёРµ СЃ РїР°СѓР·С‹ Р±СѓРґРёС‚ РїРѕС‚РѕРє. }
   if gSZ[N].Flag91 then
   begin
     if gSZ[N].Paused then
@@ -13042,10 +13789,10 @@ var
   Found: Boolean;
   Tmp: THKMods;
 begin
-  { fld_14E0 хранит указатель на компонент -- отсюда TObject(...).
-    Применение горячей клавиши: собирается подпись вида `Ctrl + Alt + F5`,
-    маска модификаторов пишется в gHKEntrieslw, а связанные с клавишей
-    флажок и метка ищутся через FindComponent по имени `cb`/`l` + имя. }
+  { fld_14E0 С…СЂР°РЅРёС‚ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° РєРѕРјРїРѕРЅРµРЅС‚ -- РѕС‚СЃСЋРґР° TObject(...).
+    РџСЂРёРјРµРЅРµРЅРёРµ РіРѕСЂСЏС‡РµР№ РєР»Р°РІРёС€Рё: СЃРѕР±РёСЂР°РµС‚СЃСЏ РїРѕРґРїРёСЃСЊ РІРёРґР° `Ctrl + Alt + F5`,
+    РјР°СЃРєР° РјРѕРґРёС„РёРєР°С‚РѕСЂРѕРІ РїРёС€РµС‚СЃСЏ РІ gHKEntrieslw, Р° СЃРІСЏР·Р°РЅРЅС‹Рµ СЃ РєР»Р°РІРёС€РµР№
+    С„Р»Р°Р¶РѕРє Рё РјРµС‚РєР° РёС‰СѓС‚СЃСЏ С‡РµСЂРµР· FindComponent РїРѕ РёРјРµРЅРё `cb`/`l` + РёРјСЏ. }
   Mods := ModNone;
   S := cbHKList.Text;
   if S <> '' then
@@ -13104,8 +13851,8 @@ begin
       end;
       Delete(Nm, 1, 2);
     end;
-    { связанный флажок: если он снят -- строка списка помечается пробелом,
-      если стоит -- вызывается обработчик, как при ручном щелчке }
+    { СЃРІСЏР·Р°РЅРЅС‹Р№ С„Р»Р°Р¶РѕРє: РµСЃР»Рё РѕРЅ СЃРЅСЏС‚ -- СЃС‚СЂРѕРєР° СЃРїРёСЃРєР° РїРѕРјРµС‡Р°РµС‚СЃСЏ РїСЂРѕР±РµР»РѕРј,
+      РµСЃР»Рё СЃС‚РѕРёС‚ -- РІС‹Р·С‹РІР°РµС‚СЃСЏ РѕР±СЂР°Р±РѕС‚С‡РёРє, РєР°Рє РїСЂРё СЂСѓС‡РЅРѕРј С‰РµР»С‡РєРµ }
     if (TObject(fld_14E0) is TCheckBox) or (TObject(fld_14E0) is TSpeedButton) then
     begin
       if (fmSecondfj.FindComponent('cb' + Nm) as TCheckBox).Checked then
@@ -13126,7 +13873,7 @@ begin
     gHKEntrieslw[N - 1].Sound := eSoundFileSelect.Text;
     if Found then
       gScriptso3[Idx].HoldKey := cbHotKeyIsHolded.Checked;
-    { зеркальный блок: после записи настроек флажок включается обратно }
+    { Р·РµСЂРєР°Р»СЊРЅС‹Р№ Р±Р»РѕРє: РїРѕСЃР»Рµ Р·Р°РїРёСЃРё РЅР°СЃС‚СЂРѕРµРє С„Р»Р°Р¶РѕРє РІРєР»СЋС‡Р°РµС‚СЃСЏ РѕР±СЂР°С‚РЅРѕ }
     if (TObject(fld_14E0) is TCheckBox) or (TObject(fld_14E0) is TSpeedButton) then
     begin
       if not (fmSecondfj.FindComponent('cb' + Nm) as TCheckBox).Checked then
@@ -13147,8 +13894,8 @@ end;
 
 procedure TfmSecond.HelpMemoWndProc(var Message: TMessage);
 begin
-  { перехват Ctrl+C в окне лога: копируем выделение своей функцией, которая
-    кладёт в буфер обмена с правильной раскладкой, и гасим сообщение }
+  { РїРµСЂРµС…РІР°С‚ Ctrl+C РІ РѕРєРЅРµ Р»РѕРіР°: РєРѕРїРёСЂСѓРµРј РІС‹РґРµР»РµРЅРёРµ СЃРІРѕРµР№ С„СѓРЅРєС†РёРµР№, РєРѕС‚РѕСЂР°СЏ
+    РєР»Р°РґС‘С‚ РІ Р±СѓС„РµСЂ РѕР±РјРµРЅР° СЃ РїСЂР°РІРёР»СЊРЅРѕР№ СЂР°СЃРєР»Р°РґРєРѕР№, Рё РіР°СЃРёРј СЃРѕРѕР±С‰РµРЅРёРµ }
   if Message.Msg = WM_COPY then
   begin
     Message.Msg := 0;
@@ -13159,8 +13906,8 @@ end;
 
 procedure TfmSecond.HelpMemoWndProc2(var Message: TMessage);
 begin
-  { близнец HelpMemoWndProc, но для мемо истории (fld_1430) и своего
-    старого обработчика gOldHelpProc2 }
+  { Р±Р»РёР·РЅРµС† HelpMemoWndProc, РЅРѕ РґР»СЏ РјРµРјРѕ РёСЃС‚РѕСЂРёРё (fld_1430) Рё СЃРІРѕРµРіРѕ
+    СЃС‚Р°СЂРѕРіРѕ РѕР±СЂР°Р±РѕС‚С‡РёРєР° gOldHelpProc2 }
   if Message.Msg = WM_COPY then
   begin
     Message.Msg := 0;
@@ -13171,9 +13918,9 @@ end;
 
 procedure TfmSecond.CharParamsWndProc(var Message: TMessage);
 begin
-  { трюк с WS_EX_APPWINDOW: при сворачивании окно должно появиться в панели
-    задач, при разворачивании -- снова исчезнуть; стиль меняется на скрытом
-    окне, поэтому вокруг ShowWindow(SW_HIDE)/ShowWindow(SW_SHOW) }
+  { С‚СЂСЋРє СЃ WS_EX_APPWINDOW: РїСЂРё СЃРІРѕСЂР°С‡РёРІР°РЅРёРё РѕРєРЅРѕ РґРѕР»Р¶РЅРѕ РїРѕСЏРІРёС‚СЊСЃСЏ РІ РїР°РЅРµР»Рё
+    Р·Р°РґР°С‡, РїСЂРё СЂР°Р·РІРѕСЂР°С‡РёРІР°РЅРёРё -- СЃРЅРѕРІР° РёСЃС‡РµР·РЅСѓС‚СЊ; СЃС‚РёР»СЊ РјРµРЅСЏРµС‚СЃСЏ РЅР° СЃРєСЂС‹С‚РѕРј
+    РѕРєРЅРµ, РїРѕСЌС‚РѕРјСѓ РІРѕРєСЂСѓРі ShowWindow(SW_HIDE)/ShowWindow(SW_SHOW) }
   if Message.Msg = WM_SYSCOMMAND then
     case Message.WParam of
       SC_MINIMIZE:
@@ -13218,8 +13965,8 @@ var
   I: Integer;
 begin
 {$I-}
-  { Сохраняет текущий скрипт как шаблон: каждая строка уходит в ini
-    отдельным ключом lineN, в кавычках -- чтобы не терялись пробелы. }
+  { РЎРѕС…СЂР°РЅСЏРµС‚ С‚РµРєСѓС‰РёР№ СЃРєСЂРёРїС‚ РєР°Рє С€Р°Р±Р»РѕРЅ: РєР°Р¶РґР°СЏ СЃС‚СЂРѕРєР° СѓС…РѕРґРёС‚ РІ ini
+    РѕС‚РґРµР»СЊРЅС‹Рј РєР»СЋС‡РѕРј lineN, РІ РєР°РІС‹С‡РєР°С… -- С‡С‚РѕР±С‹ РЅРµ С‚РµСЂСЏР»РёСЃСЊ РїСЂРѕР±РµР»С‹. }
   Ini := TMyMemIniFile.Create(FOptionsFile);
   Sect := 'ScriptTemplate';
   Ini.EraseSection(Sect);
@@ -13258,11 +14005,11 @@ begin
 
   NewIndex := seTagRename.Value;
 
-  { имя вкладки не изменилось }
+  { РёРјСЏ РІРєР»Р°РґРєРё РЅРµ РёР·РјРµРЅРёР»РѕСЃСЊ }
   if IntToStr(NewIndex) = gStr596A60 then
     Exit;
 
-  { вкладка с таким именем уже есть }
+  { РІРєР»Р°РґРєР° СЃ С‚Р°РєРёРј РёРјРµРЅРµРј СѓР¶Рµ РµСЃС‚СЊ }
   if tScript.Tabs.IndexOf(IntToStr(NewIndex)) >= 0 then
     Exit;
 
@@ -13275,7 +14022,7 @@ begin
 
   tScript.Tabs[gFlag596A5C] := IntToStr(NewIndex);
 
-  { скрипт переезжает на новый номер, старый слот освобождается }
+  { СЃРєСЂРёРїС‚ РїРµСЂРµРµР·Р¶Р°РµС‚ РЅР° РЅРѕРІС‹Р№ РЅРѕРјРµСЂ, СЃС‚Р°СЂС‹Р№ СЃР»РѕС‚ РѕСЃРІРѕР±РѕР¶РґР°РµС‚СЃСЏ }
   gScriptso3[NewIndex] := gScriptso3[OldIndex];
   gScriptso3[NewIndex].Name := IntToStr(NewIndex);
   gScriptso3[OldIndex] := nil;
@@ -13385,12 +14132,12 @@ end;
 
 procedure TfmSecond.AppMessage(var Msg: TMsg; var Handled: Boolean);
 begin
-  { TheRecorder -- переменная чужого юнита. $4B -- номер сообщения,
-    которым запись сообщает о нажатии клавиши прерывания. }
+  { TheRecorder -- РїРµСЂРµРјРµРЅРЅР°СЏ С‡СѓР¶РѕРіРѕ СЋРЅРёС‚Р°. $4B -- РЅРѕРјРµСЂ СЃРѕРѕР±С‰РµРЅРёСЏ,
+    РєРѕС‚РѕСЂС‹Рј Р·Р°РїРёСЃСЊ СЃРѕРѕР±С‰Р°РµС‚ Рѕ РЅР°Р¶Р°С‚РёРё РєР»Р°РІРёС€Рё РїСЂРµСЂС‹РІР°РЅРёСЏ. }
   if (Msg.message = $4B) and (TheRecorder.State = rsPlaying) then
   begin
     TheRecorder.DoStop;
-    fmSecondfj.mLog.Lines.Add('Воспроизведение прервано.');
+    fmSecondfj.mLog.Lines.Add('Р’РѕСЃРїСЂРѕРёР·РІРµРґРµРЅРёРµ РїСЂРµСЂРІР°РЅРѕ.');
   end;
 end;
 
@@ -13401,11 +14148,14 @@ end;
 
 procedure TfmSecond.miOptionsClick(Sender: TObject);
 begin
-  { Панель настроек живёт на отдельном окне, которое создаётся при первом
-    показе и потом только прячется/показывается. }
+  { РџР°РЅРµР»СЊ РЅР°СЃС‚СЂРѕРµРє Р¶РёРІС‘С‚ РЅР° РѕС‚РґРµР»СЊРЅРѕРј РѕРєРЅРµ, РєРѕС‚РѕСЂРѕРµ СЃРѕР·РґР°С‘С‚СЃСЏ РїСЂРё РїРµСЂРІРѕРј
+    РїРѕРєР°Р·Рµ Рё РїРѕС‚РѕРј С‚РѕР»СЊРєРѕ РїСЂСЏС‡РµС‚СЃСЏ/РїРѕРєР°Р·С‹РІР°РµС‚СЃСЏ. }
   if gDlg596704 = nil then
   begin
     gDlg596704 := TForm.Create(fmSecondfj);
+    {$IFDEF FPC}
+    gDlg596704.PopupParent := fmSecondfj;
+    {$ENDIF}
     gDlg596704.Parent := nil;
     gDlg596704.BorderStyle := bsToolWindow;
     gDlg596704.FormStyle := fsStayOnTop;
@@ -13468,8 +14218,8 @@ var
   I: Integer;
   P: PInteger;
 begin
-  { 27 таблиц адресов памяти клиента, по 25 версий в каждой. Индекс 23 --
-    пользовательская строка «свой клиент», её и правит этот спин-эдит. }
+  { 27 С‚Р°Р±Р»РёС† Р°РґСЂРµСЃРѕРІ РїР°РјСЏС‚Рё РєР»РёРµРЅС‚Р°, РїРѕ 25 РІРµСЂСЃРёР№ РІ РєР°Р¶РґРѕР№. РРЅРґРµРєСЃ 23 --
+    РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєР°СЏ СЃС‚СЂРѕРєР° В«СЃРІРѕР№ РєР»РёРµРЅС‚В», РµС‘ Рё РїСЂР°РІРёС‚ СЌС‚РѕС‚ СЃРїРёРЅ-СЌРґРёС‚. }
   if (Sender as TSpinEdit).Value < 0 then
     (Sender as TSpinEdit).Value := 0;
   I := $17;
@@ -13522,8 +14272,8 @@ var
   Wnd: HWND;
   P: PChar;
 begin
-  { Поиск адреса последнего сообщения: по цепочке из двух указателей
-    читается 32 байта текста. }
+  { РџРѕРёСЃРє Р°РґСЂРµСЃР° РїРѕСЃР»РµРґРЅРµРіРѕ СЃРѕРѕР±С‰РµРЅРёСЏ: РїРѕ С†РµРїРѕС‡РєРµ РёР· РґРІСѓС… СѓРєР°Р·Р°С‚РµР»РµР№
+    С‡РёС‚Р°РµС‚СЃСЏ 32 Р±Р°Р№С‚Р° С‚РµРєСЃС‚Р°. }
   if fmSecondfj.FTargetWnd = 0 then
   begin
     Wnd := FindWindow('Ultima Online', nil);
@@ -13642,7 +14392,7 @@ begin
 zCPBody:
       Addr := I;
       ReadProcessMemory(Ph, Pointer(Addr), @Addr, 4, Read);
-      { Второй разыменовыватель нужен только версии 1 -- он внутри if. }
+      { Р’С‚РѕСЂРѕР№ СЂР°Р·С‹РјРµРЅРѕРІС‹РІР°С‚РµР»СЊ РЅСѓР¶РµРЅ С‚РѕР»СЊРєРѕ РІРµСЂСЃРёРё 1 -- РѕРЅ РІРЅСѓС‚СЂРё if. }
       if Ver = 1 then
       begin
         Addr := Addr + $8C;
@@ -13718,16 +14468,16 @@ var
   Row: Integer;
   P: Integer;
 begin
-  { Перечитывает login.cfg рядом с клиентом в таблицу: строки с ключом
-    LoginServer разбираются на адрес, порт и комментарий; закомментированные
-    (ключ не в начале строки) помечаются 'X' в нулевой колонке. }
+  { РџРµСЂРµС‡РёС‚С‹РІР°РµС‚ login.cfg СЂСЏРґРѕРј СЃ РєР»РёРµРЅС‚РѕРј РІ С‚Р°Р±Р»РёС†Сѓ: СЃС‚СЂРѕРєРё СЃ РєР»СЋС‡РѕРј
+    LoginServer СЂР°Р·Р±РёСЂР°СЋС‚СЃСЏ РЅР° Р°РґСЂРµСЃ, РїРѕСЂС‚ Рё РєРѕРјРјРµРЅС‚Р°СЂРёР№; Р·Р°РєРѕРјРјРµРЅС‚РёСЂРѕРІР°РЅРЅС‹Рµ
+    (РєР»СЋС‡ РЅРµ РІ РЅР°С‡Р°Р»Рµ СЃС‚СЂРѕРєРё) РїРѕРјРµС‡Р°СЋС‚СЃСЏ 'X' РІ РЅСѓР»РµРІРѕР№ РєРѕР»РѕРЅРєРµ. }
   if eUOpath.Text = '' then
   begin
     SetForegroundWindow(Application.Handle);
     if gLangOffsety > 0 then
       MsgBox(PChar(LoadStr(gLangOffsety + $190)), 'UOPilot Error Message', 0)
     else
-      MsgBox('Введите путь к UO и нажмите кнопку Reload',
+      MsgBox('Р’РІРµРґРёС‚Рµ РїСѓС‚СЊ Рє UO Рё РЅР°Р¶РјРёС‚Рµ РєРЅРѕРїРєСѓ Reload',
         'UOPilot Error Message', 0);
     Exit;
   end;
@@ -13747,7 +14497,7 @@ begin
       Msg := LoadStr(gLangOffsety + $191) + Copy(S, Length(S) - 8, 9) +
              LoadStr(gLangOffsety + $192) + Copy(S, 1, Length(S) - 9)
     else
-      Msg := 'Файл ' + Copy(S, Length(S) - 8, 9) + ' не найден в ' +
+      Msg := 'Р¤Р°Р№Р» ' + Copy(S, Length(S) - 8, 9) + ' РЅРµ РЅР°Р№РґРµРЅ РІ ' +
              Copy(S, 1, Length(S) - 9);
     MsgBox(PChar(Msg), 'UOPilot Error Message', 0);
     L.Free;
@@ -13797,7 +14547,7 @@ begin
       try
         StrToInt(sgLoginLine.Cells[2, Row]);
       except
-        { непарсящийся порт -- строка выбрасывается }
+        { РЅРµРїР°СЂСЃСЏС‰РёР№СЃСЏ РїРѕСЂС‚ -- СЃС‚СЂРѕРєР° РІС‹Р±СЂР°СЃС‹РІР°РµС‚СЃСЏ }
         Dec(Row);
         sgLoginLine.RowCount := Row + 1;
       end;
@@ -13819,9 +14569,9 @@ begin
   end
   else
   begin
-    sgLoginLine.Cells[1, 0] := 'Адрес';
-    sgLoginLine.Cells[2, 0] := 'Порт';
-    sgLoginLine.Cells[3, 0] := 'Коментарий';
+    sgLoginLine.Cells[1, 0] := 'РђРґСЂРµСЃ';
+    sgLoginLine.Cells[2, 0] := 'РџРѕСЂС‚';
+    sgLoginLine.Cells[3, 0] := 'РљРѕРјРµРЅС‚Р°СЂРёР№';
   end;
   L.Free;
 end;
@@ -13856,15 +14606,15 @@ var
   Key: string[255];
   Line: string[255];
 begin
-  { Пишет login.cfg рядом с клиентом: по строке на каждую запись таблицы,
-    закомментированные (пустая нулевая колонка) -- с точкой с запятой. }
+  { РџРёС€РµС‚ login.cfg СЂСЏРґРѕРј СЃ РєР»РёРµРЅС‚РѕРј: РїРѕ СЃС‚СЂРѕРєРµ РЅР° РєР°Р¶РґСѓСЋ Р·Р°РїРёСЃСЊ С‚Р°Р±Р»РёС†С‹,
+    Р·Р°РєРѕРјРјРµРЅС‚РёСЂРѕРІР°РЅРЅС‹Рµ (РїСѓСЃС‚Р°СЏ РЅСѓР»РµРІР°СЏ РєРѕР»РѕРЅРєР°) -- СЃ С‚РѕС‡РєРѕР№ СЃ Р·Р°РїСЏС‚РѕР№. }
   if eUOpath.Text = '' then
   begin
     SetForegroundWindow(Application.Handle);
     if gLangOffsety > 0 then
       MsgBox(PChar(LoadStr(gLangOffsety + $196)), 'UOPilot Error Message', 0)
     else
-      MsgBox('Введите путь к UO и нажмите кнопку Reload',
+      MsgBox('Р’РІРµРґРёС‚Рµ РїСѓС‚СЊ Рє UO Рё РЅР°Р¶РјРёС‚Рµ РєРЅРѕРїРєСѓ Reload',
         'UOPilot Error Message', 0);
   end
   else
@@ -13898,7 +14648,7 @@ begin
           MsgBox(PChar(LoadStr(gLangOffsety + $197)),
             'UOPilot Error Message', 0)
         else
-          MsgBox(PChar('Не удалось записать изменения в файл ' + S),
+          MsgBox(PChar('РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РїРёСЃР°С‚СЊ РёР·РјРµРЅРµРЅРёСЏ РІ С„Р°Р№Р» ' + S),
             'UOPilot Error Message', 0);
     end;
     L.Free;
@@ -13927,8 +14677,8 @@ var
   L1, L2, L3: string;
   T1, T2, T3, T4: string;
 begin
-  { Сохраняет макрос мыши: имя кнопки, пауза, флаг Enter и три строки текста.
-    Имя урезается по ширине, пока не влезет в шаблон '          -         '. }
+  { РЎРѕС…СЂР°РЅСЏРµС‚ РјР°РєСЂРѕСЃ РјС‹С€Рё: РёРјСЏ РєРЅРѕРїРєРё, РїР°СѓР·Р°, С„Р»Р°Рі Enter Рё С‚СЂРё СЃС‚СЂРѕРєРё С‚РµРєСЃС‚Р°.
+    РРјСЏ СѓСЂРµР·Р°РµС‚СЃСЏ РїРѕ С€РёСЂРёРЅРµ, РїРѕРєР° РЅРµ РІР»РµР·РµС‚ РІ С€Р°Р±Р»РѕРЅ '          -         '. }
   gMouseMacros[gMacroIndex].Enter := cbmoEnter.Checked;
   gMouseMacros[gMacroIndex].Name := emoButName.Text;
   gMouseMacros[gMacroIndex].Pause := edmoPause.Text;
@@ -13973,6 +14723,9 @@ begin
     if gDlg596710 = nil then
     begin
       gDlg596710 := TForm.Create(fmSecondfj);
+      {$IFDEF FPC}
+      gDlg596710.PopupParent := fmSecondfj;
+      {$ENDIF}
       gDlg596710.Parent := nil;
       gDlg596710.BorderStyle := bsSizeToolWin;
       gDlg596710.ClientHeight := fmSecondfj.pMakroOptions.Height;
@@ -14005,9 +14758,9 @@ var
   Buf: array[0..255] of Char;
   I: Integer;
 begin
-  // Одна строка макроса мыши уходит в окно клиента посимвольно.
-  // Раскладка на время отправки переключается на gKbdLayoutow, после -- на
-  // '00000409' (US), причём условие возврата то же самое, что и на входе.
+  // РћРґРЅР° СЃС‚СЂРѕРєР° РјР°РєСЂРѕСЃР° РјС‹С€Рё СѓС…РѕРґРёС‚ РІ РѕРєРЅРѕ РєР»РёРµРЅС‚Р° РїРѕСЃРёРјРІРѕР»СЊРЅРѕ.
+  // Р Р°СЃРєР»Р°РґРєР° РЅР° РІСЂРµРјСЏ РѕС‚РїСЂР°РІРєРё РїРµСЂРµРєР»СЋС‡Р°РµС‚СЃСЏ РЅР° gKbdLayoutow, РїРѕСЃР»Рµ -- РЅР°
+  // '00000409' (US), РїСЂРёС‡С‘Рј СѓСЃР»РѕРІРёРµ РІРѕР·РІСЂР°С‚Р° С‚Рѕ Р¶Рµ СЃР°РјРѕРµ, С‡С‚Рѕ Рё РЅР° РІС…РѕРґРµ.
   GetKeyboardLayoutName(Buf);
   Old := Buf;
   if Old <> gKbdLayoutow then
@@ -14026,10 +14779,10 @@ var
   T: DWORD;
   N: Cardinal;
 begin
-  // Пауза между строками макроса. Число берётся StrToInt, а
-  // если строка кончается буквой -- разбор идёт через ИСКЛЮЧЕНИЕ: в except
-  // читается суффикс S/M/H, множитель, хвост отрезается и число умножается.
-  // Ветка else намеренно зовёт StrToInt('error') -- второе исключение.
+  // РџР°СѓР·Р° РјРµР¶РґСѓ СЃС‚СЂРѕРєР°РјРё РјР°РєСЂРѕСЃР°. Р§РёСЃР»Рѕ Р±РµСЂС‘С‚СЃСЏ StrToInt, Р°
+  // РµСЃР»Рё СЃС‚СЂРѕРєР° РєРѕРЅС‡Р°РµС‚СЃСЏ Р±СѓРєРІРѕР№ -- СЂР°Р·Р±РѕСЂ РёРґС‘С‚ С‡РµСЂРµР· РРЎРљР›Р®Р§Р•РќРР•: РІ except
+  // С‡РёС‚Р°РµС‚СЃСЏ СЃСѓС„С„РёРєСЃ S/M/H, РјРЅРѕР¶РёС‚РµР»СЊ, С…РІРѕСЃС‚ РѕС‚СЂРµР·Р°РµС‚СЃСЏ Рё С‡РёСЃР»Рѕ СѓРјРЅРѕР¶Р°РµС‚СЃСЏ.
+  // Р’РµС‚РєР° else РЅР°РјРµСЂРµРЅРЅРѕ Р·РѕРІС‘С‚ StrToInt('error') -- РІС‚РѕСЂРѕРµ РёСЃРєР»СЋС‡РµРЅРёРµ.
   if S = '' then
     Exit;
   if S = '0' then
@@ -14059,8 +14812,8 @@ var
   I: Integer;
   J: Integer;
 begin
-  { Кнопка макроса мыши: номер берётся из её имени (bmoNN), строки макроса
-    отправляются в окно клиента одна за другой с паузой между ними. }
+  { РљРЅРѕРїРєР° РјР°РєСЂРѕСЃР° РјС‹С€Рё: РЅРѕРјРµСЂ Р±РµСЂС‘С‚СЃСЏ РёР· РµС‘ РёРјРµРЅРё (bmoNN), СЃС‚СЂРѕРєРё РјР°РєСЂРѕСЃР°
+    РѕС‚РїСЂР°РІР»СЏСЋС‚СЃСЏ РІ РѕРєРЅРѕ РєР»РёРµРЅС‚Р° РѕРґРЅР° Р·Р° РґСЂСѓРіРѕР№ СЃ РїР°СѓР·РѕР№ РјРµР¶РґСѓ РЅРёРјРё. }
   gMacroWnd := gScriptso3[StrToInt(fmSecondfj.tScript.Tabs[fmSecondfj.tScript.TabIndex])].ClientWnd;
   if gMacroWnd = 0 then
   begin
@@ -14159,7 +14912,7 @@ procedure TfmSecond.sbSoundFileSelectClick(Sender: TObject);
 var
   D: TOpenDialog;
 begin
-  { Диалог не освобождается: владелец -- fmSecondfj, и он же его снесёт. }
+  { Р”РёР°Р»РѕРі РЅРµ РѕСЃРІРѕР±РѕР¶РґР°РµС‚СЃСЏ: РІР»Р°РґРµР»РµС† -- fmSecondfj, Рё РѕРЅ Р¶Рµ РµРіРѕ СЃРЅРµСЃС‘С‚. }
   D := TOpenDialog.Create(fmSecondfj);
   D.Filter := 'Sound files (*.wav)|*.wav';
   D.FilterIndex := 1;
@@ -14212,8 +14965,8 @@ var
   V: Boolean;
 begin
   V := not cbHideUOSettings.Checked;
-  { Вкладка UO прячется только когда окно настроек открыто: иначе PageControl1
-    ещё не показан и менять TabVisible нечему. }
+  { Р’РєР»Р°РґРєР° UO РїСЂСЏС‡РµС‚СЃСЏ С‚РѕР»СЊРєРѕ РєРѕРіРґР° РѕРєРЅРѕ РЅР°СЃС‚СЂРѕРµРє РѕС‚РєСЂС‹С‚Рѕ: РёРЅР°С‡Рµ PageControl1
+    РµС‰С‘ РЅРµ РїРѕРєР°Р·Р°РЅ Рё РјРµРЅСЏС‚СЊ TabVisible РЅРµС‡РµРјСѓ. }
   if (Assigned(gDlg596704)) and gDlg596704.Visible then
     PageControl1.Pages[0].TabVisible := V;
   miUltimaOnline.Visible := V;
@@ -14279,17 +15032,8 @@ end;
 
 procedure TfmSecond.CheckBox1Click(Sender: TObject);
 begin
-  edScript.CodeFolding.CollapsingMarkStyle := msSquare;
-  edScript.CodeFolding.CollapsedCodeHint := True;
-  edScript.CodeFolding.ShowCollapsedLine := True;
-  edScript.CodeFolding.IndentGuides := False;
-  edScript.CodeFolding.FolderBarColor := $20000000;
-  edScript.CodeFolding.HighlighterFoldRegions := False;
-  edScript.CodeFolding.FoldRegions.Add(rtChar, False, False, True, '{', '}');
-  edScript.CodeFolding.FoldRegions.Add(rtKeyword, False, False, True,
-    'for', 'end_for');
-  edScript.InitCodeFolding;
-  edScript.CodeFolding.Enabled := CheckBox1.Checked;
+  { РЎРІРѕСЂР°С‡РёРІР°РЅРёРµ РєРѕРґР° РѕС‚Р±СЂРѕС€РµРЅРѕ РїСЂРё РјРёРіСЂР°С†РёРё РЅР° Lazarus SynEdit: СЌС‚Рѕ Р±С‹Р»Р°
+    СЃРєСЂС‹С‚Р°СЏ (РЅРµРІРёРґРёРјС‹Р№ CheckBox1) РІСЃРµРіРґР° РІРєР»СЋС‡С‘РЅРЅР°СЏ С„СѓРЅРєС†РёСЏ. }
 end;
 
 procedure TfmSecond.seTabSizeChange(Sender: TObject);
@@ -14312,10 +15056,10 @@ var
   Top: Integer;
   I, J, N: Integer;
 begin
-  { Расстановка отступов в скрипте. Ключевые слова из списка увеличивают или
-    уменьшают отступ на seTabSize; метка (строка, начинающаяся с ':')
-    запоминается вместе с текущим отступом, а 'return' по ней выравнивает
-    хвост процедуры. }
+  { Р Р°СЃСЃС‚Р°РЅРѕРІРєР° РѕС‚СЃС‚СѓРїРѕРІ РІ СЃРєСЂРёРїС‚Рµ. РљР»СЋС‡РµРІС‹Рµ СЃР»РѕРІР° РёР· СЃРїРёСЃРєР° СѓРІРµР»РёС‡РёРІР°СЋС‚ РёР»Рё
+    СѓРјРµРЅСЊС€Р°СЋС‚ РѕС‚СЃС‚СѓРї РЅР° seTabSize; РјРµС‚РєР° (СЃС‚СЂРѕРєР°, РЅР°С‡РёРЅР°СЋС‰Р°СЏСЃСЏ СЃ ':')
+    Р·Р°РїРѕРјРёРЅР°РµС‚СЃСЏ РІРјРµСЃС‚Рµ СЃ С‚РµРєСѓС‰РёРј РѕС‚СЃС‚СѓРїРѕРј, Р° 'return' РїРѕ РЅРµР№ РІС‹СЂР°РІРЅРёРІР°РµС‚
+    С…РІРѕСЃС‚ РїСЂРѕС†РµРґСѓСЂС‹. }
   if not edScript.ReadOnly then
   begin
     Indent := 0;
@@ -14323,8 +15067,8 @@ begin
     Top := -1;
     if edScript.SelStart <> edScript.SelEnd then
     begin
-      StartRow := edScript.CharIndexToRowCol(edScript.SelStart).Line - 1;
-      EndRow := edScript.CharIndexToRowCol(edScript.SelEnd).Line - 1;
+      StartRow := edScript.CharIndexToRowCol(edScript.SelStart - 1).Y - 1;
+      EndRow := edScript.CharIndexToRowCol(edScript.SelEnd - 1).Y - 1;
       S := edScript.Lines[StartRow];
       I := 0;
       while (Length(S) >= I + 1) and (S[I + 1] in [#9, ' ']) do
@@ -14359,14 +15103,14 @@ begin
         if Indent > 0 then
           Dec(Indent, seTabSize.Value)
         else if gLangOffsety > 0 then
-          MessageBox(fmSecondfj.Handle,
+          MsgBoxW(fmSecondfj.Handle,
             PChar(LoadStr(gLangOffsety + $204) + ' ' + IntToStr(Row) + '.' + #13 +
                   LoadStr(gLangOffsety + $205)),
             PChar(miFormat.Caption), 0)
         else
-          MessageBox(fmSecondfj.Handle,
-            PChar('Подозрительный отступ в строке ' + IntToStr(Row) + '.' + #13 +
-                  'Где-то лишний "end".'),
+          MsgBoxW(fmSecondfj.Handle,
+            PChar('РџРѕРґРѕР·СЂРёС‚РµР»СЊРЅС‹Р№ РѕС‚СЃС‚СѓРї РІ СЃС‚СЂРѕРєРµ ' + IntToStr(Row) + '.' + #13 +
+                  'Р“РґРµ-С‚Рѕ Р»РёС€РЅРёР№ "end".'),
             PChar(miFormat.Caption), 0);
       if W = 'if' then
       begin
@@ -14398,7 +15142,7 @@ begin
         if Top >= 0 then
           if Marks[Top].Indent = Indent then
           begin
-            { хвост процедуры сдвигается на один уровень внутрь }
+            { С…РІРѕСЃС‚ РїСЂРѕС†РµРґСѓСЂС‹ СЃРґРІРёРіР°РµС‚СЃСЏ РЅР° РѕРґРёРЅ СѓСЂРѕРІРµРЅСЊ РІРЅСѓС‚СЂСЊ }
             for K := Marks[Top].Row + 1 to Row - 1 do
             begin
               Cur := edScript.Lines[K];
@@ -14425,14 +15169,14 @@ var
   N: Integer;
   StartRow, EndRow: Integer;
 begin
-  { Снимает ведущие табы и пробелы у выделенных строк, а без выделения --
-    у всех. Пустые строки не переписываются. }
+  { РЎРЅРёРјР°РµС‚ РІРµРґСѓС‰РёРµ С‚Р°Р±С‹ Рё РїСЂРѕР±РµР»С‹ Сѓ РІС‹РґРµР»РµРЅРЅС‹С… СЃС‚СЂРѕРє, Р° Р±РµР· РІС‹РґРµР»РµРЅРёСЏ --
+    Сѓ РІСЃРµС…. РџСѓСЃС‚С‹Рµ СЃС‚СЂРѕРєРё РЅРµ РїРµСЂРµРїРёСЃС‹РІР°СЋС‚СЃСЏ. }
   if not edScript.ReadOnly then
   begin
     if edScript.SelStart <> edScript.SelEnd then
     begin
-      StartRow := edScript.CharIndexToRowCol(edScript.SelStart).Line - 1;
-      EndRow := edScript.CharIndexToRowCol(edScript.SelEnd).Line - 1;
+      StartRow := edScript.CharIndexToRowCol(edScript.SelStart - 1).Y - 1;
+      EndRow := edScript.CharIndexToRowCol(edScript.SelEnd - 1).Y - 1;
     end
     else
     begin
@@ -14466,13 +15210,13 @@ var
   BufSize: Integer;
   K, M: Integer;
 begin
-  { Качалка страниц вики. WinInet тянет страницу целиком в буфер на $50000,
-    из неё вырезается обвязка MediaWiki и остаётся <title> + тело статьи +
-    printfooter, обёрнутые в свой html. Ссылки '/wiki/index.php?title=X'
-    переписываются в локальные 'X.htm'. При FileName = 'styles' страница
-    берётся как таблица стилей и правится подстановкой пробелов; до 10
-    повторов, если стилей ещё нет. Вызов рекурсивный: докачивает styles
-    по ссылке rel="stylesheet". }
+  { РљР°С‡Р°Р»РєР° СЃС‚СЂР°РЅРёС† РІРёРєРё. WinInet С‚СЏРЅРµС‚ СЃС‚СЂР°РЅРёС†Сѓ С†РµР»РёРєРѕРј РІ Р±СѓС„РµСЂ РЅР° $50000,
+    РёР· РЅРµС‘ РІС‹СЂРµР·Р°РµС‚СЃСЏ РѕР±РІСЏР·РєР° MediaWiki Рё РѕСЃС‚Р°С‘С‚СЃСЏ <title> + С‚РµР»Рѕ СЃС‚Р°С‚СЊРё +
+    printfooter, РѕР±С‘СЂРЅСѓС‚С‹Рµ РІ СЃРІРѕР№ html. РЎСЃС‹Р»РєРё '/wiki/index.php?title=X'
+    РїРµСЂРµРїРёСЃС‹РІР°СЋС‚СЃСЏ РІ Р»РѕРєР°Р»СЊРЅС‹Рµ 'X.htm'. РџСЂРё FileName = 'styles' СЃС‚СЂР°РЅРёС†Р°
+    Р±РµСЂС‘С‚СЃСЏ РєР°Рє С‚Р°Р±Р»РёС†Р° СЃС‚РёР»РµР№ Рё РїСЂР°РІРёС‚СЃСЏ РїРѕРґСЃС‚Р°РЅРѕРІРєРѕР№ РїСЂРѕР±РµР»РѕРІ; РґРѕ 10
+    РїРѕРІС‚РѕСЂРѕРІ, РµСЃР»Рё СЃС‚РёР»РµР№ РµС‰С‘ РЅРµС‚. Р’С‹Р·РѕРІ СЂРµРєСѓСЂСЃРёРІРЅС‹Р№: РґРѕРєР°С‡РёРІР°РµС‚ styles
+    РїРѕ СЃСЃС‹Р»РєРµ rel="stylesheet". }
   try
     Buf := nil;
     hNet := nil;
@@ -14499,7 +15243,7 @@ begin
                 if gLangOffsety > 0 then
                   fmSecondfj.mLog.Lines.Add('-' + LoadStr(gLangOffsety + $20F))
                 else
-                  fmSecondfj.mLog.Lines.Add('-Не скачался файл.');
+                  fmSecondfj.mLog.Lines.Add('-РќРµ СЃРєР°С‡Р°Р»СЃСЏ С„Р°Р№Р».');
               P := Buf;
               Content := Content + Copy(P, 1, Len);
             until Len = 0;
@@ -14639,13 +15383,13 @@ begin
     if gLangOffsety > 0 then
       fmSecondfj.mLog.Lines.Add('! ' + LoadStr(gLangOffsety + $210) + ' ' + FileName)
     else
-      fmSecondfj.mLog.Lines.Add('! Ошибка при закачке ' + FileName);
+      fmSecondfj.mLog.Lines.Add('! РћС€РёР±РєР° РїСЂРё Р·Р°РєР°С‡РєРµ ' + FileName);
   end;
 end;
 
 procedure TfmSecond.sbDownloadWikiClick(Sender: TObject);
 begin
-  { Скачивание вики в отдельном потоке; ошибка уходит сообщением в лог. }
+  { РЎРєР°С‡РёРІР°РЅРёРµ РІРёРєРё РІ РѕС‚РґРµР»СЊРЅРѕРј РїРѕС‚РѕРєРµ; РѕС€РёР±РєР° СѓС…РѕРґРёС‚ СЃРѕРѕР±С‰РµРЅРёРµРј РІ Р»РѕРі. }
   try
     if sbDownloadWiki.Down then
     begin
@@ -14666,7 +15410,7 @@ begin
     if gLangOffsety > 0 then
       fmSecondfj.mLog.Lines.Add('! ' + LoadStr(gLangOffsety + $211))
     else
-      fmSecondfj.mLog.Lines.Add('! Что то пошло не так.');
+      fmSecondfj.mLog.Lines.Add('! Р§С‚Рѕ С‚Рѕ РїРѕС€Р»Рѕ РЅРµ С‚Р°Рє.');
   end;
 end;
 
@@ -14677,9 +15421,9 @@ procedure TfmSecond.WebBrowserBeforeNavigate2(Sender: TObject;
 var
   S: string;
 begin
-  { OnBeforeNavigate2 у wbWiki: если статьи ещё нет в кэше -- скачать её
-    рядом с exe и увести переход в браузер (Cancel := True), иначе дать
-    компоненту открыть локальный файл. URL приходит OleVariant. }
+  { OnBeforeNavigate2 Сѓ wbWiki: РµСЃР»Рё СЃС‚Р°С‚СЊРё РµС‰С‘ РЅРµС‚ РІ РєСЌС€Рµ -- СЃРєР°С‡Р°С‚СЊ РµС‘
+    СЂСЏРґРѕРј СЃ exe Рё СѓРІРµСЃС‚Рё РїРµСЂРµС…РѕРґ РІ Р±СЂР°СѓР·РµСЂ (Cancel := True), РёРЅР°С‡Рµ РґР°С‚СЊ
+    РєРѕРјРїРѕРЅРµРЅС‚Сѓ РѕС‚РєСЂС‹С‚СЊ Р»РѕРєР°Р»СЊРЅС‹Р№ С„Р°Р№Р». URL РїСЂРёС…РѕРґРёС‚ OleVariant. }
   if not FileExists(URL) then
   begin
     S := ExtractFileName(URL);
@@ -14697,10 +15441,10 @@ end;
 
 procedure TfmSecond.ShowWikiTopic(Topic: string);
 begin
-  { Показ раздела вики: если окно справки закрыто -- открыть его тем же
-    обработчиком меню и, при несохранённой позиции (gHelpRect.Top = -1),
-    поставить посередине экрана. Дальше: локальная копия страницы, если
-    её нет -- качаем. }
+  { РџРѕРєР°Р· СЂР°Р·РґРµР»Р° РІРёРєРё: РµСЃР»Рё РѕРєРЅРѕ СЃРїСЂР°РІРєРё Р·Р°РєСЂС‹С‚Рѕ -- РѕС‚РєСЂС‹С‚СЊ РµРіРѕ С‚РµРј Р¶Рµ
+    РѕР±СЂР°Р±РѕС‚С‡РёРєРѕРј РјРµРЅСЋ Рё, РїСЂРё РЅРµСЃРѕС…СЂР°РЅС‘РЅРЅРѕР№ РїРѕР·РёС†РёРё (gHelpRect.Top = -1),
+    РїРѕСЃС‚Р°РІРёС‚СЊ РїРѕСЃРµСЂРµРґРёРЅРµ СЌРєСЂР°РЅР°. Р”Р°Р»СЊС€Рµ: Р»РѕРєР°Р»СЊРЅР°СЏ РєРѕРїРёСЏ СЃС‚СЂР°РЅРёС†С‹, РµСЃР»Рё
+    РµС‘ РЅРµС‚ -- РєР°С‡Р°РµРј. }
   try
     if (gHelpForm = nil) or (not gHelpForm.Visible) then
     begin
@@ -14729,23 +15473,23 @@ begin
     if gLangOffsety > 0 then
       fmSecondfj.mLog.Lines.Add('! ' + LoadStr(gLangOffsety + $212))
     else
-      fmSecondfj.mLog.Lines.Add('! Не удалось открыть форму.');
+      fmSecondfj.mLog.Lines.Add('! РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ С„РѕСЂРјСѓ.');
   end;
 end;
 
 procedure TfmSecond.ShowWikiForCommand;
 var
-  P: TBufferCoord;
+  P: TPoint;
   W: string;
   W2: string;
   Suffix: string;
-  P2: TBufferCoord;
+  P2: TPoint;
   M: Integer;
   N: Integer;
   I: Integer;
 begin
-  // F1 в редакторе: показать вики по команде под курсором.
-  // Тот же разбор, что в mnComPopup, но точка берётся от каретки.
+  // F1 РІ СЂРµРґР°РєС‚РѕСЂРµ: РїРѕРєР°Р·Р°С‚СЊ РІРёРєРё РїРѕ РєРѕРјР°РЅРґРµ РїРѕРґ РєСѓСЂСЃРѕСЂРѕРј.
+  // РўРѕС‚ Р¶Рµ СЂР°Р·Р±РѕСЂ, С‡С‚Рѕ РІ mnComPopup, РЅРѕ С‚РѕС‡РєР° Р±РµСЂС‘С‚СЃСЏ РѕС‚ РєР°СЂРµС‚РєРё.
   try
     P := edScript.CaretXY;
     W := edScript.GetWordAtRowCol(P);
@@ -14755,10 +15499,10 @@ begin
     case N of
       42, 50, 51, 77, 84:
         begin
-          P2 := edScript.PrevWordPosEx(P);
+          P2 := ScriptPrevWordPos(edScript, P);
           W2 := edScript.GetWordAtRowCol(P2);
           if W2 = W then
-            W2 := edScript.GetWordAtRowCol(edScript.PrevWordPosEx(P2));
+            W2 := edScript.GetWordAtRowCol(ScriptPrevWordPos(edScript, P2));
           M := gCmdList2jj.IndexOf(AnsiLowerCase(W2));
           case M of
             40, 49:
@@ -14788,28 +15532,34 @@ begin
     if gLangOffsety > 0 then
       fmSecondfj.mLog.Lines.Add('! ' + LoadStr(gLangOffsety + $213))
     else
-      fmSecondfj.mLog.Lines.Add('! Не удалось показать справку.');
+      fmSecondfj.mLog.Lines.Add('! РќРµ СѓРґР°Р»РѕСЃСЊ РїРѕРєР°Р·Р°С‚СЊ СЃРїСЂР°РІРєСѓ.');
   end;
 end;
 
 procedure TfmSecond.mnComPopup(Sender: TObject);
 var
-  P: TBufferCoord;
+  P: TPoint;
   W: string;
   W2: string;
   Suffix: string;
-  P2: TBufferCoord;
+  P2: TPoint;
+  Pt: TPoint;
   N: Integer;
   I: Integer;
   Ok: Boolean;
 begin
-  { Всплывающее меню редактора: под курсором ищется команда, для составных
-    (`if`, `while` и прочих с продолжением) подтягивается предыдущее слово
-    через `_`, а язык скрипта определяется первым комментарием снизу вверх --
-    от него зависит суффикс в ссылке на вики. }
+  { Р’СЃРїР»С‹РІР°СЋС‰РµРµ РјРµРЅСЋ СЂРµРґР°РєС‚РѕСЂР°: РїРѕРґ РєСѓСЂСЃРѕСЂРѕРј РёС‰РµС‚СЃСЏ РєРѕРјР°РЅРґР°, РґР»СЏ СЃРѕСЃС‚Р°РІРЅС‹С…
+    (`if`, `while` Рё РїСЂРѕС‡РёС… СЃ РїСЂРѕРґРѕР»Р¶РµРЅРёРµРј) РїРѕРґС‚СЏРіРёРІР°РµС‚СЃСЏ РїСЂРµРґС‹РґСѓС‰РµРµ СЃР»РѕРІРѕ
+    С‡РµСЂРµР· `_`, Р° СЏР·С‹Рє СЃРєСЂРёРїС‚Р° РѕРїСЂРµРґРµР»СЏРµС‚СЃСЏ РїРµСЂРІС‹Рј РєРѕРјРјРµРЅС‚Р°СЂРёРµРј СЃРЅРёР·Сѓ РІРІРµСЂС… --
+    РѕС‚ РЅРµРіРѕ Р·Р°РІРёСЃРёС‚ СЃСѓС„С„РёРєСЃ РІ СЃСЃС‹Р»РєРµ РЅР° РІРёРєРё. }
   try
     miWikiHelp.Visible := False;
-    Ok := edScript.GetPositionOfMouse(P);
+    Pt := edScript.ScreenToClient(Mouse.CursorPos);
+    Ok := (Pt.X >= 0) and (Pt.Y >= 0) and (Pt.X <= edScript.Width) and
+      (Pt.Y <= edScript.Height);
+    if not Ok then
+      Exit;
+    P := edScript.PixelsToLogicalPos(Pt);
     W := edScript.GetWordAtRowCol(P);
     if W = '' then
       Exit;
@@ -14817,10 +15567,10 @@ begin
     case N of
       42, 50, 51, 77, 84:
         begin
-          P2 := edScript.PrevWordPosEx(P);
+          P2 := ScriptPrevWordPos(edScript, P);
           W2 := edScript.GetWordAtRowCol(P2);
           if W2 = W then
-            W2 := edScript.GetWordAtRowCol(edScript.PrevWordPosEx(P2));
+            W2 := edScript.GetWordAtRowCol(ScriptPrevWordPos(edScript, P2));
           case gCmdList2jj.IndexOf(AnsiLowerCase(W2)) of
             40, 49:
               W := W2 + '_' + W;
@@ -14852,7 +15602,7 @@ begin
     if gLangOffsety > 0 then
       fmSecondfj.mLog.Lines.Add('! ' + LoadStr(gLangOffsety + $214))
     else
-      fmSecondfj.mLog.Lines.Add('! Проблемы с меню.');
+      fmSecondfj.mLog.Lines.Add('! РџСЂРѕР±Р»РµРјС‹ СЃ РјРµРЅСЋ.');
   end;
 end;
 
@@ -14862,17 +15612,21 @@ var
   Doc: IDispatch;
   W: TWebBrowser;
 begin
-  { Открывает раздел справки и активирует встроенный браузер: DoVerb с
-    OLEIVERB_UIACTIVATE. Сам wbWiki передаётся как IOleClientSite --
-    TOleControl её реализует. }
+  { РћС‚РєСЂС‹РІР°РµС‚ СЂР°Р·РґРµР» СЃРїСЂР°РІРєРё Рё Р°РєС‚РёРІРёСЂСѓРµС‚ РІСЃС‚СЂРѕРµРЅРЅС‹Р№ Р±СЂР°СѓР·РµСЂ: DoVerb СЃ
+    OLEIVERB_UIACTIVATE. РЎР°Рј wbWiki РїРµСЂРµРґР°С‘С‚СЃСЏ РєР°Рє IOleClientSite --
+    TOleControl РµС‘ СЂРµР°Р»РёР·СѓРµС‚. }
   ShowWikiTopic(miWikiHelp.Hint);
   W := wbWiki;
   Doc := W.Document;
   if Assigned(Doc) then
   begin
     R := ClientRect;
+{$IFDEF FPC}
+    W.OleObject.DoVerb(-4, nil, W, 0, W.Handle, R);
+{$ELSE}
     (W.Application as IOleObject).DoVerb(-4, nil, wbWiki, 0,
       W.Handle, R);
+{$ENDIF}
   end;
 end;
 
@@ -14880,9 +15634,9 @@ procedure WikiRefreshList(Form: TfmSecond);
 var
   SR: TSearchRec;
 begin
-  { Перечитывание списка скачанных страниц справки. SysUtils.FindClose --
-    с квалификатором: юнит Windows идёт в uses позже и перекрывает имя
-    своим FindClose(THandle), иначе «Incompatible types». }
+  { РџРµСЂРµС‡РёС‚С‹РІР°РЅРёРµ СЃРїРёСЃРєР° СЃРєР°С‡Р°РЅРЅС‹С… СЃС‚СЂР°РЅРёС† СЃРїСЂР°РІРєРё. SysUtils.FindClose --
+    СЃ РєРІР°Р»РёС„РёРєР°С‚РѕСЂРѕРј: СЋРЅРёС‚ Windows РёРґС‘С‚ РІ uses РїРѕР·Р¶Рµ Рё РїРµСЂРµРєСЂС‹РІР°РµС‚ РёРјСЏ
+    СЃРІРѕРёРј FindClose(THandle), РёРЅР°С‡Рµ В«Incompatible typesВ». }
   try
     if not DirectoryExists(gWikiPath) then
       Exit;
@@ -14896,7 +15650,7 @@ begin
     if gLangOffsety > 0 then
       fmSecondfj.mLog.Lines.Add('! ' + LoadStr(gLangOffsety + $215))
     else
-      fmSecondfj.mLog.Lines.Add('! Не удалось получить список файлов.');
+      fmSecondfj.mLog.Lines.Add('! РќРµ СѓРґР°Р»РѕСЃСЊ РїРѕР»СѓС‡РёС‚СЊ СЃРїРёСЃРѕРє С„Р°Р№Р»РѕРІ.');
   end;
 end;
 
@@ -14926,7 +15680,7 @@ end;
 
 procedure TfmSecond.WebBrowserCommandStateChange(Sender: TObject; Command: Integer; Enable: WordBool);
 begin
-  { Ветки перечислены не по возрастанию: сначала 2, потом 1. }
+  { Р’РµС‚РєРё РїРµСЂРµС‡РёСЃР»РµРЅС‹ РЅРµ РїРѕ РІРѕР·СЂР°СЃС‚Р°РЅРёСЋ: СЃРЅР°С‡Р°Р»Р° 2, РїРѕС‚РѕРј 1. }
   case Command of
     2: sbWikiBack.Enabled := Enable;
     1: sbWikiForward.Enabled := Enable;
@@ -15044,7 +15798,7 @@ begin
       fmSecondfj.mLog.Lines.Add('+ ' + LoadStr(gLangOffsety + $216) + ': ' +
         IntToStr(Length(A)))
     else
-      fmSecondfj.mLog.Lines.Add('+ Нашли функций: ' + IntToStr(Length(A)));
+      fmSecondfj.mLog.Lines.Add('+ РќР°С€Р»Рё С„СѓРЅРєС†РёР№: ' + IntToStr(Length(A)));
     P2 := Length(A) - 1;
     fmSecondfj.sbDownloadWiki.Tag := P2;
     if P2 >= 0 then
@@ -15063,7 +15817,7 @@ begin
           fmSecondfj.mLog.Lines.Add('+ ' + LoadStr(gLangOffsety + $217) + ' ' +
             IntToStr(I + 1) + ': ' + Name)
         else
-          fmSecondfj.mLog.Lines.Add('+ Скачиваем ' + IntToStr(I + 1) + ': ' + Name);
+          fmSecondfj.mLog.Lines.Add('+ РЎРєР°С‡РёРІР°РµРј ' + IntToStr(I + 1) + ': ' + Name);
         DownloadWikiPage(FMsg, S);
       end;
     end;
@@ -15129,17 +15883,17 @@ var
   I: Integer;
   s: string;
 begin
-  { Хук WH_KEYBOARD_LL: при Code < 0 событие уходит дальше по цепочке,
-    иначе возвращается 1, то есть ввод ГЛУШИТСЯ. Разбирается только
-    Code = 0 (HC_ACTION): ищется горячая клавиша по имени
-    `hkEnableKeyboard`, и если её код и три модификатора совпали
-    с нажатым -- оба хука снимаются.
-    GetKeyState возвращает Smallint, поэтому `and $80 = $80` считается
-    в шестнадцати битах. FKey -- Integer, а PDWORD(lParam)^ (поле vkCode
-    структуры KBDLLHOOKSTRUCT) -- Cardinal, и Delphi 7 сравнивает такую
-    пару как Int64.
-    Имена элементов набора зовутся с юнитом: `ssCtrl` без него берётся
-    из Classes (тот идёт в uses позже HotKeyMgr) и даёт `Incompatible
+  { РҐСѓРє WH_KEYBOARD_LL: РїСЂРё Code < 0 СЃРѕР±С‹С‚РёРµ СѓС…РѕРґРёС‚ РґР°Р»СЊС€Рµ РїРѕ С†РµРїРѕС‡РєРµ,
+    РёРЅР°С‡Рµ РІРѕР·РІСЂР°С‰Р°РµС‚СЃСЏ 1, С‚Рѕ РµСЃС‚СЊ РІРІРѕРґ Р“Р›РЈРЁРРўРЎРЇ. Р Р°Р·Р±РёСЂР°РµС‚СЃСЏ С‚РѕР»СЊРєРѕ
+    Code = 0 (HC_ACTION): РёС‰РµС‚СЃСЏ РіРѕСЂСЏС‡Р°СЏ РєР»Р°РІРёС€Р° РїРѕ РёРјРµРЅРё
+    `hkEnableKeyboard`, Рё РµСЃР»Рё РµС‘ РєРѕРґ Рё С‚СЂРё РјРѕРґРёС„РёРєР°С‚РѕСЂР° СЃРѕРІРїР°Р»Рё
+    СЃ РЅР°Р¶Р°С‚С‹Рј -- РѕР±Р° С…СѓРєР° СЃРЅРёРјР°СЋС‚СЃСЏ.
+    GetKeyState РІРѕР·РІСЂР°С‰Р°РµС‚ Smallint, РїРѕСЌС‚РѕРјСѓ `and $80 = $80` СЃС‡РёС‚Р°РµС‚СЃСЏ
+    РІ С€РµСЃС‚РЅР°РґС†Р°С‚Рё Р±РёС‚Р°С…. FKey -- Integer, Р° PDWORD(lParam)^ (РїРѕР»Рµ vkCode
+    СЃС‚СЂСѓРєС‚СѓСЂС‹ KBDLLHOOKSTRUCT) -- Cardinal, Рё Delphi 7 СЃСЂР°РІРЅРёРІР°РµС‚ С‚Р°РєСѓСЋ
+    РїР°СЂСѓ РєР°Рє Int64.
+    РРјРµРЅР° СЌР»РµРјРµРЅС‚РѕРІ РЅР°Р±РѕСЂР° Р·РѕРІСѓС‚СЃСЏ СЃ СЋРЅРёС‚РѕРј: `ssCtrl` Р±РµР· РЅРµРіРѕ Р±РµСЂС‘С‚СЃСЏ
+    РёР· Classes (С‚РѕС‚ РёРґС‘С‚ РІ uses РїРѕР·Р¶Рµ HotKeyMgr) Рё РґР°С‘С‚ `Incompatible
     types`. }
   if Code < 0 then
     Result := CallNextHookEx(gHook591404, Code, wParam, lParam)
@@ -15173,7 +15927,7 @@ begin
     gHook591404 := 0;
   end;
   // $24 = SPI_SETFASTTASKSWITCH, $61 = SPI_SETSCREENSAVERRUNNING.
-  // SPI_SETSCREENSAVERRUNNING в Windows.pas Delphi 7 нет, поэтому числом.
+  // SPI_SETSCREENSAVERRUNNING РІ Windows.pas Delphi 7 РЅРµС‚, РїРѕСЌС‚РѕРјСѓ С‡РёСЃР»РѕРј.
   SystemParametersInfo(SPI_SETFASTTASKSWITCH, 0, nil, 0);
   SystemParametersInfo($61, 0, nil, 0);
 end;
@@ -15182,8 +15936,8 @@ procedure SetHookB;
 var
   Old: Integer;
 begin
-  { Ставит хук клавиатуры и на время его работы гасит переключение задач
-    и хранитель экрана. Пара к UnhookHookB. }
+  { РЎС‚Р°РІРёС‚ С…СѓРє РєР»Р°РІРёР°С‚СѓСЂС‹ Рё РЅР° РІСЂРµРјСЏ РµРіРѕ СЂР°Р±РѕС‚С‹ РіР°СЃРёС‚ РїРµСЂРµРєР»СЋС‡РµРЅРёРµ Р·Р°РґР°С‡
+    Рё С…СЂР°РЅРёС‚РµР»СЊ СЌРєСЂР°РЅР°. РџР°СЂР° Рє UnhookHookB. }
   Old := 0;
   SystemParametersInfo(SPI_SETFASTTASKSWITCH, 1, @Old, 0);
   SystemParametersInfo($61, 1, @Old, 0);
@@ -15192,8 +15946,8 @@ end;
 
 function MouseHookProc(Code: Integer; wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
 begin
-  { Хук мыши глушит ввод: при Code >= 0 возвращает 1, то есть событие
-    дальше не идёт. }
+  { РҐСѓРє РјС‹С€Рё РіР»СѓС€РёС‚ РІРІРѕРґ: РїСЂРё Code >= 0 РІРѕР·РІСЂР°С‰Р°РµС‚ 1, С‚Рѕ РµСЃС‚СЊ СЃРѕР±С‹С‚РёРµ
+    РґР°Р»СЊС€Рµ РЅРµ РёРґС‘С‚. }
   if Code < 0 then
     Result := CallNextHookEx(gHook591400, Code, wParam, lParam)
   else
@@ -15211,7 +15965,7 @@ end;
 
 procedure SetHookA;
 begin
-  { Пара к UnhookHookA: прежний хук снимается перед постановкой нового. }
+  { РџР°СЂР° Рє UnhookHookA: РїСЂРµР¶РЅРёР№ С…СѓРє СЃРЅРёРјР°РµС‚СЃСЏ РїРµСЂРµРґ РїРѕСЃС‚Р°РЅРѕРІРєРѕР№ РЅРѕРІРѕРіРѕ. }
   if gHook591400 <> 0 then
     UnhookHookA;
   gHook591400 := SetWindowsHookEx(14, @MouseHookProc, HInstance, 0);
@@ -15222,7 +15976,7 @@ var
   StartTick: DWORD;
   Delay: Integer;
 begin
-  // Пауза с прокачкой очереди сообщений: 'wait 500' в скрипте UoPilot.
+  // РџР°СѓР·Р° СЃ РїСЂРѕРєР°С‡РєРѕР№ РѕС‡РµСЂРµРґРё СЃРѕРѕР±С‰РµРЅРёР№: 'wait 500' РІ СЃРєСЂРёРїС‚Рµ UoPilot.
   if S = '' then
     Exit;
   if S <> 'HMS' then
@@ -15237,7 +15991,7 @@ end;
 
 function ScanCommandMenu(M: TMenuItem): Boolean;
 begin
-  // Тело живёт во вложенной функции ScanMenu в mmScriptKeyUp.
+  // РўРµР»Рѕ Р¶РёРІС‘С‚ РІРѕ РІР»РѕР¶РµРЅРЅРѕР№ С„СѓРЅРєС†РёРё ScanMenu РІ mmScriptKeyUp.
   Result := False
 end;
 
@@ -15245,18 +15999,23 @@ procedure TfmSecond.sbScriptsPanelClick(Sender: TObject);
 var
   B: TSpeedButton;
 begin
-  { Панель со списком скриптов -- отдельное окошко в 22 пикселя высотой
-    с двумя кнопками по 20x20, создаётся один раз при первом включении. }
+  { РџР°РЅРµР»СЊ СЃРѕ СЃРїРёСЃРєРѕРј СЃРєСЂРёРїС‚РѕРІ -- РѕС‚РґРµР»СЊРЅРѕРµ РѕРєРѕС€РєРѕ РІ 22 РїРёРєСЃРµР»СЏ РІС‹СЃРѕС‚РѕР№
+    СЃ РґРІСѓРјСЏ РєРЅРѕРїРєР°РјРё РїРѕ 20x20, СЃРѕР·РґР°С‘С‚СЃСЏ РѕРґРёРЅ СЂР°Р· РїСЂРё РїРµСЂРІРѕРј РІРєР»СЋС‡РµРЅРёРё. }
   if sbScriptsPanel.Down then
   begin
     if gDlg596720 = nil then
     begin
       gDlg596720 := TForm.Create(fmSecondfj);
+      {$IFDEF FPC}
+      gDlg596720.PopupParent := fmSecondfj;
+      {$ENDIF}
       gDlg596720.Caption := 'Scripts';
       gDlg596720.ClientHeight := $16;
       gDlg596720.ClientWidth := $2E1;
       gDlg596720.FormStyle := fsStayOnTop;
+      {$IFnDEF FPC}
       gDlg596720.OldCreateOrder := True;
+      {$ENDIF}
       gDlg596720.Scaled := False;
       B := TSpeedButton.Create(gDlg596720);
       B.Left := 0;
@@ -15288,7 +16047,7 @@ var
   OldDir: string;
   OldTitle: string;
 begin
-  { Диалог общий, поэтому все четыре свойства сохраняются и возвращаются. }
+  { Р”РёР°Р»РѕРі РѕР±С‰РёР№, РїРѕСЌС‚РѕРјСѓ РІСЃРµ С‡РµС‚С‹СЂРµ СЃРІРѕР№СЃС‚РІР° СЃРѕС…СЂР°РЅСЏСЋС‚СЃСЏ Рё РІРѕР·РІСЂР°С‰Р°СЋС‚СЃСЏ. }
   OldExt := sdSave.DefaultExt;
   sdSave.DefaultExt := '.ini';
   sdSave.FileName := FOptionsFile;
@@ -15300,7 +16059,7 @@ begin
   if gLangOffsety > 0 then
     sdSave.Title := LoadStr(gLangOffsety + $209)
   else
-    sdSave.Title := 'Сохранить настройки как...';
+    sdSave.Title := 'РЎРѕС…СЂР°РЅРёС‚СЊ РЅР°СЃС‚СЂРѕР№РєРё РєР°Рє...';
   if sdSave.Execute then
   begin
     FOptionsFile := sdSave.FileName;
@@ -15322,9 +16081,9 @@ var
   J: Integer;
   M: TMemo;
 begin
-  { Загрузка настроек из другого ini. Перед этим все вкладки скриптов
-    закрываются по одной, а после -- создаётся одна пустая. Настройки диалога
-    подменяются на время вызова и возвращаются в конце. }
+  { Р—Р°РіСЂСѓР·РєР° РЅР°СЃС‚СЂРѕРµРє РёР· РґСЂСѓРіРѕРіРѕ ini. РџРµСЂРµРґ СЌС‚РёРј РІСЃРµ РІРєР»Р°РґРєРё СЃРєСЂРёРїС‚РѕРІ
+    Р·Р°РєСЂС‹РІР°СЋС‚СЃСЏ РїРѕ РѕРґРЅРѕР№, Р° РїРѕСЃР»Рµ -- СЃРѕР·РґР°С‘С‚СЃСЏ РѕРґРЅР° РїСѓСЃС‚Р°СЏ. РќР°СЃС‚СЂРѕР№РєРё РґРёР°Р»РѕРіР°
+    РїРѕРґРјРµРЅСЏСЋС‚СЃСЏ РЅР° РІСЂРµРјСЏ РІС‹Р·РѕРІР° Рё РІРѕР·РІСЂР°С‰Р°СЋС‚СЃСЏ РІ РєРѕРЅС†Рµ. }
   OldExt := odLoad.DefaultExt;
   odLoad.DefaultExt := '.ini';
   odLoad.FileName := FOptionsFile;
@@ -15336,7 +16095,7 @@ begin
   if gLangOffsety > 0 then
     odLoad.Title := LoadStr(gLangOffsety + $20A)
   else
-    odLoad.Title := 'Загрузить настройки...';
+    odLoad.Title := 'Р—Р°РіСЂСѓР·РёС‚СЊ РЅР°СЃС‚СЂРѕР№РєРё...';
   if odLoad.Execute then
   begin
     FOptionsFile := odLoad.FileName;
@@ -15351,10 +16110,14 @@ begin
         sghkScriptHKList.Row := I;
         cbhk1Click(sghkScriptHKList);
       end;
-      { строки списка горячих клавиш сдвигаются вверх на место удалённой }
+      { СЃС‚СЂРѕРєРё СЃРїРёСЃРєР° РіРѕСЂСЏС‡РёС… РєР»Р°РІРёС€ СЃРґРІРёРіР°СЋС‚СЃСЏ РІРІРµСЂС… РЅР° РјРµСЃС‚Рѕ СѓРґР°Р»С‘РЅРЅРѕР№ }
       for J := I to sghkScriptHKList.RowCount - 1 do
       begin
+        {$IFDEF FPC}
+        TGridCracker(sghkScriptHKList).MoveColRow(False, J + 1, J);
+        {$ELSE}
         TGridCracker(sghkScriptHKList).MoveRow(J + 1, J);
+        {$ENDIF}
         sghkScriptHKList.Rows[J + 1].Clear;
       end;
       sghkScriptHKList.RowCount := sghkScriptHKList.RowCount - 1;
@@ -15390,7 +16153,7 @@ begin
     gScriptso3[0].Name := IntToStr(0);
     gScriptso3[0].AutoStart := True;
     edScript.Clear;
-    { окно лога скрипта создаётся кодом, а его WindowProc перехватывается }
+    { РѕРєРЅРѕ Р»РѕРіР° СЃРєСЂРёРїС‚Р° СЃРѕР·РґР°С‘С‚СЃСЏ РєРѕРґРѕРј, Р° РµРіРѕ WindowProc РїРµСЂРµС…РІР°С‚С‹РІР°РµС‚СЃСЏ }
     if gScriptso3[0].LogView = nil then
     begin
       M := TMemo.Create(fmSecondfj);
@@ -15420,12 +16183,12 @@ begin
   SysUtils.SetCurrentDir(gTempFilefv);
 end;
 
-procedure TfmSecond.GutterClick(Sender: TObject; Button: TMouseButton;
-      X, Y, Line: Integer; Mark: TSynEditMark);
+procedure TfmSecond.GutterClick(Sender: TObject; X, Y, Line: Integer;
+      Mark: TSynEditMark);
 var
-  { Mode и Cm видны вложенной DoComment. J и L -- одни и те же переменные
-    в обеих половинах метода: сначала «позиция первого непробела» и
-    «длина строки минус 2», потом границы выделения. }
+  { Mode Рё Cm РІРёРґРЅС‹ РІР»РѕР¶РµРЅРЅРѕР№ DoComment. J Рё L -- РѕРґРЅРё Рё С‚Рµ Р¶Рµ РїРµСЂРµРјРµРЅРЅС‹Рµ
+    РІ РѕР±РµРёС… РїРѕР»РѕРІРёРЅР°С… РјРµС‚РѕРґР°: СЃРЅР°С‡Р°Р»Р° В«РїРѕР·РёС†РёСЏ РїРµСЂРІРѕРіРѕ РЅРµРїСЂРѕР±РµР»Р°В» Рё
+    В«РґР»РёРЅР° СЃС‚СЂРѕРєРё РјРёРЅСѓСЃ 2В», РїРѕС‚РѕРј РіСЂР°РЅРёС†С‹ РІС‹РґРµР»РµРЅРёСЏ. }
   Mode: Integer;
   Cm: string;
   I: Integer;
@@ -15433,9 +16196,9 @@ var
   Found: Boolean;
   J, L: Integer;
 
-  { Комментирует или раскомментирует строки с AFrom по ATo. Первая строка
-    задаёт режим (Mode): нашли префикс -- снимаем его со всех, не нашли --
-    ставим всем. }
+  { РљРѕРјРјРµРЅС‚РёСЂСѓРµС‚ РёР»Рё СЂР°СЃРєРѕРјРјРµРЅС‚РёСЂСѓРµС‚ СЃС‚СЂРѕРєРё СЃ AFrom РїРѕ ATo. РџРµСЂРІР°СЏ СЃС‚СЂРѕРєР°
+    Р·Р°РґР°С‘С‚ СЂРµР¶РёРј (Mode): РЅР°С€Р»Рё РїСЂРµС„РёРєСЃ -- СЃРЅРёРјР°РµРј РµРіРѕ СЃРѕ РІСЃРµС…, РЅРµ РЅР°С€Р»Рё --
+    СЃС‚Р°РІРёРј РІСЃРµРј. }
   function DoComment(AFrom, ATo: Integer): Boolean;
   var
     K, J2, L2: Integer;
@@ -15472,10 +16235,10 @@ var
     end;
   end;
 begin
-  { Клик по гуттеру редактора: комментирует строку или выделение. Префикс
-    выбирается по коду ВЫШЕ: идём вверх от текущей строки, пока не встретим
-    '//' или '--'; '--' внутри lua-блока (перед ним где-то был 'endlua')
-    означает, что дальше снова Pascal-подобный код, и префикс снова '//'. }
+  { РљР»РёРє РїРѕ РіСѓС‚С‚РµСЂСѓ СЂРµРґР°РєС‚РѕСЂР°: РєРѕРјРјРµРЅС‚РёСЂСѓРµС‚ СЃС‚СЂРѕРєСѓ РёР»Рё РІС‹РґРµР»РµРЅРёРµ. РџСЂРµС„РёРєСЃ
+    РІС‹Р±РёСЂР°РµС‚СЃСЏ РїРѕ РєРѕРґСѓ Р’Р«РЁР•: РёРґС‘Рј РІРІРµСЂС… РѕС‚ С‚РµРєСѓС‰РµР№ СЃС‚СЂРѕРєРё, РїРѕРєР° РЅРµ РІСЃС‚СЂРµС‚РёРј
+    '//' РёР»Рё '--'; '--' РІРЅСѓС‚СЂРё lua-Р±Р»РѕРєР° (РїРµСЂРµРґ РЅРёРј РіРґРµ-С‚Рѕ Р±С‹Р» 'endlua')
+    РѕР·РЅР°С‡Р°РµС‚, С‡С‚Рѕ РґР°Р»СЊС€Рµ СЃРЅРѕРІР° Pascal-РїРѕРґРѕР±РЅС‹Р№ РєРѕРґ, Рё РїСЂРµС„РёРєСЃ СЃРЅРѕРІР° '//'. }
   I := Line - 1;
   Found := False;
   while I >= 0 do
@@ -15503,7 +16266,7 @@ begin
   if not Found then
     Cm := '//';
   Mode := 0;
-  if edScript.SelLength <= 0 then
+  if edScript.SelEnd - edScript.SelStart <= 0 then
   begin
     if cbCommentOnClick.Checked then
     begin
@@ -15513,8 +16276,8 @@ begin
   end
   else if cbCommentOnSelect.Checked then
   begin
-    { Границы выделения -- в НОМЕРАХ СТРОК: каретка ставится на начало и на
-      конец, после каждой установки читается CaretY. }
+    { Р“СЂР°РЅРёС†С‹ РІС‹РґРµР»РµРЅРёСЏ -- РІ РќРћРњР•Р РђРҐ РЎРўР РћРљ: РєР°СЂРµС‚РєР° СЃС‚Р°РІРёС‚СЃСЏ РЅР° РЅР°С‡Р°Р»Рѕ Рё РЅР°
+      РєРѕРЅРµС†, РїРѕСЃР»Рµ РєР°Р¶РґРѕР№ СѓСЃС‚Р°РЅРѕРІРєРё С‡РёС‚Р°РµС‚СЃСЏ CaretY. }
     L := edScript.SelStart;
     J := edScript.SelEnd;
     edScript.SelStart := L;

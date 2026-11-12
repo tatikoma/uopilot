@@ -1,5 +1,9 @@
 unit VCLFixes;
 
+{$IFDEF FPC}
+  {$MODE Delphi}
+{$ENDIF}
+
 interface
 
 implementation
@@ -173,7 +177,9 @@ end;
 
 initialization
   {$IFDEF VER150} // Delphi7
-  PatchWinControl; 
+  {$IFnDEF FPC}
+  PatchWinControl;
+  {$ENDIF}
   {$ENDIF}
 
 end.

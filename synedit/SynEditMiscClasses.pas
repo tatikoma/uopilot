@@ -60,7 +60,8 @@ uses
   QSynEditTypes,
   QSynEditKeyConst,
 {$ELSE}
-  Consts,
+  {$IFNDEF FPC}Consts,{$ENDIF}
+  {$IFDEF FPC}LCLType, LCLProc, LCLStrConsts,{$ENDIF}
   Windows,
   Messages,
   Graphics,
@@ -1313,7 +1314,7 @@ begin
   {$ENDIF}
     Result := Result + ShortCutToText(TShortCut(Key));
   if Result = '' then
-    Result := srNone;
+    Result := 'None';
 end;
 
 constructor TSynHotKey.Create(AOwner: TComponent);
@@ -1351,7 +1352,11 @@ begin
     WindowClass.Style := WindowClass.Style and not ClassStylesOff;
     Style := Style or BorderStyles[fBorderStyle] or WS_CLIPCHILDREN;
 
+    {$IFDEF FPC}
+    if NewStyleControls and (fBorderStyle = bsSingle) then
+    {$ELSE}
     if NewStyleControls and Ctl3D and (fBorderStyle = bsSingle) then
+    {$ENDIF}
     begin
       Style := Style and not WS_BORDER;
       ExStyle := ExStyle or WS_EX_CLIENTEDGE;
@@ -1365,7 +1370,7 @@ begin
   inherited;
   if FPressedOnlyModifiers then
   begin
-    Text := srNone;
+    Text := 'None';
     Invalidate;
   end;
 end;
@@ -1457,7 +1462,7 @@ begin
   
   if FPressedOnlyModifiers then
   begin
-    Text := srNone;
+    Text := 'None';
     Invalidate;
     SetCaretPos(BorderWidth + 1 + Canvas.TextWidth(Text), BorderWidth + 1);
   end;
@@ -1497,7 +1502,7 @@ begin
     Resize;
     Invalidate;
 {$ELSE}
-    RecreateWnd;
+    {$IFDEF FPC}RecreateWnd(Self){$ELSE}RecreateWnd{$ENDIF};
 {$ENDIF}
   end;
 end;
